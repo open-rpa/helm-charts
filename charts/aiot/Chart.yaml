@@ -28,5 +28,5 @@ appVersion: 0.1.45
 dependencies:
 - name: openflow
   version: "0.x"
-#  repository: "https://raw.githubusercontent.com/open-rpa/helm-repo/master/"
+  repository: "https://open-rpa.github.io/helm-charts/"
 # helm dependency update
