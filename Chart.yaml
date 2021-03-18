@@ -1,0 +1,4 @@
+apiVersion: v2
+name: openiap
+description: A collecton of Helm chart for managed by openiap
+version: 1.0.1
