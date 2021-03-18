@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  openflow:
+  - apiVersion: v2
+    appVersion: 1.2.45
+    created: "2021-03-18T16:54:00.7686762+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: c308fa1a8ae513df5a19b69e005c7fb23e1989c5457d68dda219d54f96b15c65
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.39/openflow-0.1.39.tgz
+    version: 0.1.39
+generated: "2021-03-18T16:54:00.7686762+01:00"

@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontendingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+{{- if eq .Values.openflow.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.openflow.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.openflow.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.openflow.certresolver | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+spec:
+  rules:
+    - host: {{ required "protocol required!" .Values.frontend_domain | quote }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: frontend
+              servicePort: www
+{{- if and .Values.openflow.tlsSecret (eq .Values.openflow.protocol "https") }}
+  tls:
+    - secretName: {{ .Values.openflow.tlsSecret | quote }}
+{{- end }}

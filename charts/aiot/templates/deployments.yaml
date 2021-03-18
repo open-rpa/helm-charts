@@ -1,0 +1,61 @@
+{{- $domain := print (required "domain required!" .Values.openflow.domain) "." (required "domainsuffix required!" .Values.openflow.domainsuffix) }}
+{{- $apidomain := print (ternary .Values.openflow.apidomain .Values.openflow.domain (ne .Values.openflow.apidomain "")) "." (required "domainsuffix required!" .Values.openflow.domainsuffix) }}
+{{- $apiuri := print .Values.openflow.protocol "://" $apidomain }}
+{{- if .Values.openflow.port }}
+  {{- $dummy := set . "apiuri" .Values.openflow.protocol ":" .Values.openflow.port "://" $apidomain }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: {{ required "replicas required!" .Values.replicas }}
+  selector:
+    matchLabels:
+      role: frontend
+  strategy:
+    #type: Recreate
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        role: frontend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: {{ default "cloudhack/aiot-frontend" .Values.image | quote }}
+          imagePullPolicy: Always
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 30
+          env:
+            - name: port
+              value: "80"
+            - name: protocol
+              value: {{ required "protocol required!" .Values.openflow.protocol | quote }}
+            - name: frontend_domain
+              value: {{ required "frontend_domain required!" .Values.frontend_domain | quote }}
+            - name: saml_federation_metadata
+{{- if .Values.openflow.openflow.saml_federation_metadata }}
+              value: {{ .Values.openflow.openflow.saml_federation_metadata | quote }}
+{{- else }}
+              value: "{{ $apiuri }}/issue/FederationMetadata/2007-06/FederationMetadata.xml"
+{{- end }}
+            - name: saml_issuer
+              value: "uri:{{ $apidomain }}"

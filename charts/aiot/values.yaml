@@ -1,0 +1,10 @@
+port: 80
+protocol: http
+frontend_domain: 
+saml_federation_metadata:
+saml_issuer:
+saml_entrypoint:
+replicas: 1
+nodeSelector: {}
+image: cloudhack/aiot-frontend:0.1.45
+resources: {}

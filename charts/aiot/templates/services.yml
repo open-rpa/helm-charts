@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    name: frontend
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+  ports:
+    - port: 80
+      name: www
+  selector:
+    role: frontend
