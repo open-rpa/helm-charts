@@ -1,0 +1,145 @@
+{{- if and .Values.openflow.license_key (eq .Values.prometheus.enabled true) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      securityContext:
+        fsGroup: 65534
+      containers:
+        - name: prometheus-cont
+          image: prom/prometheus
+          resources:
+            {{- toYaml .Values.prometheus.resources | nindent 12 }}
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - --storage.tsdb.retention.time=1y
+            - --storage.tsdb.retention.size=9GB
+            - --enable-feature=remote-write-receiver
+            - --web.external-url={{ .Values.protocol }}://prometheus.{{ .Values.domain }}.{{ .Values.domainsuffix }}
+          securityContext:
+            runAsUser: 65534
+            runAsNonRoot: true
+            runAsGroup: 65534
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+            - name: prometheus-data
+              mountPath: /prometheus
+          ports:
+            - containerPort: 9090
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+        - name: prometheus-data
+          persistentVolumeClaim:
+            claimName: prometheus-data-claim
+      serviceAccountName: prometheus-user
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 15s # By default, scrape targets every 15seconds. # Attach these labels to any time series or alerts when #communicating with external systems (federation, remote storage, #Alertmanager).
+      external_labels:
+        monitor: "codelab-monitor"
+    # Scraping Prometheus itself
+    scrape_configs:
+      - job_name: "prometheus"
+        scrape_interval: 5s
+        static_configs:
+          - targets: ["localhost:9090"]
+      - job_name: "gke"
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ['{{ .Release.Namespace }}']
+        metric_relabel_configs:
+          - source_labels: [__name__, exported_pod]
+            regex: "kube_pod_info;(.+)"
+            target_label: pod
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_service_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: namespace
+          - source_labels: [__meta_kubernetes_node_label_kubernetes_io_hostname]
+            target_label: instance
+---            
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-data-claim
+  annotations:
+    helm.sh/resource-policy: "keep"
+  labels:
+    app: prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  labels:
+    name: prometheus
+spec:
+  type: NodePort
+  ports:
+    - port: 9090
+      targetPort: 9090
+      name: prometheus
+  selector:
+    app: prometheus
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-user
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: prometheus-role
+rules:
+- apiGroups: ["", "*"]
+  resources: ["nodes", "services", "endpoints", "pods"]
+  # resources: ["*/*"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-rb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-role
+subjects:
+- kind: ServiceAccount
+  name: prometheus-user
+{{- end }}

@@ -1,0 +1,139 @@
+---
+{{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) }}
+  {{- if eq .Values.zipkin.cassandra true }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cassandra-storage
+  annotations:
+    helm.sh/resource-policy: "keep"
+  labels:
+    app: cassandra
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.zipkin.cassandrastoragesize | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+  labels:
+    name: cassandra
+spec:
+  type: NodePort
+  ports:
+    - port: 9042
+      targetPort: 9042
+      name: cassandra
+  selector:
+    app: cassandra
+---
+# https://github.com/GoogleCloudPlatform/cassandra-docker/blob/master/3/README.md
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: cassandra
+  name: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: cassandra
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cassandra
+          image: launcher.gcr.io/google/cassandra3
+          resources:
+            {{- toYaml .Values.zipkin.cassandraresources | nindent 12 }}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /var/lib/cassandra
+              name: cassandra-storage
+          ports:
+            - containerPort: 7000
+            - containerPort: 7001
+            - containerPort: 7199
+            - containerPort: 9042
+            - containerPort: 9160
+            - containerPort: 9404
+      volumes:
+        - name: cassandra-storage
+          persistentVolumeClaim:
+            claimName: cassandra-storage
+
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin
+  labels:
+    name: zipkin
+spec:
+  type: NodePort
+  ports:
+    - port: 9411
+      targetPort: 9411
+      name: zipkin
+  selector:
+    app: zipkin
+---
+# https://hub.docker.com/r/openzipkin/zipkin
+# https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md
+# Adding auth https://gist.github.com/pbadenski/10069aaab5d8f0a2b2f8e943c2502e0e
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: zipkin
+  name: zipkin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkin
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: zipkin
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: zipkin
+          image: openzipkin/zipkin
+          imagePullPolicy: IfNotPresent
+          resources:
+            {{- toYaml .Values.zipkin.resources | nindent 12 }}
+          env:
+  {{- if eq .Values.zipkin.cassandra true }}
+            - name: STORAGE_TYPE
+              value: "cassandra3"
+            - name: CASSANDRA_CONTACT_POINTS
+              value: "cassandra"
+  {{- end }}
+          ports:
+            - containerPort: 9411
+              name: zipkin
+              protocol: TCP
+{{- end }}

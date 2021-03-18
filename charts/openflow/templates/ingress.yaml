@@ -1,0 +1,166 @@
+{{- $domain := print (required "domain required!" .Values.domain) "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- $apidomain := $domain }}
+{{- if .Values.apidomain }}
+  {{- $apidomain = print .Values.apidomain "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- end }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+spec:
+  rules:
+    - host: "{{ $apidomain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: api
+              servicePort: www
+{{- if eq .Values.rabbitmq.exposed true }}
+    - host: "mq.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: rabbitmq
+              servicePort: rabbitmq-mgnt
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
+    - host: "grafana.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: grafana
+              servicePort: grafana
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
+    - host: "victoria.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: victoriametrics
+              servicePort: victoriametrics
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.prometheus.enabled true) (eq .Values.prometheus.exposed true) }}
+    # - host: "prometheus.{{ $domain }}"
+    #   http:
+    #     paths:
+    #       - path: /
+    #         backend:
+    #           serviceName: prometheus
+    #           servicePort: prometheus
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.exporter.enabled true) (eq .Values.exporter.exposed true) }}
+    - host: "exporter.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: otel-collector
+              servicePort: 55681
+    # - host: "metrics.{{ $domain }}"
+    #   http:
+    #     paths:
+    #       - path: /
+    #         backend:
+    #           serviceName: otel-collector
+    #           servicePort: prometheus
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
+    - host: "jaeger.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jaeger
+              servicePort: 16686
+{{- end }}
+{{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
+    - host: "zipkin.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: zipkin
+              servicePort: 9411
+{{- end }}
+{{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
+  tls:
+    - secretName: {{ .Values.certificate.tlsSecret | quote }}
+{{- end }}
+---
+{{ $ingress := (lookup "extensions/v1beta1" "Ingress" .Release.Namespace "useringress") }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: useringress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+spec:
+  rules:
+    - host: "random.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: api
+              servicePort: www
+{{ if $ingress }}
+  {{- range $k, $v := (lookup "extensions/v1beta1" "Ingress" .Release.Namespace "useringress").spec.rules }}
+    {{ if ne $k 0 }}
+    - host: {{ $v.host }}
+      http:
+        paths:
+        {{- range $k1, $v1 := $v.http.paths }}
+          - path: {{ $v1.path }}
+            backend:
+              serviceName: {{$v1.backend.serviceName }} 
+              servicePort: www
+        {{- end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{- if .Values.certificate.tlsSecret }}
+  tls:
+    - secretName: {{ .Values.certificate.tlsSecret }}
+{{- end }}

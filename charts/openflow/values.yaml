@@ -1,0 +1,189 @@
+NODE_ENV: production
+domainsuffix: 
+domain:
+apidomain:
+protocol: http # set the https if using tlsSecret or certresolver
+certificate:
+  create: false # Create a certificate, when using certificate manager
+  tlsSecret: # Add tlsSecret to all ingress controllers, handy if using certificate manager, or you imported your own certificate in a secret
+  certresolver: # if you have added a certificate resolver to traefik, set it here also
+  certmain: # to predefine certificate name, set this, usefull if using wildcard certificates, for instance: demo.openiap.io
+  certsans: # set subjecter alternative names in the certificate. for instance: *.demo.openiap.io
+nodeSelector: {} # remeber to set under mongodb too
+port: # if the external port to access this is differente from 80/443, then set this the port users will access this instance on
+use_ingress_beta1_syntax: false
+openflow:
+  image: openiap/openflow # set image for api deployment
+  nodered_image: openiap/nodered # set image used when deploying new Nodered deployments
+  # What url to show inside the robot's getting started page
+  getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
+  replicas: 1 # number of api pods to spin up
+  port: 80 # pod/deployment will use this port
+  auto_create_users: true # if trying to login using unknown username, auto create it ?
+  auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
+  allow_user_registration: true # Allow registering new users using openflow api
+  allow_personal_nodered: true # enable the nodered tab in openflow
+  auto_create_personal_nodered_group: true # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
+  persist_user_impersonation: # When impersonating, update on user object who you are impersonating, to persist the information
+  # allow api node to listen on https, not recomended in docker, use a reverse proxy instead
+  tls_crt: 
+  tls_key: 
+  tls_ca: 
+  tls_passphrase: 
+  multi_tenant: false # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
+  force_queue_prefix: false # to avoid users registering the same message queue names, force all messages queues to be prefixed with username, this disables load balencing of multiple nodereds !
+  # The SAML Provider need to sign all tokens issued, use this certificate to sign SAML tokens
+  signing_crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lKQUp5N0tIMTE1dkQ4TUEwR0NTcUdTSWIzRFFFQkN3VUFNRnN4Q3pBSkJnTlYKQkFZVEFrUkxNUk13RVFZRFZRUUlEQXBUYjIxbExWTjBZWFJsTVNFd0h3WURWUVFLREJoSmJuUmxjbTVsZENCWAphV1JuYVhSeklGQjBlU0JNZEdReEZEQVNCZ05WQkFNTUMzTnBaMjVwYm1kalpYSjBNQjRYRFRFNU1EUXdOekUwCk5ETXpORm9YRFRJNU1EUXdOREUwTkRNek5Gb3dXekVMTUFrR0ExVUVCaE1DUkVzeEV6QVJCZ05WQkFnTUNsTnYKYldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNUlFeDBaREVVTUJJRwpBMVVFQXd3TGMybG5ibWx1WjJObGNuUXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCCkFRQy9JSkdEaGxLTU9SWkoycXQwSWpjSDZOWUFtZDVxQzQ4dkNJRE54QWZCbmQxQnN4WlVjWkl5dkFlT28yNDcKM3I0eTYwNDgxRHVUS2JaMTBTNjRqRU05aW1XTXB1TFlJRnVyQ3BWNzVEWWhxMS85Q0FJVHJqNjlmVDluSkptcwpjM2lxTnJ1Tlg1bDlISXdadWtQM1ZNRkJRNWZVd3N1ZnE0YW1NbnVnZmtyUEVzSngxK3VJb0NYU3pyblZvcnZpClZ0ZFh4a3M4N0l1S0ZnMDJIZ1RQSzdwc0FXYTBRY3g2ck04bkV5TUhwNUdlR1Rvb1NNbkcyZ1RGNWZOSVFNdTMKVEVoc2p3SWRTYmRwck1Gb1VZV05Bc2FueTJOQk0wREhZRUdjQlZhZ0xWNUhFUW5ySUM3NEhtNjYxdG9HaU5VSAoveW04U3VndTgwWVFiVGxPcTFWNnNkaVRBZ01CQUFHalV6QlJNQjBHQTFVZERnUVdCQlMrYWc1NGtITllKZ29pCm9yRnlia293THR5R3ZqQWZCZ05WSFNNRUdEQVdnQlMrYWc1NGtITllKZ29pb3JGeWJrb3dMdHlHdmpBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQTZpZHBYdzdSR2pzcUpNanI2c1YvaQpXeXFsL2xkSy9sa1NCdnNBSENieDdQYi9rVUd2NHJNbndYMnBHdTR0YkFnSDc4eStmS3dzazllYkxDeTA4Y1k0Ckt5czhzbUpLenhWN0R6U3RVR1NvZmZMaFliVVVMK3UyNU5vVXc0TG1WQU5FU0NaMTZ3aTdPQUdJMkJnNFR6TXoKdnlIUHRaaE9wTXBNV2lzM2ZnRXFzV3QxS2VLcXo0Z2M5RnJtZDZPNlQzVVAxWTRBR3VEWnNScnpiU2RQS2JxbApxekprT2tQcGtHOGo3ZjFWNkk1ZlkzblZaSWk2YW1TcTM1RTJkQzVMY0dIQXRtT1lWL0c4TEQ3OUFnTVpFUU5vCkF2R2RnV1gvbXBFVkFjMmRFQkJlcUN6WjF1aVhWUjdERld2ZDFKTEpsdVRyTm9jMUROc0xNKzNEZFFiQ2JnYVcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  singing_key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy9JSkdEaGxLTU9SWkoKMnF0MElqY0g2TllBbWQ1cUM0OHZDSUROeEFmQm5kMUJzeFpVY1pJeXZBZU9vMjQ3M3I0eTYwNDgxRHVUS2JaMQowUzY0akVNOWltV01wdUxZSUZ1ckNwVjc1RFlocTEvOUNBSVRyajY5ZlQ5bkpKbXNjM2lxTnJ1Tlg1bDlISXdaCnVrUDNWTUZCUTVmVXdzdWZxNGFtTW51Z2ZrclBFc0p4MSt1SW9DWFN6cm5Wb3J2aVZ0ZFh4a3M4N0l1S0ZnMDIKSGdUUEs3cHNBV2EwUWN4NnJNOG5FeU1IcDVHZUdUb29TTW5HMmdURjVmTklRTXUzVEVoc2p3SWRTYmRwck1GbwpVWVdOQXNhbnkyTkJNMERIWUVHY0JWYWdMVjVIRVFucklDNzRIbTY2MXRvR2lOVUgveW04U3VndTgwWVFiVGxPCnExVjZzZGlUQWdNQkFBRUNnZ0VBVXBjZ1NsV2hGamNWQ3BVVHdmdUhERVB4TmhGSHEwdVRkQitZaVZKTWg3NVAKL2pRRlVqaEJsT3JyMlJlR2F4aTEyQXNXby9LU1MrV2Frdzd4d1kzYkFKenRoUG9Zekl3dkVKcGlQa2MvblEwUgpUYVpJUDNqc1k3WGIwQlpnMGNTVVAvbW0wbENkWXhNUzk0c21FNXJzWitkdGxPTVlXc2NrU0cxSVB2SlVJV2FZCnl3NC9kaHJ3TWRsREVZS2tSbks1aDR1dXR1dzA1Q1VzNkZWN2F5cEJRRStGM3RxVlF3QWxGbWNueXdvZTB5WjQKZW1tWkRvT1dzNUk4cGNGbjZCSW1wZjN3UEg5UWhlQXJVaXRqV3YrZmI2cWRVaHJFVDBxMzh4dTZ5M1lJNFNLYQpXME9kUng4L3FTYllXdkpzbmxscDR0aUpDWE5IdnV6MVBKSGhxOUprQVFLQmdRRCt2dHlWcVJoaEJZTmd6WWorClFCaDNLcktrNEVqTXZaSGhEelhES0pMZ2JEVmJzNExrQkYySWZGOTF0S1k3d09CNVpXcU82Z3FqVVJBVE5hc1YKOExCOGE2TEpXYVJuTklLMnJkd1FwalFYcy92OVBSYnJwc2tTbDRJdUsyZWNBMjBSQkhicW5yNHZ5ZkQ4U3BzaApSdHlTUk5CRGVsaU01Z1JDM0JKKzBZbjBVUUtCZ1FEQUVZSUp3Y2xnQloyWmNNTlh1dW1lLzUxdHBHeGppRTJpCjZ3SDNsOHNTVDN1U1A4MHdndGdHaVFsUTRsR3BmSThqWkl4N0pwcGw0Qko1ZEtuVnpIS1dqMzA3YXYxcjdpU3QKLzJOVDNobzdaYkNlYzlhMHlJU2E3dTNGZGxzZ0VPcE45dURmbG5GQVQ3ZmIrM2d4Sk9DUWp1TkFCZXZaK2pScwpZY0ZhQWhGNW93S0JnUUNGUG9HVVNsRDFGblFrWXYwL3QzalVnK0hTK1hrNmxnRkNqYmthTGhPOURQeFB6Ykl0CjM5YW9lQjFhTExZeVZPMVVzZVl0Z0Y4MkUwVnNOc3NZKzc3a0pVeU5NclVhUWs0SWpTR3BGN1h4bS9PMi9vZ0oKbEVCaDJCdUFXTFdsMWVqcldNRjJjTGVidVcyeUdMZlJqUVg3LzhCTE95Z3I4bmZTSE5nVHV6Z0VNUUtCZ0JrZgpNUjhObGNWVmRyT25LQ1hGY09FM0ZlUk5hVS9yZUJ3akdQTEZpKzR0TDBDRno5VFVpR1R5YjZHQXVLV3VnUnBrCkFHdnJOSzYyakRRT3FsZ29rYVJYeUUySlJQUmxCYThzaEZWbjY0NXhVcFNuR2lJelNBVHIwM1hNY1ViVWI1RWIKQlhhNU9yN3FybVc3a3BENi9kUnFuQmEzcjQyblNFd1V6VEYwcTh4NUFvR0FIcXdRSyt1R0NTdlNsNENJUGhyRQpDREIvcytDK2NJNXVCeFJCMHVlNjc3L2lpdGZPSU9lOUNiTHE3R0tib0w4RVg3eXhKNVRLWjlYQmh5LzNCWmVNCllydEx3M2JicTNTN2hpUGFYSmE1dXZma3BWR1RnNEdzTnBJQ3VNTEJUaXJ6M0ZRV25UNFNZbzkrREVoalhEeVQKWlVOMERtUkJVNjNjWjRLSUlXd2xWUTA9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  # To enable enterprise features, add your licanse key here
+  license_key: 
+  # if not using helm to deploy mongodb, set this to the connection string if your mongodb
+  external_mongodb_url: 
+  # if not using helm to deploy mongodb, set your desired database to use
+  mongodb_db:
+  # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
+  supports_watch: true
+  # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
+  mongodb_minpoolsize: 
+  # if not using mongodb replicate set, you cannot use the watch feature, then set this to false, default: false
+  supports_watch: 
+  # Auto-create default indexes doing startup, default: true
+  ensure_indexes: 
+  # openflow will keep track of all changes on all documents except inside these collections
+  skip_history_collections: audit,jslog,openrpa_instances,configclients
+  websocket_max_package_count: "1048576" # 1048576
+  websocket_package_size: 4096
+  websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
+  update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
+  # Give nodered time to install all packages, so skip liveliness check for this many seconds
+  nodered_initial_liveness_delay: 120
+  # To allow buying addon products or dedicated nodered instance, add stripe api key and secret
+  stripe_api_key: 
+  stripe_api_secret: 
+  api_rate_limit: # to disable rate limits on all http requests, set this to false
+  api_rate_limit_points: # to change the amount of points a hit consume, default: 1
+  api_rate_limit_duration: # to change how long it takes for a point to expire in seconds, default: 60
+  socket_rate_limit: # to disable rate limits on socket messages, set this to false
+  socket_rate_limit_points: # to change the amount of points a hit consume, default: 1
+  socket_rate_limit_duration: # to change how long it takes for a point to expire in seconds, default: 30
+  log_queries: # log all db queries to console, default: false
+  log_aggregates: # log all db aggregates to console, default: false
+  log_inserts: # log all db inserts to console, default: false
+  log_updates: # log all db updates to console, default: false
+  log_deletes: # log all db deletes to console, default: false
+  log_otel_times: # log otel timings (very spammy!), default: false
+  aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
+  nodered_allow_nodeselector: false # allow collection of all kubernete nodes labels and setting nodeSelector on nodered instances
+  nodered_requests_memory: # set requested memory usage for new nodered instances, for instance: 128Mi
+  nodered_requests_cpu: # set requested cpu usage for new nodered instances, for instance: 250n ( 1000n represents 1 vCPU )
+  nodered_limits_memory: # limit memory usage for new nodered instances, for instance: 256Mi (kubernetes will restart the pod)
+  nodered_limits_cpu: # limit cpu usage for new nodered instances, for instance: 450n ( 1000n represents 1 vCPU )
+  nodered_liveness_failurethreshold: # allow nodered liveness probe to fail this amount of times before restarting it, default 5
+  resources: {}
+  api_ws_url: # force new nodereds and browser to use this url to access the api
+  prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false
+  prometheus_measure_queued_messages: # Collect prometheus metrics for openflow/nodered on socket messages waiting on a reply, default: false
+  prometheus_measure__mongodb_watch: # Collect prometheus metrics for open change streams to mongodb, default: false
+  prometheus_measure_onlineuser: # Collect prometheus metrics while updating onmline users every 10th second, default: false
+  enable_analytics: # Enable analytics
+  otel_trace_url: # Open Telemetry exporter trace URL
+  otel_metric_url: # Open Telemetry exporter metrix URL
+  otel_servicename: # Open Telemetry service name
+  otel_trace_interval: 5000 # Open Telemetry trace sending interval
+  otel_metric_interval: 5000 # Open Telemetry metric sending interval
+  expected_max_roles: # to avoid dos we limited the number of roles, default 4000
+  decorate_roles_fetching_all_roles: # default true, will grab all roles from the database and find accumulated roles in that array, if set to false will do multiple queries to the database to find all nested roles for the user
+  roles_cached_in_seconds: # if decorate_roles_fetching_all_roles is true, how many seconds will we cache all roles, default is 300, to disable cache set to 0
+  max_recursive_group_depth: # if decorate_roles_fetching_all_roles is false, limit how many nested groups to go though, default 2
+  validate_user_form: # User validation form, if set, will force all users to be fill out this form in order to login.
+  shorttoken_expires_in: # default 5m
+  longtoken_expires_in: # default: 365d
+  downloadtoken_expires_in: # default: 15m
+  personalnoderedtoken_expires_in: # default: 365d
+  debug: # Configure logging for the debug plugin
+  # limits:
+  #   #   cpu: "1"
+  #   #memory: 1Gi
+  #   memory: 768Mi
+  # requests:
+  #   # cpu: "0.02"
+  #   memory: 128Mi
+rabbitmq:
+  exposed: false
+  default_user: admin
+  # vm_memory_high_watermark: 1GB
+  default_pass: 
+  resources: {}
+  # limits:
+  #   #   cpu: "1"
+  #   #memory: 1Gi
+  #   memory: 1Gi
+  # requests:
+  #   # cpu: "0.02"
+  #   memory: 256Mi
+grafana:
+  enabled: false
+  image: openiap/grafana:1.0.22 # set image used when deploying frafana
+  oauth_client_id: application
+  oauth_client_secret: secret
+  allow_embedding: true # set to true if you want to allow browsers to render Grafana in a <frame>, <iframe>, <embed> or <object>. default is false.
+  send_user_header: false # If enabled and user is not anonymous, data proxy will add X-Grafana-User header with username into the request, default is false.
+  reporting_enabled: false # sends usage counters to stats.grafana.org every 24 hours.
+  oauth_auto_login: true # Set to true to attempt login with OAuth automatically, skipping the login screen.
+  openflow_datasource: true # inject openflow data source, this should be set to false after first deploy if you set alert manager credentials
+  prometheus_datasource: true # inject prometheus data source
+  smtp:
+    enabled: false
+    host: 
+    user: 
+    password:
+    from:
+    fromname:
+prometheus:
+  enabled: false
+  exposed: false
+  resources: {}
+exporter:
+  enabled: false
+  exposed: false
+  resources: {}
+jaeger:
+  enabled: false
+  exposed: false
+  ephemeral: true
+  resources: {}
+zipkin:
+  enabled: false
+  exposed: false
+  cassandra: false
+  resources: {}
+  cassandraresources: {}
+  cassandrastoragesize: 10Gi
+victoriametrics:
+  enabled: false
+  exposed: false
+  persistence: false
+  persistencestoragesize: 10Gi
+  resources: {}
+
+# Error: found in Chart.yaml, but missing in charts/ directory: 
+# helm dependency update
+mongodb:
+  enabled: true
+  architecture: standalone
+  metrics:
+    enabled: false
+  auth:
+    enabled: true
+    username: openflow
+    password: supersecret
+    database: openflow
+  mongodbUsername: openflow
+  mongodbDatabase: supersecret
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  nodeSelector: {}
+  arbiter:
+    nodeSelector: {}

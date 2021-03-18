@@ -1,0 +1,22 @@
+{{- if and .Values.certificate (eq .Values.certificate.create true) }}
+{{- $domain := print (required "domain required!" .Values.domain) "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- $apidomain := $domain }}
+{{- if .Values.apidomain }}
+  {{- $apidomain = print .Values.apidomain "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- end }}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ $domain | quote }}
+spec:
+  secretName: .Values.certificate.tlsSecret
+  renewBefore: 120h
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: {{ $domain | quote }}
+  dnsNames:
+    - "$apidomain"
+    - "*.{{ $domain }}"
+{{- end }}

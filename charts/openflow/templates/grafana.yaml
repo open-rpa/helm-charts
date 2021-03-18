@@ -1,0 +1,206 @@
+{{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
+{{- $domain := print (required "domain required!" .Values.domain) "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- $apidomain := $domain }}
+{{- if .Values.apidomain }}
+  {{- $apidomain = print .Values.apidomain "." (required "domainsuffix required!" .Values.domainsuffix) }}
+{{- end }}
+{{- $apiuri := print .Values.protocol "://" $apidomain }}
+{{- if .Values.port }}
+  {{- $dummy := set . "apiuri" .Values.protocol ":" .Values.port "://" $apidomain }}
+{{- end }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - image: {{ .Values.grafana.image }}
+          name: grafana
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: GF_AUTH_GENERIC_OAUTH_ENABLED
+              value: "true"
+            - name: GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP
+              value: "true"
+            - name: GF_AUTH_GENERIC_OAUTH_NAME
+              value: "OpenFlow"
+            - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+              value: {{ .Values.grafana.oauth_client_id | quote }}
+            - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+              value: {{ .Values.grafana.oauth_client_secret | quote }}
+            # - name: GF_AUTH_GENERIC_OAUTH_SCOPES
+            #   value: "user:email"
+            - name: GF_AUTH_GENERIC_OAUTH_SCOPES
+              value: "openid"
+            - name: GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH
+              value: "email"
+            - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH
+              value: "role"
+            # - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+            #   value: "{{ $apiuri }}/oauth/login"
+            # - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+            #   value: "{{ $apiuri }}/oauth/token"
+            # - name: GF_AUTH_GENERIC_OAUTH_API_URL
+            #   value: "{{ $apiuri }}/oauth/authorize"
+            - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+              value: "{{ $apiuri }}/oidc/auth"
+            - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+              value: "{{ $apiuri }}/oidc/token"
+            - name: GF_AUTH_GENERIC_OAUTH_API_URL
+              value: "{{ $apiuri }}/oidc/me"
+            - name: GF_AUTH_DISABLE_LOGIN_FORM
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "false"
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+            - name: GF_SERVER_DOMAIN
+              value: "grafana.{{ $domain }}"
+            - name: GF_SERVER_ROOT_URL
+{{- if .Values.port }}
+              value: "{{ .Values.protocol }}://grafana.{{ $domain }}:{{ .Values.port }}"
+{{- else }}
+              value: "{{ .Values.protocol }}://grafana.{{ $domain }}"
+{{- end }}
+            - name: GF_ALLOW_EMBEDDING
+              value: {{ .Values.grafana.allow_embedding | quote }}
+            - name: GF_SEND_USER_HEADER
+              value: {{ .Values.grafana.send_user_header | quote }}
+            - name: GF_REPORTING_ENABLED
+              value: {{ .Values.grafana.reporting_enabled | quote }}
+            - name: GF_OAUTH_AUTO_LOGIN
+              value: {{ .Values.grafana.oauth_auto_login | quote }}
+{{- if eq .Values.grafana.smtp.enabled true }}
+            - name: GF_SMTP_ENABLED
+              value: {{ .Values.grafana.smtp.enabled | quote }}
+            - name: GF_SMTP_HOST
+              value: {{ .Values.grafana.smtp.host | quote }}
+            - name: GF_SMTP_USER
+              value: {{ .Values.grafana.smtp.user | quote }}
+            - name: GF_SMTP_PASSWORD
+              value: {{ .Values.grafana.smtp.password | quote }}
+            - name: GF_SMTP_FROM_ADDRESS
+              value: {{ .Values.grafana.smtp.from | quote }}
+            - name: GF_SMTP_FROM_NAME
+  {{- if .Values.grafana.smtp.fromname }}
+              value: {{ .Values.grafana.smtp.fromname | quote }}
+  {{- else }}              
+              value: "Grafana {{ $domain }}"
+  {{- end }}
+{{- end }}
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+            - mountPath: /etc/grafana/provisioning/datasources
+              name: grafana-datasources
+              readOnly: false
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-storage
+        - name: grafana-datasources
+          configMap:
+            defaultMode: 420
+            name: grafana-datasources
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 472
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+data:
+{{- if .Values.grafana.openflow_datasource }}
+  openflow.yaml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+              "name": "OpenFlow",
+              "type": "grafana-openflow-datasource",
+              "access":"proxy",
+              "url": "http://api/grafana",
+              "withCredentials": true,
+              "isDefault": 1,
+              "editable": true,
+              "orgId": 1,
+              "version": 1,
+              "jsonData": {
+                "tlsAuth": false,
+                "tlsAuthWithCACert": false,
+                "oauthPassThru": true
+              }
+            }
+        ]
+    }
+{{- end }}
+{{- if .Values.grafana.prometheus_datasource }}
+  prometheus.yaml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+              "name": "Prometheus",
+              "type": "prometheus",
+              "url": "http://victoriametrics:8428",
+              "access":"proxy",
+              "editable": true,
+              "orgId": 1,
+              "version": 1
+            }
+        ]
+    }
+{{- end }}
+# "url": "http://prometheus:9090",
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-storage
+  annotations:
+    helm.sh/resource-policy: "keep"
+  labels:
+    app: grafana
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    name: grafana
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: grafana
+  selector:
+    app: grafana
+{{- end }}
