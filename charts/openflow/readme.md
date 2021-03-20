@@ -42,5 +42,5 @@ If you late update your values file you can update your install using
 helm upgrade openflow openiap/openflow -n demo1 --values ./demo1.yaml
 ```
 
-To learn more about values you can use in your values file, have a look inside [values.yaml](https://raw.githubusercontent.com/open-rpa/helm-repo/main/values.yaml) 
+To learn more about values you can use in your values file, have a look inside [values.yaml](https://github.com/open-rpa/helm-charts/blob/main/charts/openflow/values.yaml) 
 
