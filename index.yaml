@@ -31,4 +31,36 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.39/openflow-0.1.39.tgz
     version: 0.1.39
-generated: "2021-03-18T17:26:58.0067308+01:00"
+  rocketchat:
+  - apiVersion: v2
+    appVersion: 3.7.2
+    created: "2021-03-20T09:17:41.1198223+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 7.x.x
+    description: Prepare to take off with the ultimate chat platform, experience the
+      next level of team communications
+    digest: 5004fe42ba8b158f913e38d3417b6d3153d6122302b9e7658dea6f2c5d4dd054
+    home: https://rocket.chat/
+    icon: https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon.svg
+    keywords:
+    - chat
+    - communication
+    - http
+    - web
+    - application
+    - nodejs
+    - javascript
+    - meteor
+    maintainers:
+    - email: cloud@rocket.chat
+      name: RocketChat
+    name: rocketchat
+    sources:
+    - https://github.com/RocketChat/Docker.Official.Image/
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
+    version: 3.0.2
+generated: "2021-03-20T09:17:41.1198223+01:00"
