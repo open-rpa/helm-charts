@@ -25,7 +25,7 @@ rabbitmq:
 First add the helm repo and  create a new namespace called demo1
 
 ``` sh
-helm repo add openiap https://raw.githubusercontent.com/open-rpa/helm-repo/master/
+helm repo add openiap https://open-rpa.github.io/helm-charts/
 helm repo update
 kubectl create namespace demo1
 ```
