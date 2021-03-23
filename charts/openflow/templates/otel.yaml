@@ -181,7 +181,7 @@ metadata:
 spec:
   entryPoints:
     - web
-    - otlp
+    - websecure
   routes:
     - match: Host(`otel.{{$domain}}`)
       kind: Rule

@@ -126,6 +126,8 @@ spec:
           resources:
             {{- toYaml .Values.zipkin.resources | nindent 12 }}
           env:
+            - name: JAVA_OPTS
+              value: {{ .Values.zipkin.javaopts | quote }}
   {{- if eq .Values.zipkin.cassandra true }}
             - name: STORAGE_TYPE
               value: "cassandra3"

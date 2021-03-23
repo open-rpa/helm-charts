@@ -156,7 +156,12 @@ zipkin:
   enabled: false
   exposed: false
   cassandra: false
-  resources: {}
+  javaopts: "-Xms128m -Xmx512m"
+  resources: 
+    limits:
+      memory: 512Mi
+    requests:
+      memory: 256Mi
   cassandraresources: {}
   cassandrastoragesize: 10Gi
 victoriametrics:
