@@ -7,7 +7,8 @@
 {{- if .Values.port }}
   {{- $dummy := set . "apiuri" .Values.protocol ":" .Values.port "://" $apidomain }}
 {{- end }}
-{{- $oteluri := print "http://otel." $domain ":4317" }}
+# ":4317"
+{{- $oteluri := print "http://otel." $domain }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
