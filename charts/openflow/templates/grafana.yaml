@@ -69,8 +69,16 @@ spec:
               value: "{{ $apiuri }}/oidc/me"
             - name: GF_AUTH_DISABLE_LOGIN_FORM
               value: "true"
+            - name: GF_AUTH_OAUTH_AUTO_LOGIN
+              value: "true"
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "false"
+            - name: GF_AUTH_LOGIN_MAXIMUM_LIFETIME_DAYS
+              value: "1"
+            - name: GF_AUTH_LOGIN_MAXIMUM_INACTIVE_LIFETIME_DAYS
+              value: "1"
+            - name: GF_AUTH_SIGNOUT_REDIRECT_URL
+              value: "{{ $apiuri }}/oidc/session/end"
             - name: GF_USERS_ALLOW_SIGN_UP
               value: "false"
             - name: GF_SERVER_DOMAIN

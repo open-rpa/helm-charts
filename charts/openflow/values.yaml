@@ -165,6 +165,11 @@ zipkin: # for visualizing and optionally also saving all spans, we use zipkin.
       memory: 256Mi
   cassandraresources: {}
   cassandrastoragesize: 10Gi
+  dependencies:
+    enabled: false
+    storagetype: cassandra3
+    cassandra_contact_points: cassandra
+    strict_trace_id: true
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
   enabled: false
   exposed: false

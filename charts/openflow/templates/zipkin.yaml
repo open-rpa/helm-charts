@@ -140,4 +140,42 @@ spec:
             - containerPort: 9411
               name: zipkin
               protocol: TCP
+
+  {{- if and (eq .Values.zipkin.cassandra true) (eq .Values.zipkin.dependencies.enabled true) }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: zipkindependencies
+  name: zipkindependencies
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkindependencies
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: zipkindependencies
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: zipkindependencies
+          image: openzipkin/zipkin-dependencies
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STORAGE_TYPE
+              value: {{ .Values.zipkin.dependencies.storagetype | quote }}
+            - name: CASSANDRA_CONTACT_POINTS
+              value: {{ .Values.zipkin.dependencies.cassandra_contact_points | quote }}
+            - name: STRICT_TRACE_ID
+              value: {{ .Values.zipkin.dependencies.strict_trace_id | quote }}
+  {{- end }}
 {{- end }}
