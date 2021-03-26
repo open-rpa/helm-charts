@@ -1,0 +1,95 @@
+---
+{{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) }}
+  {{- if eq .Values.jaeger.ephemeral false }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jaeger-storage
+  annotations:
+    helm.sh/resource-policy: "keep"
+  labels:
+    app: jaeger
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.jaeger.ephemeralstoragesize | quote }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  labels:
+    name: jaeger
+spec:
+  type: NodePort
+  ports:
+    - port: 14250
+      targetPort: 14250
+      name: jaeger
+    - port: 16686
+      targetPort: 16686
+      name: jaegerui
+  selector:
+    app: jaeger
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: jaeger
+  name: jaeger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: jaeger
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one
+          imagePullPolicy: IfNotPresent
+          resources:
+            {{- toYaml .Values.jaeger.resources | nindent 12 }}
+          env:
+            - name: SPAN_STORAGE_TYPE
+              value: "badger"
+            - name: BADGER_EPHEMERAL
+              value: {{ .Values.jaeger.ephemeral | quote }}
+            - name: BADGER_DIRECTORY_VALUE
+              value: "/badger/data"
+            - name: BADGER_DIRECTORY_KEY
+              value: "/badger/key"
+  {{- if eq .Values.jaeger.ephemeral false }}
+          volumeMounts:
+            - mountPath: /badger
+              name: jaeger-storage
+              subPath: badger
+  {{- end }}
+          ports:
+            - containerPort: 14250
+              name: jaeger
+              protocol: TCP
+            - containerPort: 16686
+              name: jaegerui
+              protocol: TCP
+  {{- if eq .Values.jaeger.ephemeral false }}
+      volumes:
+        - name: jaeger-storage
+          persistentVolumeClaim:
+            claimName: jaeger-storage
+  {{- end }}
+{{- end }}

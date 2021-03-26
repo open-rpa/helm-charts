@@ -147,12 +147,13 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
   enabled: false # enable setting up the, open telemetry exporter
   exposed: false # expose using IngressRoute so remote nodered and openrpa robots can send data
   resources: {}
-jaeger: # deprecated, we use zipkin now.
+jaeger: # for visualizing and optionally also saving all spans, we can use jaeger.
   enabled: false
   exposed: false
-  ephemeral: true
+  ephemeral: true # To save spans data using local storage, set to false
+  ephemeralstoragesize: 20Gi
   resources: {}
-zipkin: # for visualizing and optionally also saving all spans, we use zipkin.
+zipkin: # for visualizing and optionally also saving all spans, we can use zipkin.
   enabled: false
   exposed: false # expose in ingress
   selftracing: false # log spans to self, for troubleshooting zipkin it self
