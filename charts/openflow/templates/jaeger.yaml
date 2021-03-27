@@ -65,6 +65,12 @@ spec:
           resources:
             {{- toYaml .Values.jaeger.resources | nindent 12 }}
           env:
+  {{- if eq .Values.jaeger.cassandra true }}
+            - name: SPAN_STORAGE_TYPE
+              value: "cassandra"
+            - name: CASSANDRA_SERVERS
+              value: "cassandra"
+  {{- else }}
             - name: SPAN_STORAGE_TYPE
               value: "badger"
             - name: BADGER_EPHEMERAL
@@ -73,12 +79,13 @@ spec:
               value: "/badger/data"
             - name: BADGER_DIRECTORY_KEY
               value: "/badger/key"
+  {{- end }}
   {{- if eq .Values.jaeger.ephemeral false }}
           volumeMounts:
             - mountPath: /badger
               name: jaeger-storage
               subPath: badger
-  {{- end }}
+  {{- end }}  
           ports:
             - containerPort: 14250
               name: jaeger
@@ -92,4 +99,26 @@ spec:
           persistentVolumeClaim:
             claimName: jaeger-storage
   {{- end }}
+---
+  {{- if eq .Values.jaeger.cassandra true }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jaeger-cassandra-schema-job
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      name: jaeger-cassandra-schema-job
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: jaeger-cassandra-schema-job
+          image: jaegertracing/jaeger-cassandra-schema
+          env:
+            - name: CQLSH_HOST
+              value: "cassandra"
+            - name: KEYSPACE
+              value: "jaeger_v1_test"
+  {{- end }}  
 {{- end }}

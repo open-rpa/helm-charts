@@ -1,0 +1,77 @@
+{{- if and .Values.openflow.license_key (eq .Values.cassandra.enabled true) }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cassandra-storage
+  annotations:
+    helm.sh/resource-policy: "keep"
+  labels:
+    app: cassandra
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.cassandra.storagesize | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+  labels:
+    name: cassandra
+spec:
+  type: NodePort
+  ports:
+    - port: 9042
+      targetPort: 9042
+      name: cassandra
+  selector:
+    app: cassandra
+---
+# https://github.com/GoogleCloudPlatform/cassandra-docker/blob/master/3/README.md
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: cassandra
+  name: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: cassandra
+    spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cassandra
+          image: launcher.gcr.io/google/cassandra3
+          resources:
+            {{- toYaml .Values.cassandra.resources | nindent 12 }}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /var/lib/cassandra
+              name: cassandra-storage
+          ports:
+            - containerPort: 7000
+            - containerPort: 7001
+            - containerPort: 7199
+            - containerPort: 9042
+            - containerPort: 9160
+            - containerPort: 9404
+      volumes:
+        - name: cassandra-storage
+          persistentVolumeClaim:
+            claimName: cassandra-storage
+{{- end }}

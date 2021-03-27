@@ -152,6 +152,7 @@ jaeger: # for visualizing and optionally also saving all spans, we can use jaege
   exposed: false
   ephemeral: true # To save spans data using local storage, set to false
   ephemeralstoragesize: 20Gi
+  cassandra: false # persist all data to cassandra, instead of only keeping them temporarily or using ephemeral
   resources: {}
 zipkin: # for visualizing and optionally also saving all spans, we can use zipkin.
   enabled: false
@@ -164,13 +165,10 @@ zipkin: # for visualizing and optionally also saving all spans, we can use zipki
       memory: 512Mi
     requests:
       memory: 256Mi
-  cassandraresources: {}
-  cassandrastoragesize: 10Gi
-  dependencies:
-    enabled: false
-    storagetype: cassandra3
-    cassandra_contact_points: cassandra
-    strict_trace_id: true
+cassandra:
+  enabled: false
+  storagesize: 10Gi
+  resources: {}
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
   enabled: false
   exposed: false
