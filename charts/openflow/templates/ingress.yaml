@@ -88,7 +88,48 @@ spec:
     #           serviceName: otel-collector
     #           servicePort: prometheus
 {{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
+{{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
+  tls:
+    - secretName: {{ .Values.certificate.tlsSecret | quote }}
+{{- end }}
+---
+{{- if and (.Values.openflow.license_key) (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true)) }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dashboardauth
+spec:
+  forwardAuth:
+    address: "https://{{ $apidomain }}/dashboardauth"
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: auth-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-dashboardauth@kubernetescrd"
+spec:
+  rules:
+  {{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
     - host: "jaeger.{{ $domain }}"
       http:
         paths:
@@ -96,8 +137,8 @@ spec:
             backend:
               serviceName: jaeger
               servicePort: 16686
-{{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
+  {{- end }}
+  {{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
     - host: "zipkin.{{ $domain }}"
       http:
         paths:
@@ -105,10 +146,7 @@ spec:
             backend:
               serviceName: zipkin
               servicePort: 9411
-{{- end }}
-{{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
-  tls:
-    - secretName: {{ .Values.certificate.tlsSecret | quote }}
+  {{- end }}
 {{- end }}
 ---
 {{ $ingress := (lookup "extensions/v1beta1" "Ingress" .Release.Namespace "useringress") }}
