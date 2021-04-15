@@ -126,8 +126,6 @@ spec:
               value: {{ .Values.openflow.auto_create_users | quote }}
             - name: auto_create_domains
               value: {{ default "" .Values.openflow.auto_create_domains | quote }}
-            - name: allow_user_registration
-              value: {{ .Values.openflow.allow_user_registration | quote }}
             - name: persist_user_impersonation
               value: {{ .Values.openflow.persist_user_impersonation | quote }}
             - name: aes_secret
@@ -192,7 +190,9 @@ spec:
             - name: nodered_limits_cpu
               value: {{ .Values.openflow.nodered_limits_cpu  | quote }}
             - name: nodered_liveness_failurethreshold
-              value: {{ .Values.openflow.nodered_liveness_failurethreshold  | quote }}              
+              value: {{ .Values.openflow.nodered_liveness_failurethreshold  | quote }}
+            - name: nodered_liveness_timeoutseconds
+              value: {{ .Values.openflow.nodered_liveness_timeoutseconds  | quote }}
             - name: prometheus_measure_nodeid
               value: {{ .Values.openflow.prometheus_measure_nodeid  | quote }}
             - name: prometheus_measure_queued_messages
@@ -217,6 +217,8 @@ spec:
             - name: otel_metric_url
               value: "{{ $oteluri }}"
 {{- end }}
+            - name: otel_debug_log
+              value: {{ .Values.openflow.otel_debug_log  | quote }}
             - name: otel_servicename
               value: {{ .Values.openflow.otel_servicename  | quote }}
             - name: otel_trace_interval

@@ -21,7 +21,6 @@ openflow:
   port: 80 # pod/deployment will use this port
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
-  allow_user_registration: true # Allow registering new users using openflow api
   allow_personal_nodered: true # enable the nodered tab in openflow
   auto_create_personal_nodered_group: true # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
   persist_user_impersonation: # When impersonating, update on user object who you are impersonating, to persist the information
@@ -45,8 +44,6 @@ openflow:
   supports_watch: true
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize: 
-  # if not using mongodb replicate set, you cannot use the watch feature, then set this to false, default: false
-  supports_watch: 
   # Auto-create default indexes doing startup, default: true
   ensure_indexes: 
   # openflow will keep track of all changes on all documents except inside these collections
@@ -78,7 +75,8 @@ openflow:
   nodered_requests_cpu: # set requested cpu usage for new nodered instances, for instance: 250n ( 1000n represents 1 vCPU )
   nodered_limits_memory: # limit memory usage for new nodered instances, for instance: 256Mi (kubernetes will restart the pod)
   nodered_limits_cpu: # limit cpu usage for new nodered instances, for instance: 450n ( 1000n represents 1 vCPU )
-  nodered_liveness_failurethreshold: # allow nodered liveness probe to fail this amount of times before restarting it, default 5
+  nodered_liveness_failurethreshold: 5 # allow nodered liveness probe to fail this amount of times before restarting it, default 5
+  nodered_liveness_timeoutseconds: 5 # each probe will timeout after this many seconds, default 5
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
   prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false
@@ -100,6 +98,7 @@ openflow:
   longtoken_expires_in: # default: 365d
   downloadtoken_expires_in: # default: 15m
   personalnoderedtoken_expires_in: # default: 365d
+  otel_debug_log: false
   debug: # Configure logging for the debug plugin
   # limits:
   #   #   cpu: "1"
