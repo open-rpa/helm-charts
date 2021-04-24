@@ -100,8 +100,8 @@ spec:
               value: {{ .Values.openflow.websocket_package_size | quote }}
             - name: websocket_max_package_count
               value: {{ .Values.openflow.websocket_max_package_count | quote }}
-            - name: nodered_image
-              value: {{ .Values.openflow.nodered_image | quote }}
+            - name: nodered_images
+              value: {{ .Values.openflow.nodered_images | quote }}
             - name: amqp_force_queue_prefix
               value: {{ .Values.openflow.force_queue_prefix | quote }}
             - name: amqp_force_exchange_prefix

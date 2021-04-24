@@ -14,11 +14,13 @@ port: # if the external port to access this is differente from 80/443, then set 
 use_ingress_beta1_syntax: false
 openflow:
   image: openiap/openflow # set image for api deployment
-  nodered_image: openiap/nodered # set image used when deploying new Nodered deployments
+  # nodered_image: openiap/nodered 
+  # set possible image to be used when deploying new Nodered deployments
+  nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
   # What url to show inside the robot's getting started page
   getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up
-  port: 80 # pod/deployment will use this port
+  port: 3000 # pod/deployment will use this port
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
   allow_personal_nodered: true # enable the nodered tab in openflow
