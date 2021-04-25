@@ -148,7 +148,11 @@ data:
               "name": "OpenFlow",
               "type": "grafana-openflow-datasource",
               "access":"proxy",
+{{- if .Values.openflow.port }}
+              "url": "http://api/grafana:{{.Values.openflow.port}}",
+{{- else }}
               "url": "http://api/grafana",
+{{- end }}
               "withCredentials": true,
               "isDefault": 1,
               "editable": true,
