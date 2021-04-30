@@ -1,0 +1,58 @@
+additionalArguments:
+  - --api
+  - --api.insecure
+  # - --log.level=DEBUG
+  # - --accesslog=true
+  - --entrypoints.websecure.http.tls.certresolver=default
+  - --certificatesresolvers.default.acme.dnschallenge.provider=gcloud
+  - --certificatesresolvers.default.acme.email=email@domain.com
+  - --certificatesresolvers.default.acme.dnschallenge.resolvers=1.1.1.1
+  - --certificatesresolvers.default.acme.storage=/certs/acme.json
+# ports:
+# web:
+#   redirectTo: websecure
+env:
+  - name: GCE_PROJECT
+    value: "openiap"
+  - name: GCE_SERVICE_ACCOUNT_FILE
+    value: "/data/account.json"
+  - name: DO_POLLING_INTERVAL
+    value: "5"
+  - name: DO_PROPAGATION_TIMEOUT
+    value: "120"
+  - name: DO_TTL
+    value: "30"
+persistence:
+  enabled: true
+  path: /certs
+  size: 128Mi
+#   annotations: { "pv.beta.kubernetes.io/gid": "65532" }
+# podSecurityContext:
+#   fsGroup: 65532
+#  fsGroup: null
+volumes:
+  - mountPath: /data
+    name: traefik-config
+    type: configMap
+service:
+  enabled: true
+  type: LoadBalancer
+  spec:
+    externalTrafficPolicy: Local
+    loadBalancerIP: 127.0.0.1
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesingress:
+    enabled: true
+dashboard:
+  enable: true
+  ingressRoute: true
+deployment:
+  initContainers:
+    - name: volume-permissions
+      image: busybox:1.31.1
+      command: ["sh", "-c", "chmod -Rv 600 /data/*"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
