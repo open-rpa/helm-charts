@@ -151,6 +151,11 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
   enabled: false # enable setting up the, open telemetry exporter
   exposed: false # expose using IngressRoute so remote nodered and openrpa robots can send data
   loglevel: info # debug, info
+  kubestatemetrics:
+    enabled: false
+    deploy: false
+    exporttarget: metrics-server-exporter.kube-system.svc.cluster.local:8000
+    kubesystemtarget: kube-state-metrics.kube-system.svc.cluster.local:8080
   resources: {}
 jaeger: # for visualizing and optionally also saving all spans, we can use jaeger.
   enabled: false

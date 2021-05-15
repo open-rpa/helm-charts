@@ -10,13 +10,13 @@ kind: Certificate
 metadata:
   name: {{ $domain | quote }}
 spec:
-  secretName: .Values.certificate.tlsSecret
+  secretName: {{ .Values.certificate.tlsSecret | quote }}
   renewBefore: 120h
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: {{ $domain | quote }}
   dnsNames:
-    - "$apidomain"
+    - "{{ $apidomain }}"
     - "*.{{ $domain }}"
 {{- end }}

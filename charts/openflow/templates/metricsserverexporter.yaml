@@ -1,0 +1,163 @@
+{{- if and (eq .Values.exporter.kubestatemetrics.enabled true) (eq .Values.exporter.kubestatemetrics.deploy true) }}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: metrics-server-exporter
+  labels:
+    k8s-app: metrics-server-exporter
+  annotations:
+    helm.sh/resource-policy: "keep"
+rules:
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-server-exporter
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server-exporter
+  annotations:
+    helm.sh/resource-policy: "keep"
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: metrics-server-exporter
+  annotations:
+    helm.sh/resource-policy: "keep"
+subjects:
+  - kind: ServiceAccount
+    namespace: kube-system
+    name: metrics-server-exporter
+roleRef:
+  kind: ClusterRole
+  name: metrics-server-exporter
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server-exporter
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server-exporter
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server-exporter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server-exporter
+    spec:
+      serviceAccountName: metrics-server-exporter
+      containers:
+        - name: metrics-server-exporter
+          image: cloudhack/metrics-server-exporter
+          # command: ["python", "app.py", "--insecure-tls"]
+          ports:
+            - containerPort: 8000
+              name: stats
+          # env:
+          #   - name: K8S_ENDPOINT
+          #     value: "https://metrics-server.kube-system.svc.cluster.local"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: metrics-server-exporter
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: metrics-server-exporter
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: kube-state-metrics
+  annotations:
+    helm.sh/resource-policy: "keep"
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - services
+      - endpoints
+      - pods
+    verbs: ["get", "list", "watch"]
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kube-state-metrics
+  namespace: kube-system
+  annotations:
+    helm.sh/resource-policy: "keep"
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-state-metrics
+  annotations:
+    helm.sh/resource-policy: "keep"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kube-state-metrics
+subjects:
+  - kind: ServiceAccount
+    name: kube-state-metrics
+    namespace: kube-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-state-metrics
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: kube-state-metrics
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-state-metrics
+    spec:
+      serviceAccountName: kube-state-metrics
+      containers:
+        - name: kube-state-metrics
+          image: quay.io/coreos/kube-state-metrics:v1.2.0
+          ports:
+            - containerPort: 8080
+              name: stats
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kube-state-metrics
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: kube-state-metrics
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+{{- end }}
