@@ -106,6 +106,10 @@ spec:
               value: {{ .Values.openflow.amqp_force_queue_prefix | quote }}
             - name: amqp_force_exchange_prefix
               value: {{ .Values.openflow.amqp_force_exchange_prefix | quote }}
+            - name: amqp_force_sender_has_read
+              value: {{ .Values.openflow.amqp_force_sender_has_read | quote }}
+            - name: amqp_enabled_exchange
+              value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
             - name: namespace
               value: {{ .Release.Namespace | quote }}
             - name: allow_personal_nodered
