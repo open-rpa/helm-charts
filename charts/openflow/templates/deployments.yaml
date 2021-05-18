@@ -116,6 +116,8 @@ spec:
               value: {{ .Values.openflow.allow_personal_nodered | quote }}
             - name: auto_create_personal_nodered_group
               value: {{ .Values.openflow.auto_create_personal_nodered_group | quote }}
+            - name: auto_create_personal_noderedapi_group
+              value: {{ .Values.openflow.auto_create_personal_noderedapi_group | quote }}              
             - name: nodered_domain_schema
               value: "$nodered_id$.{{ $domain }}"
             - name: protocol
