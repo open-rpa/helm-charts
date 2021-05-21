@@ -30,8 +30,9 @@ spec:
         prometheus.io/port: {{ .Values.openflow.port | quote }}
     spec:
       serviceAccountName: openflow-api-user
-      {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- if .Values.openflow.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
       containers:
         - name: api
@@ -44,13 +45,13 @@ spec:
             - containerPort: 5858
           livenessProbe:
             httpGet:
-              path: /loginproviders
+              path: /livenessprobe
               port: {{ .Values.openflow.port }}
               scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 5
-            timeoutSeconds: 30
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            failureThreshold: 3
+            timeoutSeconds: 5
           env:
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
@@ -66,6 +67,10 @@ spec:
               value: {{ .Values.openflow.log_deletes | quote }}
             - name: log_otel_times
               value: {{ .Values.openflow.log_otel_times | quote }}
+            - name: log_openflow_amqp
+              value: {{ .Values.openflow.log_openflow_amqp | quote }}
+            - name: trace_dashboardauth
+              value: {{ .Values.openflow.trace_dashboardauth | quote }}
             - name: socket_rate_limit
               value: {{ .Values.openflow.socket_rate_limit | quote }}
             - name: socket_rate_limit_points
@@ -82,6 +87,12 @@ spec:
               value: {{ .Values.openflow.supports_watch | quote }}
             - name: ensure_indexes
               value: {{ .Values.openflow.ensure_indexes | quote }}
+            - name: enable_openflow_amqp
+              value: {{ .Values.openflow.enable_openflow_amqp | quote }}
+            - name: openflow_amqp_expiration
+              value: {{ .Values.openflow.openflow_amqp_expiration | quote }}
+            - name: openflow_amqp_processing_limit
+              value: {{ .Values.openflow.openflow_amqp_processing_limit | quote }}
             - name: license_key
               value: {{ default "" .Values.openflow.license_key | quote }}
             - name: stripe_api_key

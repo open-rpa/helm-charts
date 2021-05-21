@@ -18,6 +18,21 @@ entries:
   openflow:
     - apiVersion: v2
       appVersion: 1.2.114
+      created: "2021-05-21T19:06:16.9435705+02:00"
+      dependencies:
+        - condition: mongodb.enabled
+          name: mongodb
+          repository: https://charts.bitnami.com/bitnami
+          version: 10.x
+      description: A Helm chart for deploying a single openflow instance
+      digest: 5e30c7eaf18772b754d32d413525f7ed85ab98bf3188659e92a4627f6134441f
+      name: openflow
+      type: application
+      urls:
+        - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.53/openflow-0.1.53.tgz
+      version: 0.1.53
+    - apiVersion: v2
+      appVersion: 1.2.114
       created: "2021-05-18T12:28:28.05763+02:00"
       dependencies:
         - condition: mongodb.enabled
@@ -259,4 +274,4 @@ entries:
       urls:
         - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
       version: 3.0.2
-generated: "2021-05-18T12:28:28.2358853+02:00"
+generated: "2021-05-21T19:06:17.1220576+02:00"

@@ -51,8 +51,9 @@ spec:
         environment: production
         app: cassandra
     spec:
-      {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- if .Values.cassandra.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.cassandra.nodeSelector | nindent 12 }}
       {{- end }}
       containers:
         - name: cassandra
