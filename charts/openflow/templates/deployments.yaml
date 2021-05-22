@@ -77,6 +77,8 @@ spec:
               value: {{ .Values.openflow.socket_rate_limit_points | quote }}
             - name: socket_rate_limit_duration
               value: {{ .Values.openflow.socket_rate_limit_duration | quote }}
+            - name: socket_rate_limit_points_disconnect
+              value: {{ .Values.openflow.socket_rate_limit_points_disconnect | quote }}
             - name: api_rate_limit
               value: {{ .Values.openflow.api_rate_limit | quote }}
             - name: api_rate_limit_points

@@ -75,6 +75,7 @@ openflow:
   socket_rate_limit: # to disable rate limits on socket messages, set this to false
   socket_rate_limit_points: # to change the amount of points a hit consume, default: 1
   socket_rate_limit_duration: # to change how long it takes for a point to expire in seconds, default: 30
+  socket_rate_limit_points_disconnect: # If client builds up this amount of points, disconnect the client, default: 600
   log_queries: # log all db queries to console, default: false
   log_aggregates: # log all db aggregates to console, default: false
   log_inserts: # log all db inserts to console, default: false
