@@ -56,12 +56,12 @@ openflow:
   enable_openflow_amqp: true
   openflow_amqp_expiration: # messages send to backend expire after this amount of time. default: 25 min
   amqp_prefetch: # each api instance allows only this amount of message to be processed at the same time, default 50
-  amqp_web_default_priority: # default 2, we give web trafic priority 2, where everything else has priority 1
+  enable_entity_restriction: true # Add restrictions on who can create entity in different collections, default false
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
   skip_history_collections: audit,jslog,openrpa_instances,configclients
   websocket_max_package_count: "1048576" # 1048576
-  websocket_package_size: 4096
+  websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
   update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
   # Give nodered time to install all packages, so skip liveliness check for this many seconds

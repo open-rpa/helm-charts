@@ -93,8 +93,10 @@ spec:
               value: {{ .Values.openflow.enable_openflow_amqp | quote }}
             - name: openflow_amqp_expiration
               value: {{ .Values.openflow.openflow_amqp_expiration | quote }}
-            - name: openflow_amqp_processing_limit
-              value: {{ .Values.openflow.openflow_amqp_processing_limit | quote }}
+            - name: amqp_prefetch
+              value: {{ .Values.openflow.amqp_prefetch | quote }}
+            - name: enable_entity_restriction
+              value: {{ .Values.openflow.enable_entity_restriction | quote }}
             - name: license_key
               value: {{ default "" .Values.openflow.license_key | quote }}
             - name: stripe_api_key
