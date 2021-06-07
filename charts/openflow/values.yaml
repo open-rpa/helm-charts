@@ -56,7 +56,7 @@ openflow:
   enable_openflow_amqp: true
   openflow_amqp_expiration: # messages send to backend expire after this amount of time. default: 25 min
   amqp_prefetch: # each api instance allows only this amount of message to be processed at the same time, default 50
-  enable_entity_restriction: true # Add restrictions on who can create entity in different collections, default false
+  enable_entity_restriction: false # Add restrictions on who can create entities in different collections, default false
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
   skip_history_collections: audit,jslog,openrpa_instances,configclients
@@ -122,6 +122,11 @@ openflow:
   # requests:
   #   # cpu: "0.02"
   #   memory: 128Mi
+  auto_hourly_housekeeping: false # Run an hourly job, to calculate each user and customers database usage, default false
+  stripe_force_vat: false # When multi_tenant is enabled, force new customers to add VAT information, default false
+  auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
+  nodered_docker_entrypoints: # Used for docker setups, not relevant for kubernetes
+  nodered_docker_certresolver: # Used for docker setups, not relevant for kubernetes
 rabbitmq:
   exposed: false
   default_user: admin
