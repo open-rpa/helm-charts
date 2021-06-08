@@ -122,8 +122,11 @@ openflow:
   # requests:
   #   # cpu: "0.02"
   #   memory: 128Mi
-  auto_hourly_housekeeping: false # Run an hourly job, to calculate each user and customers database usage, default false
+  auto_hourly_housekeeping: false # Enable an hourly job, that does basic house keeping, default false
+  housekeeping_update_usage_hourly: false # Doing house keeping, calculate each user and customers database usage every hour, default false ( if false runs every 12 hour )
+  housekeeping_update_usersize_hourly: true # Doing house keeping, update dblock and usage information per customer every hour, default false ( if false runs every 12 hour )
   stripe_force_vat: false # When multi_tenant is enabled, force new customers to add VAT information, default false
+  stripe_force_checkout: true # When multi_tenant is enabled, force users to accept a stripe checkout session for each purchaes, default true
   auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
   nodered_docker_entrypoints: # Used for docker setups, not relevant for kubernetes
   nodered_docker_certresolver: # Used for docker setups, not relevant for kubernetes

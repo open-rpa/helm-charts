@@ -258,6 +258,18 @@ spec:
               value: {{ .Values.openflow.validate_user_form  | quote }}              
             - name: DEBUG
               value: {{ .Values.openflow.debug  | quote }}              
+            - name: auto_hourly_housekeeping
+              value: {{ .Values.openflow.auto_hourly_housekeeping  | quote }}              
+            - name: housekeeping_update_usage_hourly
+              value: {{ .Values.openflow.housekeeping_update_usage_hourly  | quote }}              
+            - name: housekeeping_update_usersize_hourly
+              value: {{ .Values.openflow.housekeeping_update_usersize_hourly  | quote }}              
+            - name: stripe_force_vat
+              value: {{ .Values.openflow.stripe_force_vat  | quote }}              
+            - name: stripe_force_checkout
+              value: {{ .Values.openflow.stripe_force_checkout  | quote }}              
+            - name: DEBUG
+              value: {{ .Values.openflow.debug  | quote }}              
             - name: shorttoken_expires_in
               value: {{ .Values.openflow.shorttoken_expires_in  | quote }}              
             - name: longtoken_expires_in
