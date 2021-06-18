@@ -256,8 +256,6 @@ spec:
               value: {{ .Values.openflow.roles_cached_in_seconds  | quote }}              
             - name: validate_user_form
               value: {{ .Values.openflow.validate_user_form  | quote }}              
-            - name: DEBUG
-              value: {{ .Values.openflow.debug  | quote }}              
             - name: auto_hourly_housekeeping
               value: {{ .Values.openflow.auto_hourly_housekeeping  | quote }}              
             - name: housekeeping_update_usage_hourly
