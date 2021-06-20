@@ -57,6 +57,7 @@ openflow:
   openflow_amqp_expiration: # messages send to backend expire after this amount of time. default: 25 min
   amqp_prefetch: # each api instance allows only this amount of message to be processed at the same time, default 50
   enable_entity_restriction: false # Add restrictions on who can create entities in different collections, default false
+  enable_web_tours: true # Enable tours and notification about new features
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
   skip_history_collections: audit,jslog,openrpa_instances,configclients
