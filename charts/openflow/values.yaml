@@ -60,7 +60,7 @@ openflow:
   enable_web_tours: true # Enable tours and notification about new features
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
-  skip_history_collections: audit,jslog,openrpa_instances,configclients
+  skip_history_collections: audit,jslog,openrpa_instances,workflow_instances,configclients
   websocket_max_package_count: "1048576" # 1048576
   websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
