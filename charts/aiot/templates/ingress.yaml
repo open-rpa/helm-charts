@@ -11,6 +11,13 @@ metadata:
   {{- end }}
   {{- if .Values.openflow.certresolver }}
     traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.openflow.certresolver | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.openflow.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.openflow.certificate.certmain | quote }}
+  {{- end }}
+  {{- if .Values.openflow.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.openflow.certificate.certsans | quote }}
   {{- end }}
 {{- else }}
     traefik.ingress.kubernetes.io/router.entrypoints: web

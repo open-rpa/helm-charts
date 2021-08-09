@@ -45,13 +45,13 @@ spec:
             - containerPort: 5858
           livenessProbe:
             httpGet:
-              path: /livenessprobe
+              path: {{ .Values.openflow.livenessProbe.path }}
               port: {{ .Values.openflow.port }}
               scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 2
-            failureThreshold: 3
-            timeoutSeconds: 5
+            initialDelaySeconds: {{ .Values.openflow.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.openflow.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.openflow.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.openflow.livenessProbe.timeoutSeconds }}
           env:
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}

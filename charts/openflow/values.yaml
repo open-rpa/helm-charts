@@ -21,6 +21,12 @@ openflow:
   getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
+  livenessProbe:
+    path: /livenessprobe
+    initialDelaySeconds: 10
+    periodSeconds: 2
+    failureThreshold: 3
+    timeoutSeconds: 5
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
   allow_personal_nodered: true # enable the nodered tab in openflow

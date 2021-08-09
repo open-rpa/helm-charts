@@ -204,6 +204,7 @@ spec:
 #              - key: key.pem
 #                path: key.pem
 ---
+  {{- if (eq .Values.exporter.exposed true) }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -219,6 +220,7 @@ spec:
         - name: otel-collector
           port: 4317
           scheme: h2c
+  {{- end }}
 {{- end }}
 
 
