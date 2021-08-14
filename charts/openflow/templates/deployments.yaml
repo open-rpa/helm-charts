@@ -43,6 +43,7 @@ spec:
           ports:
             - containerPort: {{ .Values.openflow.port }}
             - containerPort: 5858
+{{- if .Values.openflow.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.openflow.livenessProbe.path }}
@@ -52,6 +53,7 @@ spec:
             periodSeconds: {{ .Values.openflow.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.openflow.livenessProbe.failureThreshold }}
             timeoutSeconds: {{ .Values.openflow.livenessProbe.timeoutSeconds }}
+{{- end }}
           env:
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
