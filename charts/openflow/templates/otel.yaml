@@ -71,8 +71,10 @@ data:
         endpoint: "http://zipkin:9411/api/v2/spans"
         format: proto
 {{- end }}
+{{- if (.Values.exporter.loglevel)}}
       logging:
        loglevel: {{ .Values.exporter.loglevel }}
+{{- end }}
       prometheus:
        endpoint: "0.0.0.0:9464"
       #  namespace: otelcollector
@@ -87,19 +89,19 @@ data:
 {{- else }}
           receivers: [otlp]
 {{- end }}
-          exporters: [prometheusremotewrite, logging, prometheus]
+          exporters: [prometheusremotewrite, prometheus]
           processors: []
         traces:
           receivers: [otlp]
           processors: [batch]
 {{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
-          exporters: [jaeger, zipkin, logging]
+          exporters: [jaeger, zipkin]
 {{- else if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled false) }}
-          exporters: [jaeger, logging]
+          exporters: [jaeger]
 {{- else if and (eq .Values.jaeger.enabled false) (eq .Values.zipkin.enabled true) }}
-          exporters: [zipkin, logging]
+          exporters: [zipkin]
 {{- else }}
-          exporters: [logging]
+          exporters: []
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
         logs:
