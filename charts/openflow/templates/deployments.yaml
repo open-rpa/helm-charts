@@ -34,6 +34,10 @@ spec:
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.openflow.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml .Values.openflow.topologySpreadConstraints | nindent 12 }}
+      {{- end }}      
       containers:
         - name: api
           image: {{ default "openiap/openflow" .Values.openflow.image | quote }}
