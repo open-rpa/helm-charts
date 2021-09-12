@@ -91,17 +91,22 @@ data:
 {{- end }}
           exporters: [prometheusremotewrite, prometheus]
           processors: []
+{{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
         traces:
           receivers: [otlp]
           processors: [batch]
-{{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
           exporters: [jaeger, zipkin]
 {{- else if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled false) }}
+        traces:
+          receivers: [otlp]
+          processors: [batch]
           exporters: [jaeger]
 {{- else if and (eq .Values.jaeger.enabled false) (eq .Values.zipkin.enabled true) }}
+        traces:
+          receivers: [otlp]
+          processors: [batch]
           exporters: [zipkin]
 {{- else }}
-          exporters: []
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
         logs:
