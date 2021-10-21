@@ -119,6 +119,20 @@ spec:
               value: {{ .Values.openflow.multi_tenant | quote }}
             - name: update_acl_based_on_groups
               value: {{ .Values.openflow.update_acl_based_on_groups | quote }}
+            - name: api_credential_cache_seconds
+              value: {{ .Values.openflow.api_credential_cache_seconds | quote }}
+            - name: dashboard_credential_cache_seconds
+              value: {{ .Values.openflow.dashboard_credential_cache_seconds | quote }}
+            - name: grafana_credential_cache_seconds
+              value: {{ .Values.openflow.grafana_credential_cache_seconds | quote }}
+            - name: cleanacl_credential_cache_seconds
+              value: {{ .Values.openflow.cleanacl_credential_cache_seconds | quote }}
+            - name: oauth_token_cache_seconds
+              value: {{ .Values.openflow.oauth_token_cache_seconds | quote }}
+            - name: oauth_access_token_lifetime
+              value: {{ .Values.openflow.oauth_access_token_lifetime | quote }}
+            - name: oauth_refresh_token_lifetime
+              value: {{ .Values.openflow.oauth_refresh_token_lifetime | quote }}
             - name: websocket_package_size
               value: {{ .Values.openflow.websocket_package_size | quote }}
             - name: websocket_max_package_count

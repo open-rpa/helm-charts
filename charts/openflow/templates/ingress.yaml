@@ -3,7 +3,7 @@
 {{- if .Values.apidomain }}
   {{- $apidomain = print .Values.apidomain "." (required "domainsuffix required!" .Values.domainsuffix) }}
 {{- end }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
@@ -33,35 +33,47 @@ spec:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: api
-              servicePort: www
+              service:
+                name: api
+                port:
+                  name: www
 {{- if eq .Values.rabbitmq.exposed true }}
     - host: "mq.{{ $domain }}"
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: rabbitmq
-              servicePort: rabbitmq-mgnt
+              service:
+                name: rabbitmq
+                port:
+                  name: rabbitmq-mgnt
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
     - host: "grafana.{{ $domain }}"
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: grafana
-              servicePort: grafana
+              service:
+                name: grafana
+                port:
+                  name: grafana
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
     - host: "victoria.{{ $domain }}"
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: victoriametrics
-              servicePort: victoriametrics
+              service:
+                name: victoriametrics
+                port:
+                  name: victoriametrics
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.prometheus.enabled true) (eq .Values.prometheus.exposed true) }}
     # - host: "prometheus.{{ $domain }}"
@@ -77,9 +89,13 @@ spec:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: otel-collector
-              servicePort: 55681
+              service:
+                name: otel-collector
+                port:
+                  name: collector
+    #              number: 55681
     # - host: "metrics.{{ $domain }}"
     #   http:
     #     paths:
@@ -102,7 +118,7 @@ spec:
   forwardAuth:
     address: "https://{{ $apidomain }}/dashboardauth"
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: auth-ingress
@@ -134,23 +150,29 @@ spec:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: jaeger
-              servicePort: 16686
+              service:
+                name: jaeger
+                port:
+                  name: jaeger
   {{- end }}
   {{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
     - host: "zipkin.{{ $domain }}"
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: zipkin
-              servicePort: 9411
+              service:
+                name: zipkin
+                port:
+                  name: jaeger
   {{- end }}
 {{- end }}
 ---
-{{ $ingress := (lookup "extensions/v1beta1" "Ingress" .Release.Namespace "useringress") }}
-apiVersion: extensions/v1beta1
+{{ $ingress := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress") }}
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: useringress
@@ -180,20 +202,26 @@ spec:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: api
-              servicePort: www
+              service:
+                name: api
+                port:
+                  name: www
 {{ if $ingress }}
-  {{- range $k, $v := (lookup "extensions/v1beta1" "Ingress" .Release.Namespace "useringress").spec.rules }}
+  {{- range $k, $v := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress").spec.rules }}
     {{ if ne $k 0 }}
     - host: {{ $v.host }}
       http:
         paths:
         {{- range $k1, $v1 := $v.http.paths }}
           - path: {{ $v1.path }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{$v1.backend.serviceName }} 
-              servicePort: www
+              service:
+                name: {{$v1.backend.service.name }} 
+                port:
+                  name: www
         {{- end }}
     {{ end }}
   {{ end }}
@@ -202,3 +230,11 @@ spec:
   tls:
     - secretName: {{ .Values.certificate.tlsSecret }}
 {{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: deleteme
+  labels:
+type: Opaque
+data:
