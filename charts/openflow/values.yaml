@@ -72,6 +72,13 @@ openflow:
   websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
   update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
+  api_credential_cache_seconds: 60000
+  dashboard_credential_cache_seconds: 60000
+  grafana_credential_cache_seconds: 60000
+  cleanacl_credential_cache_seconds: 60000
+  oauth_token_cache_seconds: 60000
+  oauth_access_token_lifetime: 604800
+  oauth_refresh_token_lifetime: 604800
   # Give nodered time to install all packages, so skip liveliness check for this many seconds
   nodered_initial_liveness_delay: 120
   # To allow buying addon products or dedicated nodered instance, add stripe api key and secret
