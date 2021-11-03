@@ -12,7 +12,7 @@ image:
 
 replicaCount: 1
 minAvailable: 1
-
+nodeSelector: {}
 smtp:
   enabled: false
   username:
@@ -21,7 +21,8 @@ smtp:
   port: 587
 
 # Extra env vars for Rocket.Chat:
-extraEnv:  # |
+extraEnv:
+  # |
   # - name: MONGO_OPTIONS
   #   value: '{"ssl": "true"}'
   # - name: MONGO_OPLOG_URL
@@ -54,8 +55,8 @@ affinity: {}
 #         - e2e-az2
 
 ## MongoDB URL if using an externally provisioned MongoDB
-externalMongodbUrl:  # mongodb://user:password@localhost:27017/rocketchat
-externalMongodbOplogUrl:  # mongodb://user:password@localhost:27017/local?replicaSet=rs0&authSource=admin
+externalMongodbUrl: # mongodb://user:password@localhost:27017/rocketchat
+externalMongodbOplogUrl: # mongodb://user:password@localhost:27017/local?replicaSet=rs0&authSource=admin
 
 ##
 ## MongoDB chart configuration
@@ -81,7 +82,7 @@ mongodb:
         secondary: 0
         arbiter: 0
 
-   # key:
+    # key:
 
   persistence:
     enabled: true
@@ -139,7 +140,8 @@ serviceAccount:
 ###
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: "nginx"
   path: /
   tls:
@@ -167,7 +169,8 @@ service:
 podLabels: {}
 
 ## Optional Pod Annotations.
-podAnnotations: {}
+podAnnotations:
+  {}
   # prometheus.io/port: "9458"
   # prometheus.io/path: "/metrics"
   # prometheus.io/scrape: "true"
