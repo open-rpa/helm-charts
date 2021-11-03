@@ -42,7 +42,9 @@ openflow:
   multi_tenant: false # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
   amqp_force_queue_prefix: false # to avoid users registering the same message queue names, force all messages queues to be prefixed with username, this disables load balancing of multiple nodereds !
   amqp_force_exchange_prefix: false # to avoid users registering the same message exchange names, force all messages exchanges to be prefixed with username, this disables load balancing of multiple nodereds !
-  amqp_force_sender_has_read: true # If queue is a mongodb ud, check user is member of the role or has read permission on the object it represents
+  amqp_force_sender_has_read: true # If queue is a mongodb id, check user is member of the role or has read permission on the object it represents
+  amqp_force_sender_has_invoke: true # Force user to have invoke permission on the mq or user object in order to send to it
+  amqp_force_consumer_has_update: false # Force user has update permission on the mq or user object in order to consume the queue ( else needs read if amqp_force_sender_has_read is true
   amqp_enabled_exchange: false # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
   # The SAML Provider need to sign all tokens issued, use this certificate to sign SAML tokens
   signing_crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lKQUp5N0tIMTE1dkQ4TUEwR0NTcUdTSWIzRFFFQkN3VUFNRnN4Q3pBSkJnTlYKQkFZVEFrUkxNUk13RVFZRFZRUUlEQXBUYjIxbExWTjBZWFJsTVNFd0h3WURWUVFLREJoSmJuUmxjbTVsZENCWAphV1JuYVhSeklGQjBlU0JNZEdReEZEQVNCZ05WQkFNTUMzTnBaMjVwYm1kalpYSjBNQjRYRFRFNU1EUXdOekUwCk5ETXpORm9YRFRJNU1EUXdOREUwTkRNek5Gb3dXekVMTUFrR0ExVUVCaE1DUkVzeEV6QVJCZ05WQkFnTUNsTnYKYldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNUlFeDBaREVVTUJJRwpBMVVFQXd3TGMybG5ibWx1WjJObGNuUXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCCkFRQy9JSkdEaGxLTU9SWkoycXQwSWpjSDZOWUFtZDVxQzQ4dkNJRE54QWZCbmQxQnN4WlVjWkl5dkFlT28yNDcKM3I0eTYwNDgxRHVUS2JaMTBTNjRqRU05aW1XTXB1TFlJRnVyQ3BWNzVEWWhxMS85Q0FJVHJqNjlmVDluSkptcwpjM2lxTnJ1Tlg1bDlISXdadWtQM1ZNRkJRNWZVd3N1ZnE0YW1NbnVnZmtyUEVzSngxK3VJb0NYU3pyblZvcnZpClZ0ZFh4a3M4N0l1S0ZnMDJIZ1RQSzdwc0FXYTBRY3g2ck04bkV5TUhwNUdlR1Rvb1NNbkcyZ1RGNWZOSVFNdTMKVEVoc2p3SWRTYmRwck1Gb1VZV05Bc2FueTJOQk0wREhZRUdjQlZhZ0xWNUhFUW5ySUM3NEhtNjYxdG9HaU5VSAoveW04U3VndTgwWVFiVGxPcTFWNnNkaVRBZ01CQUFHalV6QlJNQjBHQTFVZERnUVdCQlMrYWc1NGtITllKZ29pCm9yRnlia293THR5R3ZqQWZCZ05WSFNNRUdEQVdnQlMrYWc1NGtITllKZ29pb3JGeWJrb3dMdHlHdmpBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQTZpZHBYdzdSR2pzcUpNanI2c1YvaQpXeXFsL2xkSy9sa1NCdnNBSENieDdQYi9rVUd2NHJNbndYMnBHdTR0YkFnSDc4eStmS3dzazllYkxDeTA4Y1k0Ckt5czhzbUpLenhWN0R6U3RVR1NvZmZMaFliVVVMK3UyNU5vVXc0TG1WQU5FU0NaMTZ3aTdPQUdJMkJnNFR6TXoKdnlIUHRaaE9wTXBNV2lzM2ZnRXFzV3QxS2VLcXo0Z2M5RnJtZDZPNlQzVVAxWTRBR3VEWnNScnpiU2RQS2JxbApxekprT2tQcGtHOGo3ZjFWNkk1ZlkzblZaSWk2YW1TcTM1RTJkQzVMY0dIQXRtT1lWL0c4TEQ3OUFnTVpFUU5vCkF2R2RnV1gvbXBFVkFjMmRFQkJlcUN6WjF1aVhWUjdERld2ZDFKTEpsdVRyTm9jMUROc0xNKzNEZFFiQ2JnYVcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
@@ -72,13 +74,20 @@ openflow:
   websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
   update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
-  api_credential_cache_seconds: 60000
-  dashboard_credential_cache_seconds: 60000
-  grafana_credential_cache_seconds: 60000
-  cleanacl_credential_cache_seconds: 60000
+  api_credential_cache_seconds: 900
+  dashboard_credential_cache_seconds: 900
+  grafana_credential_cache_seconds: 900
+  cleanacl_credential_cache_seconds: 900
+  mq_credential_cache_seconds: 900
   oauth_token_cache_seconds: 60000
   oauth_access_token_lifetime: 604800
   oauth_refresh_token_lifetime: 604800
+  oidc_access_token_ttl: 28800 # 8 hours
+  oidc_authorization_code_ttl: 28800
+  oidc_client_credentials_ttl: 28800
+  oidc_refresh_token_ttl: 1209600 # 14 days
+  oidc_session_ttl: 1209600
+
   # Give nodered time to install all packages, so skip liveliness check for this many seconds
   nodered_initial_liveness_delay: 120
   # To allow buying addon products or dedicated nodered instance, add stripe api key and secret
@@ -187,6 +196,7 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
   exposed: false # expose using IngressRoute so remote nodered and openrpa robots can send data
   # loglevel: info # debug, info
   # image: otel/opentelemetry-collector:0.30.1
+  # image: otel/opentelemetry-collector:0.38.0
   image: otel/opentelemetry-collector
   kubestatemetrics:
     enabled: false

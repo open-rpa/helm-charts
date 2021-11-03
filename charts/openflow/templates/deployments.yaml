@@ -127,12 +127,24 @@ spec:
               value: {{ .Values.openflow.grafana_credential_cache_seconds | quote }}
             - name: cleanacl_credential_cache_seconds
               value: {{ .Values.openflow.cleanacl_credential_cache_seconds | quote }}
+            - name: mq_credential_cache_seconds
+              value: {{ .Values.openflow.mq_credential_cache_seconds | quote }}
             - name: oauth_token_cache_seconds
               value: {{ .Values.openflow.oauth_token_cache_seconds | quote }}
             - name: oauth_access_token_lifetime
               value: {{ .Values.openflow.oauth_access_token_lifetime | quote }}
             - name: oauth_refresh_token_lifetime
               value: {{ .Values.openflow.oauth_refresh_token_lifetime | quote }}
+            - name: oidc_access_token_ttl
+              value: {{ .Values.openflow.oidc_access_token_ttl | quote }}
+            - name: oidc_authorization_code_ttl
+              value: {{ .Values.openflow.oidc_authorization_code_ttl | quote }}
+            - name: oidc_client_credentials_ttl
+              value: {{ .Values.openflow.oidc_client_credentials_ttl | quote }}
+            - name: oidc_refresh_token_ttl
+              value: {{ .Values.openflow.oidc_refresh_token_ttl | quote }}
+            - name: oidc_session_ttl
+              value: {{ .Values.openflow.oidc_session_ttl | quote }}
             - name: websocket_package_size
               value: {{ .Values.openflow.websocket_package_size | quote }}
             - name: websocket_max_package_count
@@ -145,6 +157,10 @@ spec:
               value: {{ .Values.openflow.amqp_force_exchange_prefix | quote }}
             - name: amqp_force_sender_has_read
               value: {{ .Values.openflow.amqp_force_sender_has_read | quote }}
+            - name: amqp_force_sender_has_invoke
+              value: {{ .Values.openflow.amqp_force_sender_has_invoke | quote }}
+            - name: amqp_force_consumer_has_update
+              value: {{ .Values.openflow.amqp_force_consumer_has_update | quote }}
             - name: amqp_enabled_exchange
               value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
             - name: namespace
