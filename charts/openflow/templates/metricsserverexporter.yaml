@@ -1,6 +1,6 @@
 {{- if and (eq .Values.exporter.kubestatemetrics.enabled true) (eq .Values.exporter.kubestatemetrics.deploy true) }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: metrics-server-exporter
@@ -23,7 +23,7 @@ metadata:
   annotations:
     helm.sh/resource-policy: "keep"
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: metrics-server-exporter
@@ -81,7 +81,7 @@ spec:
       port: 8000
       targetPort: 8000
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: kube-state-metrics
@@ -197,7 +197,7 @@ metadata:
   annotations:
     helm.sh/resource-policy: "keep"
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: kube-state-metrics
