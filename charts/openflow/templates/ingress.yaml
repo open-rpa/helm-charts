@@ -118,6 +118,7 @@ spec:
   forwardAuth:
     address: "https://{{ $apidomain }}/dashboardauth"
 ---
+{{- if or (and (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true)) (and (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true)) }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -169,6 +170,7 @@ spec:
                 port:
                   name: jaeger
   {{- end }}
+{{- end }}
 {{- end }}
 ---
 {{ $ingress := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress") }}
