@@ -75,8 +75,10 @@ spec:
               value: {{ .Values.openflow.log_otel_times | quote }}
             - name: log_openflow_amqp
               value: {{ .Values.openflow.log_openflow_amqp | quote }}
-            - name: trace_dashboardauth
-              value: {{ .Values.openflow.trace_dashboardauth | quote }}
+            - name: otel_trace_dashboardauth
+              value: {{ .Values.openflow.otel_trace_dashboardauth | quote }}
+            - name: otel_trace_pingclients
+              value: {{ .Values.openflow.otel_trace_pingclients | quote }}
             - name: socket_rate_limit
               value: {{ .Values.openflow.socket_rate_limit | quote }}
             - name: socket_rate_limit_points
@@ -163,6 +165,12 @@ spec:
               value: {{ .Values.openflow.amqp_force_consumer_has_update | quote }}
             - name: amqp_enabled_exchange
               value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
+            - name: create_text_index_for_names
+              value: {{ .Values.openflow.create_text_index_for_names | quote }}
+            - name: use_text_index_for_names
+              value: {{ .Values.openflow.use_text_index_for_names | quote }}
+            - name: upload_max_filesize_mb
+              value: {{ .Values.openflow.upload_max_filesize_mb | quote }}
             - name: namespace
               value: {{ .Release.Namespace | quote }}
             - name: allow_personal_nodered
