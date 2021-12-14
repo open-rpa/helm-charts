@@ -13,6 +13,7 @@ domain: demo
 # if using a reverse procy that add ssl, uncomment below line.
 # protocol: https
 openflow:
+  license_key: 
 #  external_mongodb_url: mongodb+srv://user:pass@cluster0.gcp.mongodb.net?retryWrites=true&w=majority
 rabbitmq:
   default_pass: supersecret
