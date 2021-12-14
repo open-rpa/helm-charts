@@ -65,7 +65,7 @@ data:
     exporters:
       jaeger:
         endpoint: jaeger:14250
-      #  insecure: true
+        insecure: true
 {{- if (eq .Values.zipkin.enabled true) }}
       zipkin:
         endpoint: "http://zipkin:9411/api/v2/spans"

@@ -51,7 +51,7 @@ spec:
             # - name: GF_AUTH_GENERIC_OAUTH_SCOPES
             #   value: "user:email"
             - name: GF_AUTH_GENERIC_OAUTH_SCOPES
-              value: "openid"
+              value: "openid offline_access"
             - name: GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH
               value: "email"
             - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH
@@ -74,10 +74,10 @@ spec:
               value: "true"
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "false"
-            - name: GF_AUTH_LOGIN_MAXIMUM_LIFETIME_DAYS
-              value: "1"
-            - name: GF_AUTH_LOGIN_MAXIMUM_INACTIVE_LIFETIME_DAYS
-              value: "1"
+            # - name: GF_AUTH_LOGIN_MAXIMUM_LIFETIME_DAYS
+            #   value: "1"
+            # - name: GF_AUTH_LOGIN_MAXIMUM_INACTIVE_LIFETIME_DAYS
+            #   value: "1"
             - name: GF_AUTH_SIGNOUT_REDIRECT_URL
               value: "{{ $apiuri }}/oidc/session/end"
             - name: GF_USERS_ALLOW_SIGN_UP
