@@ -28,6 +28,20 @@ openflow:
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
+  readinessProbe:
+    enabled: true
+    path: /loginproviders
+    initialDelaySeconds: 2
+    periodSeconds: 2
+    failureThreshold: 3
+    timeoutSeconds: 5
+  startupProbe:
+    enabled: false
+    path: /loginproviders
+    initialDelaySeconds: 2
+    periodSeconds: 2
+    failureThreshold: 3
+    timeoutSeconds: 5
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
   allow_personal_nodered: true # enable the nodered tab in openflow
@@ -46,8 +60,6 @@ openflow:
   amqp_force_sender_has_invoke: false # Force user to have invoke permission on the mq or user object in order to send to it
   amqp_force_consumer_has_update: false # Force user has update permission on the mq or user object in order to consume the queue ( else needs read if amqp_force_sender_has_read is true
   amqp_enabled_exchange: false # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
-  create_text_index_for_names: false # enable to create an text index on name in all collection, to then be used for faster search in very big collections
-  use_text_index_for_names: false # enable to make web interface use text index, instead of regular expresion on name when searching in collections
   upload_max_filesize_mb: 25 # max upload size for files in MB
 
   # The SAML Provider need to sign all tokens issued, use this certificate to sign SAML tokens
@@ -61,6 +73,10 @@ openflow:
   mongodb_db:
   # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
   supports_watch: true
+  # If watches are enabled, log every watch event trigger (will generated ALOT of entries)
+  log_watches: false
+  # If watches are enabled, log every event send to a client
+  log_watches_notify: true
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # Auto-create default indexes doing startup, default: true

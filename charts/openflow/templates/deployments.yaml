@@ -58,6 +58,28 @@ spec:
             failureThreshold: {{ .Values.openflow.livenessProbe.failureThreshold }}
             timeoutSeconds: {{ .Values.openflow.livenessProbe.timeoutSeconds }}
 {{- end }}
+{{- if .Values.openflow.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.openflow.readinessProbe.path }}
+              port: {{ .Values.openflow.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.openflow.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.openflow.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.openflow.readinessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.openflow.readinessProbe.timeoutSeconds }}
+{{- end }}
+{{- if .Values.openflow.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.openflow.startupProbe.path }}
+              port: {{ .Values.openflow.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.openflow.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.openflow.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.openflow.startupProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.openflow.startupProbe.timeoutSeconds }}
+{{- end }}
           env:
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
@@ -95,6 +117,10 @@ spec:
               value: {{ .Values.openflow.api_rate_limit_duration | quote }}
             - name: supports_watch
               value: {{ .Values.openflow.supports_watch | quote }}
+            - name: log_watches
+              value: {{ .Values.openflow.log_watches | quote }}
+            - name: log_watches_notify
+              value: {{ .Values.openflow.log_watches_notify | quote }}
             - name: ensure_indexes
               value: {{ .Values.openflow.ensure_indexes | quote }}
             - name: enable_openflow_amqp
@@ -165,10 +191,6 @@ spec:
               value: {{ .Values.openflow.amqp_force_consumer_has_update | quote }}
             - name: amqp_enabled_exchange
               value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
-            - name: create_text_index_for_names
-              value: {{ .Values.openflow.create_text_index_for_names | quote }}
-            - name: use_text_index_for_names
-              value: {{ .Values.openflow.use_text_index_for_names | quote }}
             - name: upload_max_filesize_mb
               value: {{ .Values.openflow.upload_max_filesize_mb | quote }}
             - name: namespace
