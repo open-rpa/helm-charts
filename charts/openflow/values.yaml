@@ -215,6 +215,8 @@ prometheus: # deprecated, we use victoriametrics now.
 exporter: # open telemetry exporter. This service receive metrics and spans from openrpa/nodered and openrpa robots
   enabled: false # enable setting up the, open telemetry exporter
   exposed: false # expose using IngressRoute so remote nodered and openrpa robots can send data
+  type: ClusterIP # set the service type of exporter, default is ClusterIP, set to LoadBalancer to expose as a seperate service with a dedicated it
+  loadBalancerIP: # set the load balancer IP if type is set to LoadBalancer
   # loglevel: info # debug, info
   # image: otel/opentelemetry-collector:0.30.1
   # image: otel/opentelemetry-collector:0.38.0

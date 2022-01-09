@@ -1,0 +1,137 @@
+{{- $baseuri := print .Values.protocol "://" .Values.domain }}
+{{- if .Values.port }}
+  {{- $baseuri := print .Values.protocol "://" .Values.domain ":" .Values.port }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calendso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: calendso
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        role: calendso
+    spec:
+      containers:
+        - name: calendso
+          image: {{ default "calendso/calendso" .Values.image | quote }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@calendso-postgresql/{{ .Values.postgresql.postgresqlDatabase }}
+            - name: NODE_ENV
+              value: {{ .Values.NODE_ENV | quote }}
+            - name: BASE_URL
+              value: {{ $baseuri | quote }}
+            - name: NEXT_PUBLIC_BASE_URL
+              value: {{ $baseuri | quote }}
+            - name: NEXT_PUBLIC_APP_URL
+              value: {{ $baseuri | quote }}
+            - name: JWT_SECRET
+              value: {{ .Values.JWT_SECRET | quote }}
+            - name: CALENDSO_ENCRYPTION_KEY
+              value: {{ .Values.CALENDSO_ENCRYPTION_KEY | quote }}
+            - name: NEXT_PUBLIC_TELEMETRY_KEY
+              value: {{ .Values.NEXT_PUBLIC_TELEMETRY_KEY | quote }}
+            - name: GOOGLE_API_CREDENTIALS
+              value: {{ .Values.GOOGLE_API_CREDENTIALS | toJson | quote }}
+            - name: LICENSE
+              value: {{ .Values.license | quote }}
+            - name: NEXT_PUBLIC_LICENSE_CONSENT
+              value: {{ .Values.license | quote }}
+            - name: MS_GRAPH_CLIENT_ID
+              value: {{ .Values.MS_GRAPH_CLIENT_ID | quote }}
+            - name: MS_GRAPH_CLIENT_SECRET
+              value: {{ .Values.MS_GRAPH_CLIENT_SECRET | quote }}
+            - name: ZOOM_CLIENT_ID
+              value: {{ .Values.ZOOM_CLIENT_ID | quote }}
+            - name: ZOOM_CLIENT_SECRET
+              value: {{ .Values.ZOOM_CLIENT_SECRET | quote }}
+            - name: EMAIL_FROM
+              value: {{ .Values.EMAIL_FROM | quote }}
+            - name: EMAIL_SERVER_HOST
+              value: {{ .Values.EMAIL_SERVER_HOST | quote }}
+            - name: EMAIL_SERVER_PORT
+              value: {{ .Values.EMAIL_SERVER_PORT | quote }}
+            - name: EMAIL_SERVER_USER
+              value: {{ .Values.EMAIL_SERVER_USER | quote }}
+            - name: EMAIL_SERVER_PASSWORD
+              value: {{ .Values.EMAIL_SERVER_PASSWORD | quote }}
+            - name: CALENDSO_ENCRYPTION_KEY
+              value: {{ .Values.CALENDSO_ENCRYPTION_KEY | quote }}
+            - name: CRON_API_KEY
+              value: {{ .Values.CRON_API_KEY | quote }}
+            - name: NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+              value: {{ .Values.NEXT_PUBLIC_STRIPE_PUBLIC_KEY | quote }}
+            - name: STRIPE_PRIVATE_KEY
+              value: {{ .Values.STRIPE_PRIVATE_KEY | quote }}
+            - name: STRIPE_CLIENT_ID
+              value: {{ .Values.STRIPE_CLIENT_ID | quote }}
+            - name: STRIPE_WEBHOOK_SECRET
+              value: {{ .Values.STRIPE_WEBHOOK_SECRET | quote }}
+            - name: PAYMENT_FEE_PERCENTAGE
+              value: {{ .Values.PAYMENT_FEE_PERCENTAGE | quote }}
+            - name: PAYMENT_FEE_FIXED
+              value: {{ .Values.PAYMENT_FEE_FIXED | quote }}
+            - name: NEXT_PUBLIC_INTERCOM_APP_ID
+              value: {{ .Values.NEXT_PUBLIC_INTERCOM_APP_ID | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calendso
+  labels:
+    name: calendso
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+  ports:
+    - port: 3000
+      name: www
+  selector:
+    role: calendso
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+spec:
+  rules:
+    - host: "{{ .Values.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: calendso
+                port:
+                  name: www

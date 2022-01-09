@@ -15,6 +15,22 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/aiot-0.0.1/aiot-0.0.1.tgz
     version: 0.0.1
+  calendso:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-01-09T17:07:13.4427692+01:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.x.x
+    description: A Helm chart for deploying a calendso instance
+    digest: abfefea13f0f852ab664e41f14a1cc06e90213b3e533eef562f37be2a0e10c22
+    name: calendso
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/calendso-0.1.1/calendso-0.1.1.tgz
+    version: 0.1.1
   openflow:
   - apiVersion: v2
     appVersion: 1.3.72
@@ -522,4 +538,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-01-01T16:17:26.5213743+01:00"
+generated: "2022-01-09T17:07:18.6715404+01:00"

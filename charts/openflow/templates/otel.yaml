@@ -248,6 +248,29 @@ spec:
         - name: otel-collector
           port: 4317
           scheme: h2c
+    {{- if and (eq .Values.exporter.type "LoadBalancer") (.Values.exporter.loadBalancerIP) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: opentelemetry
+  name: ext-otel-collector
+spec:
+  loadBalancerIP: {{ .Values.exporter.loadBalancerIP }}
+  type: LoadBalancer
+  ports:
+  - name: newporthttp
+    port: 80
+    protocol: TCP
+    targetPort: 4317
+  - name: newporthttps
+    port: 443
+    protocol: TCP
+    targetPort: 4317
+  selector:
+    app: opentelemetry
+    {{- end }}
   {{- end }}
 {{- end }}
 
