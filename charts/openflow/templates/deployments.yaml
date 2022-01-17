@@ -19,8 +19,7 @@ spec:
     matchLabels:
       role: api
   strategy:
-    #type: Recreate
-    type: RollingUpdate
+    type: {{ required "A valid .Values.openflow.deploymentstrategy entry required!" .Values.openflow.deploymentstrategy }}
   template:
     metadata:
       labels:
@@ -296,15 +295,23 @@ spec:
             - name: otel_trace_url
               value: {{ .Values.openflow.otel_trace_url  | quote }}
 {{- else }}
+  {{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) (eq .Values.exporter.exposed true) }}
             - name: otel_trace_url
               value: "{{ $oteluri }}"
+  {{- else }}
+            - name: otel_trace_url
+  {{- end }}
 {{- end }}
 {{- if .Values.openflow.otel_metric_url }}
             - name: otel_metric_url
               value: {{ .Values.openflow.otel_metric_url  | quote }}
 {{- else }}
+  {{- if and (eq .Values.exporter.exposed true) }}
             - name: otel_metric_url
               value: "{{ $oteluri }}"
+  {{- else }}
+            - name: otel_metric_url
+  {{- end }}
 {{- end }}
             - name: otel_debug_log
               value: {{ .Values.openflow.otel_debug_log  | quote }}
