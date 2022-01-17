@@ -14,7 +14,7 @@ port: # if the external port to access this is differente from 80/443, then set 
 use_ingress_beta1_syntax: false
 openflow:
   image: openiap/openflow # set image for api deployment
-  deploymentstrategy: Recreate
+  deploymentstrategy: Recreate # Recreate or RollingUpdate
   # nodered_image: openiap/nodered
   # set possible image to be used when deploying new Nodered deployments
   nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
