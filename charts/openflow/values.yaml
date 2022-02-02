@@ -11,10 +11,10 @@ certificate:
   certsans: # set subjecter alternative names in the certificate. for instance: *.demo.openiap.io
 nodeSelector: {} # remeber to set under mongodb too
 port: # if the external port to access this is differente from 80/443, then set this the port users will access this instance on
-use_ingress_beta1_syntax: false
 openflow:
   image: openiap/openflow # set image for api deployment
   deploymentstrategy: Recreate # Recreate or RollingUpdate
+  sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
   # nodered_image: openiap/nodered
   # set possible image to be used when deploying new Nodered deployments
   nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
@@ -138,6 +138,7 @@ openflow:
   nodered_limits_cpu: # limit cpu usage for new nodered instances, for instance: 450n ( 1000n represents 1 vCPU )
   nodered_liveness_failurethreshold: 5 # allow nodered liveness probe to fail this amount of times before restarting it, default 5
   nodered_liveness_timeoutseconds: 5 # each probe will timeout after this many seconds, default 5
+  noderedcatalogues: # list of package catalogs to use in nodered for finding packages to install, seperated by ; ... default is https://catalogue.nodered.org/catalogue.json
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
   prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false

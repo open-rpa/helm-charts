@@ -281,6 +281,8 @@ spec:
               value: {{ .Values.openflow.nodered_liveness_failurethreshold  | quote }}
             - name: nodered_liveness_timeoutseconds
               value: {{ .Values.openflow.nodered_liveness_timeoutseconds  | quote }}
+            - name: noderedcatalogues
+              value: {{ .Values.openflow.noderedcatalogues  | quote }}
             - name: prometheus_measure_nodeid
               value: {{ .Values.openflow.prometheus_measure_nodeid  | quote }}
             - name: prometheus_measure_queued_messages
