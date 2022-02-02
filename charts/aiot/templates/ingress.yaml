@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontendingress
@@ -28,9 +28,12 @@ spec:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: frontend
-              servicePort: www
+              service:
+                name: frontend
+                port:
+                  name: www
 {{- if and .Values.openflow.tlsSecret (eq .Values.openflow.protocol "https") }}
   tls:
     - secretName: {{ .Values.openflow.tlsSecret | quote }}
