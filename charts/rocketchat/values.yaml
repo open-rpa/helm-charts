@@ -2,17 +2,22 @@
 ## ref: https://hub.docker.com/r/rocketchat/rocket.chat/tags
 ##
 image:
-  repository: docker.io/rocketchat/rocket.chat
-  tag: 3.7.2
+  repository: registry.rocket.chat/rocketchat/rocket.chat
   pullPolicy: IfNotPresent
 
+imagePullSecrets: []
+
+## Deploy as micro-services?
+# Monolithic architecture, by default
+microservices: false
+
 ## Host for the application
-##
+## set it to a domain pointing to your loadbalancer
 # host:
 
 replicaCount: 1
 minAvailable: 1
-nodeSelector: {}
+
 smtp:
   enabled: false
   username:
@@ -22,18 +27,23 @@ smtp:
 
 # Extra env vars for Rocket.Chat:
 extraEnv:
-  # |
   # - name: MONGO_OPTIONS
   #   value: '{"ssl": "true"}'
   # - name: MONGO_OPLOG_URL
   #   value: mongodb://oploguser:password@rocket-1:27017/local&replicaSet=rs0
+
+## Specifies a Registration Token (obtainable at https://cloud.rocket.chat)
+#registrationToken: ""
+
+## Specifies an Enterprise License
+# license: ""
 
 ## Pod anti-affinity can prevent the scheduler from placing RocketChat replicas on the same node.
 ## The default value "soft" means that the scheduler should *prefer* to not schedule two replica pods onto the same node but no guarantee is provided.
 ## The value "hard" means that the scheduler is *required* to not schedule two replica pods onto the same node.
 ## The value "" will disable pod anti-affinity so that no anti-affinity rules will be configured.
 ##
-podAntiAffinity: ""
+podAntiAffinity: ''
 
 ## If anti-affinity is enabled sets the topologyKey to use for anti-affinity.
 ## This can be changed to, for example, failure-domain.beta.kubernetes.io/zone
@@ -54,6 +64,9 @@ affinity: {}
 #         - e2e-az1
 #         - e2e-az2
 
+## Use an existing secret file with the MongoDB Url and OplogUrl
+existingMongodbSecret: ''
+
 ## MongoDB URL if using an externally provisioned MongoDB
 externalMongodbUrl: # mongodb://user:password@localhost:27017/rocketchat
 externalMongodbOplogUrl: # mongodb://user:password@localhost:27017/local?replicaSet=rs0&authSource=admin
@@ -66,21 +79,20 @@ mongodb:
   ## Enable or disable MongoDB dependency completely.
   enabled: true
 
-  # mongodbRootPassword:
-
-  mongodbUsername: rocketchat
-  # mongodbPassword:
-  mongodbDatabase: rocketchat
-
-  replicaSet:
-    enabled: true
-    replicas:
-      secondary: 0
-      arbiter: 0
+  auth:
+    # rootPassword:
+    username: rocketchat
+    # password: 
+    database: rocketchat
+  
+  architecture: replicaset
+  replicaCount: 1
+  arbiter:
+    enabled: false
     pdb:
-      minAvailable:
-        secondary: 0
-        arbiter: 0
+      minAvailable: 0
+  pdb:
+    minAvailable: 0
 
     # key:
 
@@ -96,6 +108,8 @@ mongodb:
     # storageClass: "-"
     accessMode: ReadWriteOnce
     size: 8Gi
+  
+  volumePermissions: {enabled: true}
 
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
@@ -140,11 +154,13 @@ serviceAccount:
 ###
 ingress:
   enabled: false
+  pathType: Prefix
   annotations:
     {}
+  # ingressClassName: "nxinx"
     # kubernetes.io/ingress.class: "nginx"
   path: /
-  tls:
+  tls: {}
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -165,6 +181,9 @@ service:
 
   port: 80
 
+## Optional custom labels for the deployment resource.
+deploymentLabels: {}
+
 ## Optional Pod Labels.
 podLabels: {}
 
@@ -174,6 +193,11 @@ podAnnotations:
   # prometheus.io/port: "9458"
   # prometheus.io/path: "/metrics"
   # prometheus.io/scrape: "true"
+
+## Optional Prometheus scraping Settings
+prometheusScraping:
+  enabled: false
+  port: 9458
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes

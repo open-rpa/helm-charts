@@ -6,7 +6,7 @@ metadata:
     name: api
 spec:
   type: NodePort
-  sessionAffinity: ClientIP
+#  sessionAffinity: ClientIP
   ports:
     - port: {{ .Values.openflow.port }}
       name: www
