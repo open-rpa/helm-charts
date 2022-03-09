@@ -192,6 +192,8 @@ spec:
               value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
             - name: upload_max_filesize_mb
               value: {{ .Values.openflow.upload_max_filesize_mb | quote }}
+            - name: use_ingress_beta1_syntax
+              value: {{ .Values.openflow.use_ingress_beta1_syntax | quote }}
             - name: namespace
               value: {{ .Release.Namespace | quote }}
             - name: allow_personal_nodered
