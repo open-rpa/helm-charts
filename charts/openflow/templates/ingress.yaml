@@ -154,9 +154,9 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: jaeger
+                name: openflow-jaeger-query
                 port:
-                  name: jaegerui
+                  name: query
   {{- end }}
   {{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
     - host: "zipkin.{{ $domain }}"

@@ -64,7 +64,7 @@ data:
       zpages: {}
     exporters:
       jaeger:
-        endpoint: jaeger:14250
+        endpoint: openflow-jaeger-collector:14250
         insecure: true
 {{- if (eq .Values.zipkin.enabled true) }}
       zipkin:
@@ -75,6 +75,67 @@ data:
       logging:
        loglevel: {{ .Values.exporter.loglevel }}
 {{- end }}
+
+{{- if (eq .Values.exporter.opensearch.metricsenabled true) }}
+      otlp/opensearchmetrics:
+        endpoint: "{{ .Values.exporter.opensearch.data_prepper_host }}"  
+  {{- if (eq .Values.exporter.opensearch.insecure true) }}
+        insecure: true
+  {{- end }}
+  {{- if (eq .Values.exporter.opensearch.insecure_skip_verify true) }}
+        insecure_skip_verify: true
+  {{- end }}
+{{- end }}
+
+{{- if (eq .Values.exporter.opensearch.traceenabled true) }}
+      otlp/opensearchtrace:
+        endpoint: "{{ .Values.exporter.opensearch.data_prepper_host }}"  
+  {{- if (eq .Values.exporter.opensearch.insecure true) }}
+        insecure: true
+  {{- end }}
+  {{- if (eq .Values.exporter.opensearch.insecure_skip_verify true) }}
+        insecure_skip_verify: true
+  {{- end }}
+{{- end }}
+{{- if eq .Values.exporter.opensearch.logsenabled true }}
+      otlp/opensearchlogs:
+        endpoint: "{{ .Values.exporter.opensearch.data_prepper_host }}"  
+  {{- if (eq .Values.exporter.opensearch.insecure true) }}
+        insecure: true
+  {{- end }}
+  {{- if (eq .Values.exporter.opensearch.insecure_skip_verify true) }}
+        insecure_skip_verify: true
+  {{- end }}
+{{- end }}
+
+{{- if (eq .Values.exporter.elastic.metricsenabled true) }}
+      # elastic/otr:
+      #   apm_server_url: http://apm-server:8200
+      otlp/elasticmetrics:
+        endpoint: "{{ .Values.exporter.elastic.elastic_apm_server_endpoint }}"
+{{- if (eq .Values.exporter.elastic.insecure true) }}
+        insecure: true
+{{- end }}
+{{- if (eq .Values.exporter.elastic.insecure_skip_verify true) }}
+        insecure_skip_verify: true
+{{- end }}
+        headers:
+          Authorization: "{{ .Values.exporter.elastic.elastic_apm_server_authorization }}"  
+{{- end }}
+{{- if (eq .Values.exporter.elastic.traceenabled true) }}
+      # elastic/otr:
+      #   apm_server_url: http://apm-server:8200
+      otlp/elastictrace:
+        endpoint: "{{ .Values.exporter.elastic.elastic_apm_server_endpoint }}"  
+{{- if (eq .Values.exporter.elastic.insecure true) }}
+        insecure: true
+{{- end }}
+{{- if (eq .Values.exporter.elastic.insecure_skip_verify true) }}
+        insecure_skip_verify: true
+{{- end }}
+        headers:
+          Authorization: "{{ .Values.exporter.elastic.elastic_apm_server_authorization }}"  
+{{- end }}
       prometheus:
        endpoint: "0.0.0.0:9464"
       #  namespace: otelcollector
@@ -84,34 +145,49 @@ data:
       extensions: [health_check, zpages]
       pipelines:
         metrics:
+          receivers:
 {{- if (eq .Values.exporter.kubestatemetrics.enabled true) }}
-          receivers: [prometheus,otlp]
-{{- else }}
-          receivers: [otlp]
+            - prometheus
 {{- end }}
-          exporters: [prometheusremotewrite, prometheus]
+            - otlp
+          exporters: 
+            - prometheusremotewrite
+            - prometheus
+{{- if (eq .Values.exporter.opensearch.metricsenabled true) }}
+            - otlp/opensearchmetrics
+{{- end }}
+{{- if (eq .Values.exporter.elastic.metricsenabled true) }}
+            - otlp/elasticmetrics
+{{- end }}
           processors: []
-{{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
+{{- if or (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) (eq .Values.exporter.elastic.traceenabled true) (eq .Values.exporter.opensearch.traceenabled true) }}
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [jaeger, zipkin]
-{{- else if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled false) }}
-        traces:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: [jaeger]
-{{- else if and (eq .Values.jaeger.enabled false) (eq .Values.zipkin.enabled true) }}
-        traces:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: [zipkin]
-{{- else }}
+          exporters: 
+  {{- if eq .Values.jaeger.enabled true }}
+            - jaeger
+  {{- end }}
+  {{- if eq .Values.zipkin.enabled true }}
+            - zipkin
+  {{- end }}
+  {{- if (eq .Values.exporter.opensearch.traceenabled true) }}
+            - otlp/opensearchtrace
+  {{- end }}
+  {{- if (eq .Values.exporter.elastic.traceenabled true) }}
+            - otlp/elastictrace
+  {{- end }}
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
         logs:
           receivers: [otlp]
           exporters: [ loki ]
+{{- end }}
+{{- if eq .Values.exporter.opensearch.logsenabled true }}
+        logs:
+          receivers: [otlp]
+          exporters: 
+            - otlp/opensearchlogs
 {{- end }}
           
 #        traces:
