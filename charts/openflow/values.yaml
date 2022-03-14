@@ -79,7 +79,11 @@ openflow:
   # If watches are enabled, log every watch event trigger (will generated ALOT of entries)
   log_watches: false
   # If watches are enabled, log every event send to a client
-  log_watches_notify: true
+  log_watches_notify: false
+  # log creating and updating of mongodb indexs
+  log_index_mngt: false
+  # log when adding, updating, removing or clearing cache items
+  log_cache: false
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # Auto-create default indexes doing startup, default: true

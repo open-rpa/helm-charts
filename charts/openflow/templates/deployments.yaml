@@ -120,6 +120,10 @@ spec:
               value: {{ .Values.openflow.log_watches | quote }}
             - name: log_watches_notify
               value: {{ .Values.openflow.log_watches_notify | quote }}
+            - name: log_index_mngt
+              value: {{ .Values.openflow.log_index_mngt | quote }}
+            - name: log_cache
+              value: {{ .Values.openflow.log_cache | quote }}
             - name: ensure_indexes
               value: {{ .Values.openflow.ensure_indexes | quote }}
             - name: enable_openflow_amqp
