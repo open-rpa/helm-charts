@@ -147,6 +147,7 @@ openflow:
   noderedcatalogues: # list of package catalogs to use in nodered for finding packages to install, seperated by ; ... default is https://catalogue.nodered.org/catalogue.json
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
+  nodered_ws_url: # force new nodereds (but not browser) to use this url to access the api
   prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false
   prometheus_measure_queued_messages: # Collect prometheus metrics for openflow/nodered on socket messages waiting on a reply, default: false
   prometheus_measure__mongodb_watch: # Collect prometheus metrics for open change streams to mongodb, default: false

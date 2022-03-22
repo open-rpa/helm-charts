@@ -271,6 +271,8 @@ spec:
               value: "amqp://{{ .Values.rabbitmq.default_user }}:{{ .Values.rabbitmq.default_pass }}@rabbitmq"
             - name: api_ws_url
               value: {{ .Values.openflow.api_ws_url  | quote }}
+            - name: nodered_ws_url
+              value: {{ .Values.openflow.nodered_ws_url  | quote }}              
             - name: domain
               value: "{{ $apidomain }}"
             - name: nodered_allow_nodeselector
