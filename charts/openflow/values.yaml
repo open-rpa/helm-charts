@@ -148,6 +148,7 @@ openflow:
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
   nodered_ws_url: # force new nodereds (but not browser) to use this url to access the api
+  saml_federation_metadata: # Override SAML url for new nodered instances
   prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false
   prometheus_measure_queued_messages: # Collect prometheus metrics for openflow/nodered on socket messages waiting on a reply, default: false
   prometheus_measure__mongodb_watch: # Collect prometheus metrics for open change streams to mongodb, default: false

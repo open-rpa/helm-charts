@@ -272,7 +272,9 @@ spec:
             - name: api_ws_url
               value: {{ .Values.openflow.api_ws_url  | quote }}
             - name: nodered_ws_url
-              value: {{ .Values.openflow.nodered_ws_url  | quote }}              
+              value: {{ .Values.openflow.nodered_ws_url  | quote }}
+            - name: saml_federation_metadata
+              value: {{ .Values.openflow.saml_federation_metadata  | quote }}              
             - name: domain
               value: "{{ $apidomain }}"
             - name: nodered_allow_nodeselector
