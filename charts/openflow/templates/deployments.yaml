@@ -273,8 +273,6 @@ spec:
               value: {{ .Values.openflow.api_ws_url  | quote }}
             - name: nodered_ws_url
               value: {{ .Values.openflow.nodered_ws_url  | quote }}
-            - name: saml_federation_metadata
-              value: {{ .Values.openflow.saml_federation_metadata  | quote }}
             - name: nodered_saml_entrypoint
               value: {{ .Values.openflow.nodered_saml_entrypoint  | quote }}
             - name: domain
