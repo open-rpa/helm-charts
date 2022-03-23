@@ -48,6 +48,29 @@ entries:
   openflow:
   - apiVersion: v2
     appVersion: 1.3.100
+    created: "2022-03-23T13:03:21.3372592+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.x
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/loki/charts
+      version: 2.x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: 72a2b3600ebe4f5fb077e2abad3f7904388d512c93cac56a4ae917bce6d40082
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.79/openflow-0.1.79.tgz
+    version: 0.1.79
+  - apiVersion: v2
+    appVersion: 1.3.100
     created: "2022-03-23T12:29:06.0676587+01:00"
     dependencies:
     - condition: mongodb.enabled
@@ -770,4 +793,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-03-23T12:29:06.2428289+01:00"
+generated: "2022-03-23T13:03:21.5290621+01:00"

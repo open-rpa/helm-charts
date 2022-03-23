@@ -171,6 +171,9 @@ openflow:
   personalnoderedtoken_expires_in: # default: 365d
   otel_debug_log: false
   debug: # Configure logging for the debug plugin
+  NO_PROXY: # Set NO_PROXY for all api and nodered nodes
+  HTTP_PROXY: # Set HTTP_PROXY for all api and nodered nodes
+  HTTPS_PROXY: # Set HTTPS_PROXY for all api and nodered nodes
   # limits:
   #   #   cpu: "1"
   #   #memory: 1Gi
