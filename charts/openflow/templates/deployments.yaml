@@ -136,6 +136,8 @@ spec:
               value: {{ .Values.openflow.enable_entity_restriction | quote }}
             - name: enable_web_tours
               value: {{ .Values.openflow.enable_web_tours | quote }}
+            - name: ping_clients_interval
+              value: {{ .Values.openflow.ping_clients_interval | quote }}
             - name: license_key
               value: {{ default "" .Values.openflow.license_key | quote }}
             - name: stripe_api_key

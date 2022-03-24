@@ -95,6 +95,8 @@ openflow:
   enable_entity_restriction: false # Add restrictions on who can create entities in different collections, default false
   enable_web_tours: true # Enable tours and notification about new features
 
+  ping_clients_interval: 10000 # each api node pings connected clients witht his interval, and update the user object for each online user
+
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
   skip_history_collections: audit,openrpa_instances,workflow_instances
   websocket_max_package_count: "1048576" # 1048576
