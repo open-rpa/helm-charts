@@ -215,6 +215,9 @@ grafana:
   oauth_auto_login: true # Set to true to attempt login with OAuth automatically, skipping the login screen.
   openflow_datasource: true # inject openflow data source, this should be set to false after first deploy if you set alert manager credentials
   prometheus_datasource: true # inject prometheus data source
+  persistence:
+    size: 10Gi
+    storageClassName:
   smtp:
     enabled: false
     host:
@@ -357,8 +360,10 @@ cassandra:
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
   enabled: false
   exposed: false
-  persistence: false # enable persistence to not loose data when ever the pod restarts
-  persistencestoragesize: 10Gi
+  persistence:
+    enabled: false
+    size: 10Gi
+    storageClassName:
   resources: {}
 mongodb:
   enabled: true # by setting this to enable AND setting architecture to either standalone or replicaset, a mongodb installation will be deployed as well

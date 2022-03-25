@@ -1,5 +1,5 @@
 {{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) }}
-  {{- if eq .Values.victoriametrics.persistence true }}
+  {{- if eq .Values.victoriametrics.persistence.enabled true }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -9,11 +9,14 @@ metadata:
   labels:
     app: victoriametrics
 spec:
+{{- if .Values.victoriametrics.persistence.storageclass }}
+  storageClassName: "{{ .Values.victoriametrics.persistence.storageclass }}"
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.victoriametrics.persistencestoragesize | quote }}
+      storage: {{ .Values.victoriametrics.persistence.size | quote }}
 ---
   {{- end }}
 apiVersion: apps/v1
@@ -33,7 +36,8 @@ spec:
         app: victoriametrics
     spec:
       {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
       containers:
         - name: victoriametrics-cont
@@ -44,7 +48,7 @@ spec:
             - "-selfScrapeInterval=10s"
           ports:
             - containerPort: 8428
-  {{- if eq .Values.victoriametrics.persistence true }}
+  {{- if eq .Values.victoriametrics.persistence.enabled true }}
           volumeMounts:
             - name: victoriametrics-storage
               mountPath: /victoria-metrics-data

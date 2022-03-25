@@ -11,6 +11,7 @@ imagePullSecrets: []
 # Monolithic architecture, by default
 microservices: false
 
+nodeSelector: {}
 ## Host for the application
 ## set it to a domain pointing to your loadbalancer
 # host:
