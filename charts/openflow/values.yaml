@@ -217,7 +217,7 @@ grafana:
   prometheus_datasource: true # inject prometheus data source
   persistence:
     size: 10Gi
-    storageClassName:
+    storageclass:
   smtp:
     enabled: false
     host:
@@ -363,7 +363,7 @@ victoriametrics: # for exposing all all metric data for grafana, optionally also
   persistence:
     enabled: false
     size: 10Gi
-    storageClassName:
+    storageclass:
   resources: {}
 mongodb:
   enabled: true # by setting this to enable AND setting architecture to either standalone or replicaset, a mongodb installation will be deployed as well

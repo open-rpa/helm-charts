@@ -65,8 +65,15 @@ spec:
             #   value: "{{ $apiuri }}/oauth/authorize"
             - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
               value: "{{ $apiuri }}/oidc/auth"
+            # - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+            #   value: "{{ $apiuri }}/oidc/token"
+{{- if .Values.openflow.port }}
             - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
-              value: "{{ $apiuri }}/oidc/token"
+              value: "http://api:{{.Values.openflow.port}}/oidc/token"
+{{- else }}
+            - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+              value: "http://api/oidc/token"
+{{- end }}
             - name: GF_AUTH_GENERIC_OAUTH_API_URL
               value: "{{ $apiuri }}/oidc/me"
             - name: GF_AUTH_DISABLE_LOGIN_FORM
