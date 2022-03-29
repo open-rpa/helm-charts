@@ -120,6 +120,8 @@ spec:
               value: {{ .Values.openflow.log_watches | quote }}
             - name: log_watches_notify
               value: {{ .Values.openflow.log_watches_notify | quote }}
+            - name: log_missing_jwt
+              value: {{ .Values.openflow.log_missing_jwt | quote }}
             - name: log_index_mngt
               value: {{ .Values.openflow.log_index_mngt | quote }}
             - name: log_cache

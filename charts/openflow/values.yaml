@@ -80,6 +80,8 @@ openflow:
   log_watches: false
   # If watches are enabled, log every event send to a client
   log_watches_notify: false
+  # If enabled, will log a message every time openflow receives a message from a client with no JWT ( or an invalid jwt )
+  log_missing_jwt: true
   # log creating and updating of mongodb indexs
   log_index_mngt: false
   # log when adding, updating, removing or clearing cache items
