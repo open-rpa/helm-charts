@@ -9,11 +9,14 @@ metadata:
   labels:
     app: cassandra
 spec:
+{{- if .Values.cassandra.persistence.storageclass }}
+  storageClassName: "{{ .Values.cassandra.persistence.storageclass }}"
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.cassandra.storagesize | quote }}
+      storage: {{ .Values.cassandra.persistence.size | quote }}
 ---
 apiVersion: v1
 kind: Service

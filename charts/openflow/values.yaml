@@ -232,6 +232,9 @@ loki:
 prometheus: # deprecated, we use victoriametrics now.
   enabled: false
   exposed: false
+  persistence:
+    size: 10Gi
+    storageclass:
   resources: {}
 exporter: # open telemetry exporter. This service receive metrics and spans from openrpa/nodered and openrpa robots
   enabled: false # enable setting up the, open telemetry exporter
@@ -357,6 +360,9 @@ zipkin: # for visualizing and optionally also saving all spans, we can use zipki
       memory: 256Mi
 cassandra:
   enabled: false
+  persistence:
+    size: 10Gi
+    storageclass:
   storagesize: 10Gi
   resources: {}
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics

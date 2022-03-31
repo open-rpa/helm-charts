@@ -95,11 +95,14 @@ metadata:
   labels:
     app: prometheus
 spec:
+{{- if .Values.prometheus.persistence.storageclass }}
+  storageClassName: "{{ .Values.prometheus.persistence.storageclass }}"
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: {{ .Values.prometheus.persistence.size }}
 ---
 apiVersion: v1
 kind: Service
