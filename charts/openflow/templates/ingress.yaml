@@ -85,7 +85,7 @@ spec:
     #           servicePort: prometheus
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.exporter.enabled true) (eq .Values.exporter.exposed true) }}
-    - host: "exporter.{{ $domain }}"
+    - host: "otel.{{ $domain }}"
       http:
         paths:
           - path: /
