@@ -8,7 +8,10 @@
   {{- $dummy := set . "apiuri" .Values.protocol ":" .Values.port "://" $apidomain }}
 {{- end }}
 # ":4317"
-{{- $oteluri := print "http://otel." $domain ":80" }}
+{{- $oteluri := print "http://otel." $apidomain ":80" }}
+{{- if .Values.port }}
+  {{- $oteluri := print "http://otel." $apidomain ":" .Values.port }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -311,23 +314,33 @@ spec:
             - name: otel_trace_url
               value: {{ .Values.openflow.otel_trace_url  | quote }}
 {{- else }}
-  {{- if and (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) (eq .Values.exporter.exposed true) }}
+  {{- if or (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
+    {{- if (eq .Values.exporter.exposed true) }}
             - name: otel_trace_url
               value: "{{ $oteluri }}"
-  {{- else }}
+    {{- else }}
             - name: otel_trace_url
+              value: "http://otel-collector:4317"
+    {{- end }}
   {{- end }}
 {{- end }}
 {{- if .Values.openflow.otel_metric_url }}
             - name: otel_metric_url
               value: {{ .Values.openflow.otel_metric_url  | quote }}
 {{- else }}
-  {{- if and (eq .Values.exporter.exposed true) }}
+
+  {{- if or (eq .Values.prometheus.enabled true) (eq .Values.victoriametrics.enabled true) }}
+    {{- if (eq .Values.exporter.exposed true) }}
             - name: otel_metric_url
               value: "{{ $oteluri }}"
-  {{- else }}
+    {{- else }}
             - name: otel_metric_url
+              value: "http://otel-collector:4317"
+    {{- end }}
   {{- end }}
+
+
+
 {{- end }}
             - name: otel_debug_log
               value: {{ .Values.openflow.otel_debug_log  | quote }}
