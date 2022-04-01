@@ -85,24 +85,25 @@ spec:
     #           servicePort: prometheus
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.exporter.enabled true) (eq .Values.exporter.exposed true) }}
-    - host: "otel.{{ $domain }}"
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: otel-collector
-                port:
-                  name: collector
-    #              number: 55681
-    # - host: "metrics.{{ $domain }}"
+    # not used, we use IngressRoute instead ( defined in otel template )
+    # - host: "otel.{{ $domain }}"
     #   http:
     #     paths:
     #       - path: /
+    #         pathType: ImplementationSpecific
     #         backend:
-    #           serviceName: otel-collector
-    #           servicePort: prometheus
+    #           service:
+    #             name: otel-collector
+    #             port:
+    #               name: collector
+    # #              number: 55681
+    # # - host: "metrics.{{ $domain }}"
+    # #   http:
+    # #     paths:
+    # #       - path: /
+    # #         backend:
+    # #           serviceName: otel-collector
+    # #           servicePort: prometheus
 {{- end }}
 {{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
   tls:
