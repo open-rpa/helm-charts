@@ -65,8 +65,6 @@ spec:
               value: {{ .Values.EMAIL_SERVER_USER | quote }}
             - name: EMAIL_SERVER_PASSWORD
               value: {{ .Values.EMAIL_SERVER_PASSWORD | quote }}
-            - name: CALENDSO_ENCRYPTION_KEY
-              value: {{ .Values.CALENDSO_ENCRYPTION_KEY | quote }}
             - name: CRON_API_KEY
               value: {{ .Values.CRON_API_KEY | quote }}
             - name: NEXT_PUBLIC_STRIPE_PUBLIC_KEY

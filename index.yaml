@@ -32,6 +32,21 @@ entries:
   calendso:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-04-05T10:05:39.8927162+02:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.x.x
+    description: A Helm chart for deploying a calendso instance
+    digest: 95da78722f9999cb02ae9b3f677d4f94bf144db68cc47bea557cf2dfa80f2c37
+    name: calendso
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/calendso-0.1.2/calendso-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-01-09T17:07:13.4427692+01:00"
     dependencies:
     - condition: postgresql.enabled
@@ -885,4 +900,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-04-01T09:01:54.0963394+02:00"
+generated: "2022-04-05T10:05:48.2143476+02:00"
