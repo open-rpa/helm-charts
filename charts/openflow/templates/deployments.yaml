@@ -366,6 +366,10 @@ spec:
               value: {{ .Values.openflow.housekeeping_update_usage_hourly  | quote }}              
             - name: housekeeping_update_usersize_hourly
               value: {{ .Values.openflow.housekeeping_update_usersize_hourly  | quote }}              
+            - name: workitem_queue_monitoring_enabled
+              value: {{ .Values.openflow.workitem_queue_monitoring_enabled  | quote }}              
+            - name: workitem_queue_monitoring_interval
+              value: {{ .Values.openflow.workitem_queue_monitoring_interval  | quote }}              
             - name: stripe_force_vat
               value: {{ .Values.openflow.stripe_force_vat  | quote }}              
             - name: stripe_force_checkout

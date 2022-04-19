@@ -188,6 +188,10 @@ openflow:
   auto_hourly_housekeeping: true # Enable an hourly job, that does basic house keeping, default false
   housekeeping_update_usage_hourly: false # Doing house keeping, calculate each user and customers database usage every hour, default false ( if false runs every 12 hour )
   housekeeping_update_usersize_hourly: true # Doing house keeping, update dblock and usage information per customer every hour, default false ( if false runs every 12 hour )
+
+  workitem_queue_monitoring_enabled: 
+  workitem_queue_monitoring_interval: 
+
   stripe_force_vat: false # When multi_tenant is enabled, force new customers to add VAT information, default false
   stripe_force_checkout: false # When multi_tenant is enabled, force users to accept a stripe checkout session for each purchaes, default true
   auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
@@ -353,11 +357,7 @@ zipkin: # for visualizing and optionally also saving all spans, we can use zipki
   selftracing: false # log spans to self, for troubleshooting zipkin it self
   cassandra: false # persist all data to cassandra, instead of only keeping them temporarily
   javaopts: "-Xms128m -Xmx512m -XX:+ExitOnOutOfMemoryError" # set java memory limits, this should be lower but close to the kubernetes limits.
-  resources:
-    limits:
-      memory: 512Mi
-    requests:
-      memory: 256Mi
+  resources: {}
 cassandra:
   enabled: false
   persistence:
