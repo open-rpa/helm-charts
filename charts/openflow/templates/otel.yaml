@@ -13,9 +13,6 @@ data:
         protocols:
           grpc:
           http:
-            cors_allowed_origins:
-            - http://*
-            - https://*
 {{- if (eq .Values.exporter.kubestatemetrics.enabled true) }}
       prometheus:
           config:
@@ -63,9 +60,11 @@ data:
       health_check: {}
       zpages: {}
     exporters:
+{{- if (eq .Values.jaeger.enabled true) }}
       jaeger:
         endpoint: openflow-jaeger-collector:14250
         insecure: true
+{{- end }}
 {{- if (eq .Values.zipkin.enabled true) }}
       zipkin:
         endpoint: "http://zipkin:9411/api/v2/spans"
