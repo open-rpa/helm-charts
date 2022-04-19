@@ -25,7 +25,8 @@ spec:
         prometheus.io/port: "80"
     spec:
       {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
       containers:
         - name: frontend
