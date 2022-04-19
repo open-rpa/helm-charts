@@ -1,0 +1,97 @@
+{{- if eq .Values.openflow.cache_store_type "redis" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      role: redis
+  strategy:
+    type: {{ required "A valid .Values.openflow.deploymentstrategy entry required!" .Values.openflow.deploymentstrategy }}
+  template:
+    metadata:
+      labels:
+        role: redis
+    spec:
+      {{- if .Values.openflow.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
+      {{- end }}
+      containers:
+        - name: redis
+          image: redis
+          imagePullPolicy: Always
+          resources:
+            {{- toYaml .Values.openflow.resources | nindent 12 }}
+          ports:
+            - containerPort: 6379
+          args: [ "--requirepass", "{{ .Values.openflow.cache_store_redis_password }}" ]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    name: redis
+spec:
+  type: NodePort
+  ports:
+    - port: 6379
+      name: www
+  selector:
+    role: redis
+
+{{- end }}
+---
+{{- if (eq .Values.rediscommander.enabled true) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rediscommander
+spec:
+  selector:
+    matchLabels:
+      role: rediscommander
+  strategy:
+    type: {{ required "A valid .Values.openflow.deploymentstrategy entry required!" .Values.openflow.deploymentstrategy }}
+  template:
+    metadata:
+      labels:
+        role: rediscommander
+    spec:
+      {{- if .Values.openflow.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
+      {{- end }}
+      containers:
+        - name: rediscommander
+          image: rediscommander/redis-commander
+          imagePullPolicy: Always
+          resources:
+            {{- toYaml .Values.openflow.resources | nindent 12 }}
+          ports:
+            - containerPort: 6379
+          env:
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              value: {{ .Values.openflow.cache_store_redis_password | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rediscommander
+  labels:
+    name: rediscommander
+spec:
+  type: NodePort
+  ports:
+    - port: 8081
+      name: rediscommander
+  selector:
+    role: rediscommander
+{{- end }}

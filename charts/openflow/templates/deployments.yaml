@@ -157,16 +157,6 @@ spec:
               value: {{ .Values.openflow.multi_tenant | quote }}
             - name: update_acl_based_on_groups
               value: {{ .Values.openflow.update_acl_based_on_groups | quote }}
-            - name: api_credential_cache_seconds
-              value: {{ .Values.openflow.api_credential_cache_seconds | quote }}
-            - name: dashboard_credential_cache_seconds
-              value: {{ .Values.openflow.dashboard_credential_cache_seconds | quote }}
-            - name: grafana_credential_cache_seconds
-              value: {{ .Values.openflow.grafana_credential_cache_seconds | quote }}
-            - name: cleanacl_credential_cache_seconds
-              value: {{ .Values.openflow.cleanacl_credential_cache_seconds | quote }}
-            - name: mq_credential_cache_seconds
-              value: {{ .Values.openflow.mq_credential_cache_seconds | quote }}
             - name: oauth_token_cache_seconds
               value: {{ .Values.openflow.oauth_token_cache_seconds | quote }}
             - name: oauth_access_token_lifetime
@@ -266,53 +256,59 @@ spec:
               value: {{ required "A valid .Values.openflow.external_mongodb_url entry required!" .Values.openflow.external_mongodb_url | quote }}
   {{- if .Values.openflow.mongodb_db }}
             - name: mongodb_db
-              value: {{ .Values.openflow.mongodb_db  | quote }}
+              value: {{ .Values.openflow.mongodb_db | quote }}
   {{- else }}
             - name: mongodb_db
               value: {{ .Release.Namespace | quote }}
   {{- end }}
 {{- end }}
             - name: mongodb_minpoolsize
-              value: {{ .Values.openflow.mongodb_minpoolsize  | quote }}
+              value: {{ .Values.openflow.mongodb_minpoolsize | quote }}
             - name: amqp_url
               value: "amqp://{{ .Values.rabbitmq.default_user }}:{{ .Values.rabbitmq.default_pass }}@rabbitmq"
             - name: api_ws_url
-              value: {{ .Values.openflow.api_ws_url  | quote }}
+              value: {{ .Values.openflow.api_ws_url | quote }}
             - name: nodered_ws_url
-              value: {{ .Values.openflow.nodered_ws_url  | quote }}
+              value: {{ .Values.openflow.nodered_ws_url | quote }}
             - name: nodered_saml_entrypoint
-              value: {{ .Values.openflow.nodered_saml_entrypoint  | quote }}
+              value: {{ .Values.openflow.nodered_saml_entrypoint | quote }}
             - name: domain
               value: "{{ $apidomain }}"
             - name: nodered_allow_nodeselector
               value: {{ .Values.openflow.nodered_allow_nodeselector | quote }}
             - name: nodered_requests_memory
-              value: {{ .Values.openflow.nodered_requests_memory  | quote }}
+              value: {{ .Values.openflow.nodered_requests_memory | quote }}
             - name: nodered_requests_cpu
-              value: {{ .Values.openflow.nodered_requests_cpu  | quote }}
+              value: {{ .Values.openflow.nodered_requests_cpu | quote }}
             - name: nodered_limits_memory
-              value: {{ .Values.openflow.nodered_limits_memory  | quote }}
+              value: {{ .Values.openflow.nodered_limits_memory | quote }}
             - name: nodered_limits_cpu
-              value: {{ .Values.openflow.nodered_limits_cpu  | quote }}
+              value: {{ .Values.openflow.nodered_limits_cpu | quote }}
             - name: nodered_liveness_failurethreshold
-              value: {{ .Values.openflow.nodered_liveness_failurethreshold  | quote }}
+              value: {{ .Values.openflow.nodered_liveness_failurethreshold | quote }}
             - name: nodered_liveness_timeoutseconds
-              value: {{ .Values.openflow.nodered_liveness_timeoutseconds  | quote }}
+              value: {{ .Values.openflow.nodered_liveness_timeoutseconds | quote }}
             - name: noderedcatalogues
-              value: {{ .Values.openflow.noderedcatalogues  | quote }}
+              value: {{ .Values.openflow.noderedcatalogues | quote }}
             - name: prometheus_measure_nodeid
-              value: {{ .Values.openflow.prometheus_measure_nodeid  | quote }}
+              value: {{ .Values.openflow.prometheus_measure_nodeid | quote }}
             - name: prometheus_measure_queued_messages
-              value: {{ .Values.openflow.prometheus_measure_queued_messages  | quote }}
+              value: {{ .Values.openflow.prometheus_measure_queued_messages | quote }}
             - name: prometheus_measure__mongodb_watch
-              value: {{ .Values.openflow.prometheus_measure__mongodb_watch  | quote }}
+              value: {{ .Values.openflow.prometheus_measure__mongodb_watch | quote }}
             - name: prometheus_measure_onlineuser
-              value: {{ .Values.openflow.prometheus_measure_onlineuser  | quote }}
+              value: {{ .Values.openflow.prometheus_measure_onlineuser | quote }}
             - name: enable_analytics
-              value: {{ .Values.openflow.enable_analytics  | quote }}
+              value: {{ .Values.openflow.enable_analytics | quote }}
+            - name: cache_store_type
+              value: {{ .Values.openflow.cache_store_type | quote }}
+            - name: cache_store_redis_host
+              value: {{ .Values.openflow.cache_store_redis_host | quote }}
+            - name: cache_store_redis_password
+              value: {{ .Values.openflow.cache_store_redis_password | quote }}
 {{- if .Values.openflow.otel_trace_url }}
             - name: otel_trace_url
-              value: {{ .Values.openflow.otel_trace_url  | quote }}
+              value: {{ .Values.openflow.otel_trace_url | quote }}
 {{- else }}
   {{- if or (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
     {{- if (eq .Values.exporter.exposed true) }}
@@ -326,7 +322,7 @@ spec:
 {{- end }}
 {{- if .Values.openflow.otel_metric_url }}
             - name: otel_metric_url
-              value: {{ .Values.openflow.otel_metric_url  | quote }}
+              value: {{ .Values.openflow.otel_metric_url | quote }}
 {{- else }}
 
   {{- if or (eq .Values.prometheus.enabled true) (eq .Values.victoriametrics.enabled true) }}
@@ -343,53 +339,53 @@ spec:
 
 {{- end }}
             - name: otel_debug_log
-              value: {{ .Values.openflow.otel_debug_log  | quote }}
+              value: {{ .Values.openflow.otel_debug_log | quote }}
             - name: otel_servicename
-              value: {{ .Values.openflow.otel_servicename  | quote }}
+              value: {{ .Values.openflow.otel_servicename | quote }}
             - name: otel_trace_interval
-              value: {{ .Values.openflow.otel_trace_interval  | quote }}
+              value: {{ .Values.openflow.otel_trace_interval | quote }}
             - name: otel_metric_interval
-              value: {{ .Values.openflow.otel_metric_interval  | quote }}
+              value: {{ .Values.openflow.otel_metric_interval | quote }}
             - name: expected_max_roles
-              value: {{ .Values.openflow.expected_max_roles  | quote }}
+              value: {{ .Values.openflow.expected_max_roles | quote }}
             - name: max_recursive_group_depth
-              value: {{ .Values.openflow.max_recursive_group_depth  | quote }}              
+              value: {{ .Values.openflow.max_recursive_group_depth | quote }}              
             - name: decorate_roles_fetching_all_roles
-              value: {{ .Values.openflow.decorate_roles_fetching_all_roles  | quote }}              
+              value: {{ .Values.openflow.decorate_roles_fetching_all_roles | quote }}              
             - name: roles_cached_in_seconds
-              value: {{ .Values.openflow.roles_cached_in_seconds  | quote }}              
+              value: {{ .Values.openflow.roles_cached_in_seconds | quote }}              
             - name: validate_user_form
-              value: {{ .Values.openflow.validate_user_form  | quote }}              
+              value: {{ .Values.openflow.validate_user_form | quote }}              
             - name: auto_hourly_housekeeping
-              value: {{ .Values.openflow.auto_hourly_housekeeping  | quote }}              
+              value: {{ .Values.openflow.auto_hourly_housekeeping | quote }}              
             - name: housekeeping_update_usage_hourly
-              value: {{ .Values.openflow.housekeeping_update_usage_hourly  | quote }}              
+              value: {{ .Values.openflow.housekeeping_update_usage_hourly | quote }}              
             - name: housekeeping_update_usersize_hourly
-              value: {{ .Values.openflow.housekeeping_update_usersize_hourly  | quote }}              
+              value: {{ .Values.openflow.housekeeping_update_usersize_hourly | quote }}              
             - name: workitem_queue_monitoring_enabled
-              value: {{ .Values.openflow.workitem_queue_monitoring_enabled  | quote }}              
+              value: {{ .Values.openflow.workitem_queue_monitoring_enabled | quote }}              
             - name: workitem_queue_monitoring_interval
-              value: {{ .Values.openflow.workitem_queue_monitoring_interval  | quote }}              
+              value: {{ .Values.openflow.workitem_queue_monitoring_interval | quote }}              
             - name: stripe_force_vat
-              value: {{ .Values.openflow.stripe_force_vat  | quote }}              
+              value: {{ .Values.openflow.stripe_force_vat | quote }}              
             - name: stripe_force_checkout
-              value: {{ .Values.openflow.stripe_force_checkout  | quote }}              
+              value: {{ .Values.openflow.stripe_force_checkout | quote }}              
             - name: DEBUG
-              value: {{ .Values.openflow.debug  | quote }}              
+              value: {{ .Values.openflow.debug | quote }}              
             - name: HTTP_PROXY
-              value: {{ .Values.openflow.HTTP_PROXY  | quote }}              
+              value: {{ .Values.openflow.HTTP_PROXY | quote }}              
             - name: HTTPS_PROXY
-              value: {{ .Values.openflow.HTTPS_PROXY  | quote }}              
+              value: {{ .Values.openflow.HTTPS_PROXY | quote }}              
             - name: NO_PROXY
-              value: {{ .Values.openflow.NO_PROXY  | quote }}              
+              value: {{ .Values.openflow.NO_PROXY | quote }}              
             - name: shorttoken_expires_in
-              value: {{ .Values.openflow.shorttoken_expires_in  | quote }}              
+              value: {{ .Values.openflow.shorttoken_expires_in | quote }}              
             - name: longtoken_expires_in
-              value: {{ .Values.openflow.longtoken_expires_in  | quote }}              
+              value: {{ .Values.openflow.longtoken_expires_in | quote }}              
             - name: downloadtoken_expires_in
-              value: {{ .Values.openflow.downloadtoken_expires_in  | quote }}              
+              value: {{ .Values.openflow.downloadtoken_expires_in | quote }}              
             - name: personalnoderedtoken_expires_in
-              value: {{ .Values.openflow.personalnoderedtoken_expires_in  | quote }}              
+              value: {{ .Values.openflow.personalnoderedtoken_expires_in | quote }}              
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -110,7 +110,7 @@ spec:
     - secretName: {{ .Values.certificate.tlsSecret | quote }}
 {{- end }}
 ---
-{{- if and (.Values.openflow.license_key) (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true)) }}
+{{- if or (and (.Values.openflow.license_key) (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true))) (eq .Values.rediscommander.exposed true) }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -119,7 +119,7 @@ spec:
   forwardAuth:
     address: "https://{{ $apidomain }}/dashboardauth"
 ---
-{{- if or (and (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true)) (and (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true)) }}
+{{- if or (and (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true)) (and (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true)) (and (eq .Values.rediscommander.enabled true) (eq .Values.rediscommander.exposed true)) }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -147,6 +147,18 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-dashboardauth@kubernetescrd"
 spec:
   rules:
+  {{- if and (eq .Values.rediscommander.enabled true) (eq .Values.rediscommander.exposed true) }}
+    - host: "redis.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: rediscommander
+                port:
+                  name: rediscommander
+  {{- end }}
   {{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
     - host: "jaeger.{{ $domain }}"
       http:
