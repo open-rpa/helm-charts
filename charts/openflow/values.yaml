@@ -22,7 +22,7 @@ openflow:
   getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
-  cache_store_type: # Default memory
+  cache_store_type: memory # Default memory or redis
   cache_store_ttl_seconds: # Items expire from store after this amount of seconds
   cache_store_max: # Max items to store when using memory store
   cache_store_redis_password: # When store type is "redis" use this password for redis
