@@ -3,6 +3,20 @@ entries:
   aiot:
   - apiVersion: v2
     appVersion: 0.1.45
+    created: "2022-04-19T08:29:54.428256+02:00"
+    dependencies:
+    - name: openflow
+      repository: https://open-rpa.github.io/helm-charts/
+      version: 0.x
+    description: A Helm chart for deploying an access IoT instance
+    digest: 7340c287f9252750c7b06954cf494a5a59f31b7b5d4a4110008b58d415c85387
+    name: aiot
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/aiot-0.0.3/aiot-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 0.1.45
     created: "2022-02-02T09:41:08.3696977+01:00"
     dependencies:
     - name: openflow
@@ -61,6 +75,29 @@ entries:
     - https://github.com/open-rpa/helm-charts/releases/download/calendso-0.1.1/calendso-0.1.1.tgz
     version: 0.1.1
   openflow:
+  - apiVersion: v2
+    appVersion: 1.3.107
+    created: "2022-04-19T08:30:03.70676+02:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.x
+    - condition: loki.enabled
+      name: loki
+      repository: https://grafana.github.io/loki/charts
+      version: 2.x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: 53fb0377edb474fc6474de0cb68f6bbbeacdcbb27c1348c0fbfe51ea80bbafaa
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.84/openflow-0.1.84.tgz
+    version: 0.1.84
   - apiVersion: v2
     appVersion: 1.3.107
     created: "2022-04-01T09:01:53.914872+02:00"
@@ -900,4 +937,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-04-05T10:05:48.2143476+02:00"
+generated: "2022-04-19T08:30:04.065879+02:00"
