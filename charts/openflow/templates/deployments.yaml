@@ -362,6 +362,8 @@ spec:
               value: {{ .Values.openflow.housekeeping_update_usage_hourly | quote }}              
             - name: housekeeping_update_usersize_hourly
               value: {{ .Values.openflow.housekeeping_update_usersize_hourly | quote }}              
+            - name: housekeeping_skip_collections
+              value: {{ .Values.openflow.housekeeping_skip_collections | quote }}              
             - name: workitem_queue_monitoring_enabled
               value: {{ .Values.openflow.workitem_queue_monitoring_enabled | quote }}              
             - name: workitem_queue_monitoring_interval

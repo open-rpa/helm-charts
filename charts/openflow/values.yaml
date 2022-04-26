@@ -187,6 +187,7 @@ openflow:
   auto_hourly_housekeeping: true # Enable an hourly job, that does basic house keeping, default false
   housekeeping_update_usage_hourly: false # Doing house keeping, calculate each user and customers database usage every hour, default false ( if false runs every 12 hour )
   housekeeping_update_usersize_hourly: true # Doing house keeping, update dblock and usage information per customer every hour, default false ( if false runs every 12 hour )
+  housekeeping_skip_collections: # Comma seperated list of collections to skip while calculating database usage
 
   workitem_queue_monitoring_enabled: 
   workitem_queue_monitoring_interval: 
