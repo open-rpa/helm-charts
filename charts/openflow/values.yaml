@@ -90,6 +90,8 @@ openflow:
   log_index_mngt: false
   # log when adding, updating, removing or clearing cache items
   log_cache: false
+  # Log events related to login provider
+  log_login_provider: false
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # Auto-create default indexes doing startup, default: true

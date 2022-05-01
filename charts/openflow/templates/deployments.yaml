@@ -129,6 +129,8 @@ spec:
               value: {{ .Values.openflow.log_index_mngt | quote }}
             - name: log_cache
               value: {{ .Values.openflow.log_cache | quote }}
+            - name: log_login_provider
+              value: {{ .Values.openflow.log_login_provider | quote }}
             - name: ensure_indexes
               value: {{ .Values.openflow.ensure_indexes | quote }}
             - name: enable_openflow_amqp
