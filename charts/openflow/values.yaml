@@ -92,6 +92,8 @@ openflow:
   log_cache: false
   # Log events related to login provider
   log_login_provider: false
+  # Allow temp work around for bug in open openflow-api code
+  amqp_allow_replyto_empty_queuename: false
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # Auto-create default indexes doing startup, default: true
