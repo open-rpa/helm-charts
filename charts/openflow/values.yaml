@@ -113,14 +113,11 @@ openflow:
   websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
   update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
-  oauth_token_cache_seconds: 60000
-  oauth_access_token_lifetime: 604800
-  oauth_refresh_token_lifetime: 604800
-  oidc_access_token_ttl: 28800 # 8 hours
-  oidc_authorization_code_ttl: 28800
-  oidc_client_credentials_ttl: 28800
-  oidc_refresh_token_ttl: 1209600 # 14 days
-  oidc_session_ttl: 1209600
+  oidc_access_token_ttl: 480 # 8 hours
+  oidc_authorization_code_ttl: 480
+  oidc_client_credentials_ttl: 480
+  oidc_refresh_token_ttl: 20160 # 14 days
+  oidc_session_ttl: 20160
 
   # Give nodered time to install all packages, so skip liveliness check for this many seconds
   nodered_initial_liveness_delay: 120

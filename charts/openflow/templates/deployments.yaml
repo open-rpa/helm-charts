@@ -161,12 +161,6 @@ spec:
               value: {{ .Values.openflow.multi_tenant | quote }}
             - name: update_acl_based_on_groups
               value: {{ .Values.openflow.update_acl_based_on_groups | quote }}
-            - name: oauth_token_cache_seconds
-              value: {{ .Values.openflow.oauth_token_cache_seconds | quote }}
-            - name: oauth_access_token_lifetime
-              value: {{ .Values.openflow.oauth_access_token_lifetime | quote }}
-            - name: oauth_refresh_token_lifetime
-              value: {{ .Values.openflow.oauth_refresh_token_lifetime | quote }}
             - name: oidc_access_token_ttl
               value: {{ .Values.openflow.oidc_access_token_ttl | quote }}
             - name: oidc_authorization_code_ttl
