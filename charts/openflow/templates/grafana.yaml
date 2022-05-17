@@ -55,8 +55,11 @@ spec:
               value: "openid offline_access"
             - name: GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH
               value: "email"
+            # - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH
+            #   value: "role"
             - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH
-              value: "role"
+              value: "contains(roles[*], 'admins') && 'Admin' || contains(roles[*], 'grafana admins') && 'Admin'  || contains(roles[*], 'grafana editors') && 'Editor' || 'Viewer'"
+            #
             # - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
             #   value: "{{ $apiuri }}/oauth/login"
             # - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
