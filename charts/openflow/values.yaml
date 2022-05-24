@@ -369,6 +369,7 @@ cassandra:
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
   enabled: false
   exposed: false
+  retentionPeriod: # override default retension of 1 month https://github.com/VictoriaMetrics/VictoriaMetrics#retention
   persistence:
     enabled: false
     size: 10Gi

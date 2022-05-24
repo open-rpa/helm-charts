@@ -46,6 +46,9 @@ spec:
             {{- toYaml .Values.victoriametrics.resources | nindent 12 }}
           args:
             - "-selfScrapeInterval=10s"
+            {{- if .Values.victoriametrics.retentionPeriod }}
+            - "-retentionPeriod={{ .Values.victoriametrics.retentionPeriod }}"
+            {{- end }}
           ports:
             - containerPort: 8428
   {{- if eq .Values.victoriametrics.persistence.enabled true }}
