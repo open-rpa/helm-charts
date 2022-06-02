@@ -85,20 +85,6 @@ spec:
           env:
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
-            - name: log_queries
-              value: {{ .Values.openflow.log_queries | quote }}
-            - name: log_aggregates
-              value: {{ .Values.openflow.log_aggregates | quote }}
-            - name: log_inserts
-              value: {{ .Values.openflow.log_inserts | quote }}
-            - name: log_updates
-              value: {{ .Values.openflow.log_updates | quote }}
-            - name: log_deletes
-              value: {{ .Values.openflow.log_deletes | quote }}
-            - name: log_otel_times
-              value: {{ .Values.openflow.log_otel_times | quote }}
-            - name: log_openflow_amqp
-              value: {{ .Values.openflow.log_openflow_amqp | quote }}
             - name: otel_trace_dashboardauth
               value: {{ .Values.openflow.otel_trace_dashboardauth | quote }}
             - name: otel_trace_pingclients
@@ -119,18 +105,46 @@ spec:
               value: {{ .Values.openflow.api_rate_limit_duration | quote }}
             - name: supports_watch
               value: {{ .Values.openflow.supports_watch | quote }}
-            - name: log_watches
-              value: {{ .Values.openflow.log_watches | quote }}
-            - name: log_watches_notify
-              value: {{ .Values.openflow.log_watches_notify | quote }}
-            - name: log_missing_jwt
-              value: {{ .Values.openflow.log_missing_jwt | quote }}
-            - name: log_index_mngt
-              value: {{ .Values.openflow.log_index_mngt | quote }}
             - name: log_cache
               value: {{ .Values.openflow.log_cache | quote }}
             - name: log_login_provider
               value: {{ .Values.openflow.log_login_provider | quote }}
+            - name: log_amqp
+              value: {{ .Values.openflow.log_amqp | quote }}
+            - name: log_login_provider
+              value: {{ .Values.openflow.log_login_provider | quote }}
+            - name: log_websocket
+              value: {{ .Values.openflow.log_websocket | quote }}
+            - name: log_oauth
+              value: {{ .Values.openflow.log_oauth | quote }}
+            - name: log_webserver
+              value: {{ .Values.openflow.log_webserver | quote }}
+            - name: log_database
+              value: {{ .Values.openflow.log_database | quote }}
+            - name: log_grafana
+              value: {{ .Values.openflow.log_grafana | quote }}
+            - name: log_information
+              value: {{ .Values.openflow.log_information | quote }}
+            - name: log_debug
+              value: {{ .Values.openflow.log_debug | quote }}
+            - name: log_verbose
+              value: {{ .Values.openflow.log_verbose | quote }}
+            - name: log_silly
+              value: {{ .Values.openflow.log_silly | quote }}
+            - name: validate_emails
+              value: {{ .Values.openflow.validate_emails | quote }}
+            - name: debounce_lookup
+              value: {{ .Values.openflow.debounce_lookup | quote }}
+            - name: smtp_service
+              value: {{ .Values.openflow.smtp_service | quote }}
+            - name: smtp_from
+              value: {{ .Values.openflow.smtp_from | quote }}
+            - name: smtp_user
+              value: {{ .Values.openflow.smtp_user | quote }}
+            - name: smtp_pass
+              value: {{ .Values.openflow.smtp_pass | quote }}
+            - name: smtp_url
+              value: {{ .Values.openflow.smtp_url | quote }}
             - name: amqp_allow_replyto_empty_queuename
               value: {{ .Values.openflow.amqp_allow_replyto_empty_queuename | quote }}
             - name: ensure_indexes

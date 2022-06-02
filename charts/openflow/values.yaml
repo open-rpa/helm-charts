@@ -80,18 +80,24 @@ openflow:
   mongodb_db:
   # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
   supports_watch: true
-  # If watches are enabled, log every watch event trigger (will generated ALOT of entries)
-  log_watches: false
-  # If watches are enabled, log every event send to a client
-  log_watches_notify: false
-  # If enabled, will log a message every time openflow receives a message from a client with no JWT ( or an invalid jwt )
-  log_missing_jwt: true
-  # log creating and updating of mongodb indexs
-  log_index_mngt: false
   # log when adding, updating, removing or clearing cache items
   log_cache: false
   # Log events related to login provider
   log_login_provider: false
+  # enable email validation of all non-federated users, require smtp settings to bet set
+  validate_emails: false
+  # when validating email, check if disposable email, using https://debounce.io/free-disposable-check-api/
+  debounce_lookup: 
+  # Node mailer, service type
+  smtp_service: 
+  # When sending service mails, sent from this email
+  smtp_from: 
+  # Username when sending ( smtp service=gmail for everything else, use smtp_url )
+  smtp_user: 
+  # password when sending ( smtp service=gmail for everything else, use smtp_url )
+  smtp_pass: 
+  # Use smtp url for configuration  ( see https://nodemailer.com/smtp/ or https://www.npmjs.com/package/nodemailer/v/2.2.0-beta.0 ) 
+  smtp_url: 
   # Allow temp work around for bug in open openflow-api code
   amqp_allow_replyto_empty_queuename: false
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
@@ -131,13 +137,6 @@ openflow:
   socket_rate_limit_points: # to change the amount of points a hit consume, default: 1
   socket_rate_limit_duration: # to change how long it takes for a point to expire in seconds, default: 30
   socket_rate_limit_points_disconnect: # If client builds up this amount of points, disconnect the client, default: 600
-  log_queries: # log all db queries to console, default: false
-  log_aggregates: # log all db aggregates to console, default: false
-  log_inserts: # log all db inserts to console, default: false
-  log_updates: # log all db updates to console, default: false
-  log_deletes: # log all db deletes to console, default: false
-  log_otel_times: # log otel timings (very spammy!), default: false
-  log_openflow_amqp: # log messages in and out of the openflow backend queue, default: false
   otel_trace_dashboardauth: # add trace for dashboardauth events, default: true
   otel_trace_pingclients: # add trace for each ping clients in openflow, default: true
   aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
