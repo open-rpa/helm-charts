@@ -81,9 +81,29 @@ openflow:
   # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
   supports_watch: true
   # log when adding, updating, removing or clearing cache items
-  log_cache: false
-  # Log events related to login provider
-  log_login_provider: false
+  log_cache: 
+  # Log verbose and higher events related to login provider
+  log_login_provider: 
+  # Log verbose and higher websocket events
+  log_websocket: 
+  # Log verbose and higher oauth provider events
+  log_oauth: 
+  # Log verbose and higher webserver events
+  log_webserver: 
+  # Log verbose and higher database events 
+  log_database: 
+  # Log verbose and higher grafana events 
+  log_grafana: 
+  # Log verbose and higher open telemtry registration events 
+  log_otel: 
+  # Enable logging of all information events 
+  log_information: 
+  # Enable logging of all debug events 
+  log_debug: 
+  # Enable logging of all verbose events 
+  log_verbose: 
+  # Enable logging of all silly events 
+  log_silly: 
   # enable email validation of all non-federated users, require smtp settings to bet set
   validate_emails: false
   # when validating email, check if disposable email, using https://debounce.io/free-disposable-check-api/
