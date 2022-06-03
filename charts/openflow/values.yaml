@@ -80,6 +80,8 @@ openflow:
   mongodb_db:
   # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
   supports_watch: true
+  # Use colors in console log
+  log_with_colors: false
   # log when adding, updating, removing or clearing cache items
   log_cache: 
   # Log verbose and higher events related to login provider
@@ -105,7 +107,9 @@ openflow:
   # Enable logging of all silly events 
   log_silly: 
   # enable email validation of all non-federated users, require smtp settings to bet set
-  validate_emails: false
+  validate_emails: 
+  # enable "forgot password" by email validation for non-federated users, require smtp settings to bet set
+  forgot_pass_emails:
   # when validating email, check if disposable email, using https://debounce.io/free-disposable-check-api/
   debounce_lookup: 
   # Node mailer, service type

@@ -105,6 +105,8 @@ spec:
               value: {{ .Values.openflow.api_rate_limit_duration | quote }}
             - name: supports_watch
               value: {{ .Values.openflow.supports_watch | quote }}
+            - name: log_with_colors
+              value: {{ .Values.openflow.log_with_colors | quote }}
             - name: log_cache
               value: {{ .Values.openflow.log_cache | quote }}
             - name: log_amqp
@@ -133,6 +135,8 @@ spec:
               value: {{ .Values.openflow.log_silly | quote }}
             - name: validate_emails
               value: {{ .Values.openflow.validate_emails | quote }}
+            - name: forgot_pass_emails
+              value: {{ .Values.openflow.forgot_pass_emails | quote }}
             - name: debounce_lookup
               value: {{ .Values.openflow.debounce_lookup | quote }}
             - name: smtp_service
