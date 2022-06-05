@@ -112,6 +112,8 @@ openflow:
   forgot_pass_emails:
   # when validating email, check if disposable email, using https://debounce.io/free-disposable-check-api/
   debounce_lookup: 
+  # when validating email, check if disposable email by looking for name in the domains collection for _type disposable
+  validate_emails_disposable: 
   # Node mailer, service type
   smtp_service: 
   # When sending service mails, sent from this email

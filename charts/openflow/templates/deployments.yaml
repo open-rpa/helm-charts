@@ -139,6 +139,8 @@ spec:
               value: {{ .Values.openflow.forgot_pass_emails | quote }}
             - name: debounce_lookup
               value: {{ .Values.openflow.debounce_lookup | quote }}
+            - name: validate_emails_disposable
+              value: {{ .Values.openflow.validate_emails_disposable | quote }}
             - name: smtp_service
               value: {{ .Values.openflow.smtp_service | quote }}
             - name: smtp_from
