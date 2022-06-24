@@ -165,6 +165,8 @@ openflow:
   socket_rate_limit_points_disconnect: # If client builds up this amount of points, disconnect the client, default: 600
   otel_trace_dashboardauth: # add trace for dashboardauth events, default: true
   otel_trace_pingclients: # add trace for each ping clients in openflow, default: true
+  otel_trace_include_query: # include query in spans, default: false
+  otel_trace_connection_ips: # track connection requests per ip address, default: false
   aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
   nodered_allow_nodeselector: false # allow collection of all kubernete nodes labels and setting nodeSelector on nodered instances
   nodered_requests_memory: # set requested memory usage for new nodered instances, for instance: 128Mi

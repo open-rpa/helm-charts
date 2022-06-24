@@ -89,6 +89,10 @@ spec:
               value: {{ .Values.openflow.otel_trace_dashboardauth | quote }}
             - name: otel_trace_pingclients
               value: {{ .Values.openflow.otel_trace_pingclients | quote }}
+            - name: otel_trace_include_query
+              value: {{ .Values.openflow.otel_trace_include_query | quote }}
+            - name: otel_trace_connection_ips
+              value: {{ .Values.openflow.otel_trace_connection_ips | quote }}
             - name: socket_rate_limit
               value: {{ .Values.openflow.socket_rate_limit | quote }}
             - name: socket_rate_limit_points
