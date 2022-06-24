@@ -96,6 +96,8 @@ openflow:
   log_database: 
   # Log verbose and higher grafana events 
   log_grafana: 
+  # Log verbose and higher events around house keeping
+  log_housekeeping:
   # Log verbose and higher open telemtry registration events 
   log_otel: 
   # Enable logging of all information events 

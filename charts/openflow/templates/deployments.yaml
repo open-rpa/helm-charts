@@ -127,6 +127,8 @@ spec:
               value: {{ .Values.openflow.log_database | quote }}
             - name: log_grafana
               value: {{ .Values.openflow.log_grafana | quote }}
+            - name: log_housekeeping
+              value: {{ .Values.openflow.log_housekeeping | quote }}
             - name: log_otel
               value: {{ .Values.openflow.log_otel | quote }}
             - name: log_information
