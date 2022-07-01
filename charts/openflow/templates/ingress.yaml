@@ -27,6 +27,9 @@ metadata:
 {{- else }}
     traefik.ingress.kubernetes.io/router.entrypoints: web
 {{- end }}
+{{- if (eq .Values.openflow.traefik_ipblock true) }}
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-ipblock@kubernetescrd"
+{{- end }}
 spec:
   rules:
     - host: "{{ $apidomain }}"
@@ -108,6 +111,59 @@ spec:
 {{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
   tls:
     - secretName: {{ .Values.certificate.tlsSecret | quote }}
+{{- end }}
+{{- if (eq .Values.openflow.traefik_ipblock true) }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: ipblock
+spec:
+  forwardAuth:
+    address: "{{ .Values.protocol }}://ipblock.{{ $domain }}/ipblock/"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ipblock
+  annotations:
+    kubernetes.io/ingress.class: traefik
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+spec:
+  rules:
+    - host: "ipblock.{{ $domain }}"
+      http:
+        paths:
+          - path: /ipblock
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api
+                port:
+                  name: www
+{{- if .Values.certificate.tlsSecret }}
+  tls:
+    - secretName: {{ .Values.certificate.tlsSecret }}
+{{- end }}
+
+
 {{- end }}
 ---
 {{- if or (and (.Values.openflow.license_key) (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true))) (eq .Values.rediscommander.exposed true) }}
