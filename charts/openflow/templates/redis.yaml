@@ -14,7 +14,10 @@ spec:
       labels:
         role: redis
     spec:
-      {{- if .Values.openflow.nodeSelector }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- else if .Values.openflow.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
@@ -61,7 +64,10 @@ spec:
       labels:
         role: rediscommander
     spec:
-      {{- if .Values.openflow.nodeSelector }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- else if .Values.openflow.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
