@@ -143,7 +143,7 @@ openflow:
   ping_clients_interval: 10000 # each api node pings connected clients witht his interval, and update the user object for each online user
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
-  skip_history_collections: audit,oauthtokens,openrpa_instances,workflow_instances
+  skip_history_collections: audit,oauthtokens,openrpa_instances,workflow_instances,workitems,dbsize,mailhist
   websocket_max_package_count: "1048576" # 1048576
   websocket_package_size: 25000
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
@@ -304,84 +304,84 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
 jaeger: # for visualizing and optionally also saving all spans, we can use jaeger.
   enabled: false
   exposed: false
-  provisionDataStore: 
-    cassandra: false
-  storage:
-    type: elasticsearch
-    elasticsearch:
-      scheme: https
-      host: "opensearch-cluster-master"
-      port: "9200"
-      user: admin
-      password: admin
-      usePassword: true
-      cmdlineParams:
-        es.version: 7
-  tag: 1.22.0
-  agent:
-    enabled: false
-  collector:
-    enabled: true
-    extraEnv:
-      - name: ES_TLS_ENABLED
-        value: "true"
-      - name: ES_TLS_SKIP_HOST_VERIFY
-        value: "true"  
+  # provisionDataStore: 
+  #   cassandra: false
+  # storage:
+  #   type: elasticsearch
+  #   elasticsearch:
+  #     scheme: https
+  #     host: "opensearch-cluster-master"
+  #     port: "9200"
+  #     user: admin
+  #     password: admin
+  #     usePassword: true
+  #     cmdlineParams:
+  #       es.version: 7
+  # tag: 1.22.0
+  # agent:
+  #   enabled: false
+  # collector:
+  #   enabled: true
+  #   extraEnv:
+  #     - name: ES_TLS_ENABLED
+  #       value: "true"
+  #     - name: ES_TLS_SKIP_HOST_VERIFY
+  #       value: "true"  
 
-  query:
-    enabled: true
-    extraEnv:
-      - name: ES_TLS_ENABLED
-        value: "true"
-      - name: ES_TLS_SKIP_HOST_VERIFY
-        value: "true"  
-    agentSidecar:
-      enabled: false
-    service:
-      # type: LoadBalancer
-      port: 80
-    config: |-
-      {
-        "dependencies": {
-          "dagMaxNumServices": 200,
-          "menuEnabled": false
-        },
-        "menu": [
-      {
-        "label": "OpenIAP Resources",
-        "items": [
-          {
-            "label": "OpenFlow",
-            "url": "https://app.openiap.io/"
-          },
-            {
-            "label": "Support options",
-            "url": "https://openiap.io/"
-          }
-            ]
-          }
-        ],
-        "archiveEnabled": true,
-        "search": {
-          "maxLookback": {
-            "label": "7 Days",
-            "value": "7d"
-          },
-          "maxLimit": 2500
-        }
-      }
+  # query:
+  #   enabled: true
+  #   extraEnv:
+  #     - name: ES_TLS_ENABLED
+  #       value: "true"
+  #     - name: ES_TLS_SKIP_HOST_VERIFY
+  #       value: "true"  
+  #   agentSidecar:
+  #     enabled: false
+  #   service:
+  #     # type: LoadBalancer
+  #     port: 80
+  #   config: |-
+  #     {
+  #       "dependencies": {
+  #         "dagMaxNumServices": 200,
+  #         "menuEnabled": false
+  #       },
+  #       "menu": [
+  #     {
+  #       "label": "OpenIAP Resources",
+  #       "items": [
+  #         {
+  #           "label": "OpenFlow",
+  #           "url": "https://app.openiap.io/"
+  #         },
+  #           {
+  #           "label": "Support options",
+  #           "url": "https://openiap.io/"
+  #         }
+  #           ]
+  #         }
+  #       ],
+  #       "archiveEnabled": true,
+  #       "search": {
+  #         "maxLookback": {
+  #           "label": "7 Days",
+  #           "value": "7d"
+  #         },
+  #         "maxLimit": 2500
+  #       }
+  #     }
 
-  spark:
-    enabled: false
+  # spark:
+  #   enabled: false
 
-  esIndexCleaner:
-    enabled: false
+  # esIndexCleaner:
+  #   enabled: false
 
-  esRollover:
-    enabled: false
+  # esRollover:
+  #   enabled: false
 
-  esLookback:
-    enabled: false
+  # esLookback:
+  #   enabled: false
 zipkin: # for visualizing and optionally also saving all spans, we can use zipkin.
   enabled: false
   exposed: false # expose in ingress
