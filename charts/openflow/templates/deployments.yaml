@@ -8,9 +8,9 @@
   {{- $dummy := set . "apiuri" .Values.protocol ":" .Values.port "://" $apidomain }}
 {{- end }}
 # ":4317"
-{{- $oteluri := print "http://otel." $apidomain ":80" }}
+{{- $oteluri := print .Values.protocol "://otel." $apidomain }}
 {{- if .Values.port }}
-  {{- $oteluri := print "http://otel." $apidomain ":" .Values.port }}
+  {{- $oteluri := print .Values.protocol "://otel." $apidomain ":" .Values.port }}
 {{- end }}
 apiVersion: apps/v1
 kind: Deployment
@@ -35,6 +35,9 @@ spec:
       {{- if .Values.openflow.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.openflow.topologySpreadConstraints }}
       topologySpreadConstraints:
@@ -339,10 +342,10 @@ spec:
   {{- if or (eq .Values.jaeger.enabled true) (eq .Values.zipkin.enabled true) }}
     {{- if (eq .Values.exporter.exposed true) }}
             - name: otel_trace_url
-              value: "{{ $oteluri }}"
+              value: "{{ $oteluri }}/v1/trace"
     {{- else }}
             - name: otel_trace_url
-              value: "http://otel-collector:4317"
+              value: "http://otel-collector:4317/v1/trace"
     {{- end }}
   {{- end }}
 {{- end }}
@@ -354,10 +357,10 @@ spec:
   {{- if or (eq .Values.prometheus.enabled true) (eq .Values.victoriametrics.enabled true) }}
     {{- if (eq .Values.exporter.exposed true) }}
             - name: otel_metric_url
-              value: "{{ $oteluri }}"
+              value: "{{ $oteluri }}/v1/metrics"
     {{- else }}
             - name: otel_metric_url
-              value: "http://otel-collector:4317"
+              value: "http://otel-collector:4317/v1/metrics"
     {{- end }}
   {{- end }}
 

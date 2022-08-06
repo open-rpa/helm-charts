@@ -89,6 +89,16 @@ spec:
 {{- end }}
 {{- if and .Values.openflow.license_key (eq .Values.exporter.enabled true) (eq .Values.exporter.exposed true) }}
     # not used, we use IngressRoute instead ( defined in otel template )
+    # - host: "exporter.{{ $domain }}"
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: ImplementationSpecific
+    #         backend:
+    #           service:
+    #             name: otel-collector
+    #             port:
+    #               name: otlphttp
     # - host: "otel.{{ $domain }}"
     #   http:
     #     paths:
