@@ -293,6 +293,8 @@ spec:
 {{- end }}
             - name: mongodb_minpoolsize
               value: {{ .Values.openflow.mongodb_minpoolsize | quote }}
+            - name: mongodb_maxpoolsize
+              value: {{ .Values.openflow.mongodb_maxpoolsize | quote }}
             - name: amqp_url
               value: "amqp://{{ .Values.rabbitmq.default_user }}:{{ .Values.rabbitmq.default_pass }}@rabbitmq"
             - name: api_ws_url

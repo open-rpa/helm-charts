@@ -131,6 +131,8 @@ openflow:
   amqp_allow_replyto_empty_queuename: false
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
+  # To override the default maxPoolSize of the database connection, usefull when needing a lot of watches or have many clients
+  mongodb_maxpoolsize:
   # Auto-create default indexes doing startup, default: true
   ensure_indexes:
   # openflow will keep track of all changes on all documents except inside these collections
@@ -279,7 +281,8 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
   # loglevel: info # debug, info
   # image: otel/opentelemetry-collector:0.30.1
   # image: otel/opentelemetry-collector:0.38.0
-  image: otel/opentelemetry-collector
+  image: otel/opentelemetry-collector:0.53.0
+  # image: otel/opentelemetry-collector
   elastic:
     metricsenabled: false
     traceenabled: false
