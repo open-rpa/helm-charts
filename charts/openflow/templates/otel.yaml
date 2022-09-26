@@ -56,6 +56,12 @@ data:
   {{- end }}
     processors:
       batch:
+{{- if (eq .Values.exporter.memorylimit.enabled true) }}
+      memory_limiter:
+        limit_mib: {{ .Values.exporter.memorylimit.limit_mib }}
+        spike_limit_mib: {{ .Values.exporter.memorylimit.spike_limit_mib }}
+        check_interval: {{ .Values.exporter.memorylimit.check_interval }}
+{{- end }}
     extensions:
       health_check: {}
       zpages: {}
@@ -257,9 +263,12 @@ spec:
       labels:
         app: opentelemetry
     spec:
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.openflow.nodeSelector }}
       nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.exporter.nodeSelector | nindent 12 }}
+      {{- else if .Values.exporter.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       containers:
         - command:
