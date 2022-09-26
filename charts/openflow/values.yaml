@@ -172,7 +172,12 @@ openflow:
   otel_trace_pingclients: # add trace for each ping clients in openflow, default: true
   otel_trace_include_query: # include query in spans, default: false
   otel_trace_connection_ips: # track connection requests per ip address, default: false
-  otel_trace_mongodb_per_users: # track queries per user, default: false
+  otel_trace_mongodb_per_users: # track all mongo actions per user, default: false
+  otel_trace_mongodb_query_per_users: # track queries per user, default: false
+  otel_trace_mongodb_aggregate_per_users: # track aggregates per user, default: false
+  otel_trace_mongodb_insert_per_users: # track inserts per user, default: false
+  otel_trace_mongodb_update_per_users: # track updates per user, default: false
+  otel_trace_mongodb_delete_per_users: # track deletes per user, default: false
   aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
   nodered_allow_nodeselector: false # allow collection of all kubernete nodes labels and setting nodeSelector on nodered instances
   nodered_requests_memory: # set requested memory usage for new nodered instances, for instance: 128Mi
@@ -282,8 +287,8 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
   # loglevel: info # debug, info
   # image: otel/opentelemetry-collector:0.30.1
   # image: otel/opentelemetry-collector:0.38.0
-  image: otel/opentelemetry-collector:0.53.0
-  # image: otel/opentelemetry-collector
+  # image: otel/opentelemetry-collector:0.53.0
+  image: otel/opentelemetry-collector
   elastic:
     metricsenabled: false
     traceenabled: false
@@ -305,6 +310,11 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
     exporttarget: metrics-server-exporter.kube-system.svc.cluster.local:8000
     kubesystemtarget: kube-state-metrics.kube-system.svc.cluster.local:8080
   resources: {}
+  memorylimit:
+    enabled: false
+    limit_mib: 1500 # 80% of maximum memory up to 2G
+    spike_limit_mib: 512 # 25% of limit up to 2G
+    check_interval: 5s
 jaeger: # for visualizing and optionally also saving all spans, we can use jaeger.
   enabled: false
   exposed: false
