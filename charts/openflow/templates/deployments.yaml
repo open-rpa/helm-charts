@@ -368,7 +368,7 @@ spec:
               value: {{ .Values.openflow.otel_metric_url | quote }}
 {{- else }}
 
-  {{- if or (eq .Values.prometheus.enabled true) (eq .Values.victoriametrics.enabled true) }}
+  {{- if or (eq (index .Values "victoria-metrics-cluster" "enabled") true) (eq .Values.victoriametrics.enabled true) }}
     {{- if (eq .Values.exporter.exposed true) }}
             - name: otel_metric_url
               value: "{{ $oteluri }}/v1/metrics"

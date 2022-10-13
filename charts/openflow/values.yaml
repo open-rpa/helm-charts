@@ -410,9 +410,13 @@ cassandra:
     storageclass:
   storagesize: 10Gi
   resources: {}
+victoria-metrics-cluster:
+  enabled: false
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
   enabled: false
   exposed: false
+  # insertendpoint: http://openflow-victoria-metrics-cluster-vminsert.stats.svc.cluster.local:8480/insert/0/prometheus/
+  # selectendpoint: http://openflow-victoria-metrics-cluster-vmselect.stats.svc.cluster.local:8481/select/0/prometheus/
   retentionPeriod: # override default retension of 1 month https://github.com/VictoriaMetrics/VictoriaMetrics#retention
   persistence:
     enabled: false

@@ -187,7 +187,11 @@ data:
             {
               "name": "Prometheus",
               "type": "prometheus",
-              "url": "http://victoriametrics:8428",
+              {{- if .Values.victoriametrics.selectendpoint }}
+                "url": "{{ .Values.victoriametrics.selectendpoint }}",
+              {{- else }}
+                endpoint: "http://{{ .Release.Name }}-victoria-metrics-cluster-vmselect.{{ .Release.Namespace }}.svc.cluster.local:8480/select/0/prometheus/"
+              {{- end }}
               "access":"proxy",
               "editable": true,
               "orgId": 1,
