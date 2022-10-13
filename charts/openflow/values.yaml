@@ -168,6 +168,8 @@ openflow:
   socket_rate_limit_points: # to change the amount of points a hit consume, default: 1
   socket_rate_limit_duration: # to change how long it takes for a point to expire in seconds, default: 30
   socket_rate_limit_points_disconnect: # If client builds up this amount of points, disconnect the client, default: 600
+  client_heartbeat_timeout: # Disconnect clients who has not send any messages after this many seconds, default: 60
+  client_signin_timeout: # Disconnect clients who has not signed in after this many seconds, default: 120
   otel_trace_dashboardauth: # add trace for dashboardauth events, default: true
   otel_trace_pingclients: # add trace for each ping clients in openflow, default: true
   otel_trace_include_query: # include query in spans, default: false
