@@ -238,6 +238,11 @@ openflow:
   auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
   nodered_docker_entrypoints: # Used for docker setups, not relevant for kubernetes
   nodered_docker_certresolver: # Used for docker setups, not relevant for kubernetes
+
+  # To use openflow as an webpush server, add your wapid certificate and email here
+  wapid_pub: 
+  wapid_key: 
+  wapid_mail: 
 rabbitmq:
   exposed: false
   default_user: admin

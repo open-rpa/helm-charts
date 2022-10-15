@@ -116,6 +116,10 @@ spec:
               value: {{ .Values.openflow.socket_rate_limit_duration | quote }}
             - name: socket_rate_limit_points_disconnect
               value: {{ .Values.openflow.socket_rate_limit_points_disconnect | quote }}
+            - name: client_heartbeat_timeout
+              value: {{ .Values.openflow.client_heartbeat_timeout | quote }}
+            - name: client_signin_timeout
+              value: {{ .Values.openflow.client_signin_timeout | quote }}
             - name: api_rate_limit
               value: {{ .Values.openflow.api_rate_limit | quote }}
             - name: api_rate_limit_points
@@ -431,6 +435,12 @@ spec:
               value: {{ .Values.openflow.downloadtoken_expires_in | quote }}              
             - name: personalnoderedtoken_expires_in
               value: {{ .Values.openflow.personalnoderedtoken_expires_in | quote }}              
+            - name: wapid_pub
+              value: {{ .Values.openflow.wapid_pub | quote }}              
+            - name: wapid_key
+              value: {{ .Values.openflow.wapid_key | quote }}              
+            - name: wapid_mail
+              value: {{ .Values.openflow.wapid_mail | quote }}              
 ---
 apiVersion: apps/v1
 kind: Deployment
