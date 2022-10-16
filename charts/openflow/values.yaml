@@ -101,6 +101,8 @@ openflow:
   log_housekeeping:
   # Log verbose and higher open telemtry registration events 
   log_otel: 
+  # Log everytime a blocked ip connection is dropped
+  log_blocked_ips:
   # Enable logging of all information events 
   log_information: 
   # Enable logging of all debug events 

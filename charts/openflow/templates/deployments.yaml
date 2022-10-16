@@ -150,6 +150,8 @@ spec:
               value: {{ .Values.openflow.log_housekeeping | quote }}
             - name: log_otel
               value: {{ .Values.openflow.log_otel | quote }}
+            - name: log_blocked_ips
+              value: {{ .Values.openflow.log_blocked_ips | quote }}
             - name: log_information
               value: {{ .Values.openflow.log_information | quote }}
             - name: log_debug
