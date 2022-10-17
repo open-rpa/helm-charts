@@ -67,7 +67,7 @@ openflow:
   amqp_enabled_exchange: false # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
   upload_max_filesize_mb: 25 # max upload size for files in MB
 
-  use_ingress_beta1_syntax: false # Use beta one syntax for ingress controller
+  use_ingress_beta1_syntax: false # Use beta one syntax for ingress controller, default: false
   traefik_ipblock: false # Tell traefic to check IP before forwarding request, using OpenFlow blocklist endpoint
 
   # The SAML Provider need to sign all tokens issued, use this certificate to sign SAML tokens
