@@ -32,12 +32,12 @@ spec:
         prometheus.io/port: {{ .Values.openflow.port | quote }}
     spec:
       serviceAccountName: openflow-api-user
-      {{- if .Values.openflow.nodeSelector }}
-      nodeSelector:
-        {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
-      {{- else if .Values.openflow.nodeSelector }}
+      {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- else if .Values.openflow.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.openflow.topologySpreadConstraints }}
       topologySpreadConstraints:
@@ -160,6 +160,8 @@ spec:
               value: {{ .Values.openflow.log_verbose | quote }}
             - name: log_silly
               value: {{ .Values.openflow.log_silly | quote }}
+            - name: log_to_exchange
+              value: {{ .Values.openflow.log_to_exchange | quote }}
             - name: validate_emails
               value: {{ .Values.openflow.validate_emails | quote }}
             - name: forgot_pass_emails

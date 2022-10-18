@@ -111,6 +111,8 @@ openflow:
   log_verbose: 
   # Enable logging of all silly events 
   log_silly: 
+  # Send all log events to a global echange
+  log_to_exchange:
   # enable email validation of all non-federated users, require smtp settings to bet set
   validate_emails: 
   # enable "forgot password" by email validation for non-federated users, require smtp settings to bet set
