@@ -9,10 +9,10 @@ dependencies:
   version: "10.x"
   repository: "https://charts.bitnami.com/bitnami"
   condition: mongodb.enabled
-- name: loki
-  version: "2.x"
-  repository: "https://grafana.github.io/loki/charts"
-  condition: loki.enabled
+# - name: loki
+#   version: "2.x"
+#   repository: "https://grafana.github.io/loki/charts"
+#   condition: loki.enabled
 - name: jaeger
   version: "0.x"
   repository: "https://jaegertracing.github.io/helm-charts"
