@@ -357,6 +357,10 @@ spec:
               value: {{ .Values.openflow.cache_store_redis_host | quote }}
             - name: cache_store_redis_password
               value: {{ .Values.openflow.cache_store_redis_password | quote }}
+            - name: cache_store_ttl_seconds
+              value: {{ .Values.openflow.cache_store_ttl_seconds | quote }}
+            - name: cache_store_max
+              value: {{ .Values.openflow.cache_store_max | quote }}
 {{- if .Values.openflow.otel_trace_url }}
             - name: otel_trace_url
               value: {{ .Values.openflow.otel_trace_url | quote }}
