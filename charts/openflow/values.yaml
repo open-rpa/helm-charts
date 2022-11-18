@@ -198,10 +198,10 @@ openflow:
   nodered_ws_url: # force new nodereds (but not browser) to use this url to access the api
   nodered_saml_entrypoint: # override openflow saml entry point for new nodereds ( to override url received in saml_federation_metadata )
   saml_federation_metadata: # Override SAML url for new nodered instances
-  prometheus_measure_nodeid: # Collect prometheus metrics PER node in nodered ( default is per node type ), default: false
-  prometheus_measure_queued_messages: # Collect prometheus metrics for openflow/nodered on socket messages waiting on a reply, default: false
-  prometheus_measure__mongodb_watch: # Collect prometheus metrics for open change streams to mongodb, default: false
-  prometheus_measure_onlineuser: # Collect prometheus metrics while updating onmline users every 10th second, default: false
+  otel_measure_nodeid: # Collect otel metrics PER node in nodered ( default is per node type ), default: false
+  otel_measure_queued_messages: # Collect otel metrics for openflow/nodered on socket messages waiting on a reply, default: false
+  otel_measure__mongodb_watch: # Collect otel metrics for open change streams to mongodb, default: false
+  otel_measure_onlineuser: # Collect otel metrics while updating onmline users every 10th second, default: false
   enable_analytics: # Enable analytics
   otel_trace_url: # Open Telemetry exporter trace URL
   otel_metric_url: # Open Telemetry exporter metrix URL

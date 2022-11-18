@@ -341,14 +341,14 @@ spec:
               value: {{ .Values.openflow.nodered_liveness_timeoutseconds | quote }}
             - name: noderedcatalogues
               value: {{ .Values.openflow.noderedcatalogues | quote }}
-            - name: prometheus_measure_nodeid
-              value: {{ .Values.openflow.prometheus_measure_nodeid | quote }}
-            - name: prometheus_measure_queued_messages
-              value: {{ .Values.openflow.prometheus_measure_queued_messages | quote }}
-            - name: prometheus_measure__mongodb_watch
-              value: {{ .Values.openflow.prometheus_measure__mongodb_watch | quote }}
-            - name: prometheus_measure_onlineuser
-              value: {{ .Values.openflow.prometheus_measure_onlineuser | quote }}
+            - name: otel_measure_nodeid
+              value: {{ .Values.openflow.otel_measure_nodeid | quote }}
+            - name: otel_measure_queued_messages
+              value: {{ .Values.openflow.otel_measure_queued_messages | quote }}
+            - name: otel_measure__mongodb_watch
+              value: {{ .Values.openflow.otel_measure__mongodb_watch | quote }}
+            - name: otel_measure_onlineuser
+              value: {{ .Values.openflow.otel_measure_onlineuser | quote }}
             - name: enable_analytics
               value: {{ .Values.openflow.enable_analytics | quote }}
             - name: cache_store_type
