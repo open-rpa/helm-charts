@@ -345,8 +345,8 @@ spec:
               value: {{ .Values.openflow.otel_measure_nodeid | quote }}
             - name: otel_measure_queued_messages
               value: {{ .Values.openflow.otel_measure_queued_messages | quote }}
-            - name: otel_measure__mongodb_watch
-              value: {{ .Values.openflow.otel_measure__mongodb_watch | quote }}
+            - name: otel_measure_mongodb_watch
+              value: {{ .Values.openflow.otel_measure_mongodb_watch | quote }}
             - name: otel_measure_onlineuser
               value: {{ .Values.openflow.otel_measure_onlineuser | quote }}
             - name: enable_analytics

@@ -200,7 +200,7 @@ openflow:
   saml_federation_metadata: # Override SAML url for new nodered instances
   otel_measure_nodeid: # Collect otel metrics PER node in nodered ( default is per node type ), default: false
   otel_measure_queued_messages: # Collect otel metrics for openflow/nodered on socket messages waiting on a reply, default: false
-  otel_measure__mongodb_watch: # Collect otel metrics for open change streams to mongodb, default: false
+  otel_measure_mongodb_watch: # Collect otel metrics for open change streams to mongodb, default: false
   otel_measure_onlineuser: # Collect otel metrics while updating onmline users every 10th second, default: false
   enable_analytics: # Enable analytics
   otel_trace_url: # Open Telemetry exporter trace URL
