@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo-client
+  name: mongo-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-client
+  template:
+    metadata:
+      labels:
+        app: mongo-client
+    spec:
+      containers:
+      - image: mongo
+        name: mongo-client
+        args: ["--dbpath","/data/db", "--replSet", {{ .Values.rsname | quote }}]
+        env:
+        - name: replica_set
+          value: {{ .Values.rsname | quote }}
+# kubectl exec deployment/mongo-client -it -- /bin/bash
+# mongosh --host mongo --port 27017 -u adminuser -p password123
+# show dbs
+# show collections

@@ -1,0 +1,12 @@
+architecture: standalone # standalone or replicaset
+rsname: rs1
+nodeSelector: {}
+persistence:
+  size: 10Gi
+  storageclass:
+auth:
+  adminuser: adminuser
+  adminpass: password123
+service:
+  type: NodePort
+  nodePort: 32000
