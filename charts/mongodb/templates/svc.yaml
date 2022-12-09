@@ -1,26 +1,26 @@
-{{- if eq .Values.architecture "standalone" }}
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   labels:
+#     app: mongo
+#   name: mongo
+# spec:
+#   ports:
+#   - port: 27017
+#     protocol: TCP
+#     targetPort: 27017
+#     {{- if and (eq "NodePort" .Values.service.type) .Values.service.nodePort }}
+#     nodePort: {{ .Values.service.nodePort }}
+#     {{- end }}
+#   selector:
+#     app: mongo
+#   type: {{ .Values.service.type }}
 apiVersion: v1
 kind: Service
 metadata:
+  name: mongo
   labels:
-    app: mongo
-  name: mongo
-spec:
-  ports:
-  - port: 27017
-    protocol: TCP
-    targetPort: 27017
-    {{- if and (eq "NodePort" .Values.service.type) .Values.service.nodePort }}
-    nodePort: {{ .Values.service.nodePort }}
-    {{- end }}
-  selector:
-    app: mongo
-  type: {{ .Values.service.type }}
-{{- else }}
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo
+    name: mongo
 spec:
   clusterIP: None 
   selector:
@@ -29,4 +29,3 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-{{- end }}

@@ -1,6 +1,6 @@
-architecture: standalone # standalone or replicaset
-rsname: rs1
+rsname: rs0
 nodeSelector: {}
+replicas: 2
 persistence:
   size: 10Gi
   storageclass:

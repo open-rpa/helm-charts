@@ -74,6 +74,17 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/calendso-0.1.1/calendso-0.1.1.tgz
     version: 0.1.1
+  mongodb:
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2022-12-09T21:39:42.191400738Z"
+    description: A Helm chart for deploying a mongodb
+    digest: e6f1396abc3ce15a9eebd2e63b1f221186cd918c82370d60411a4e41a657b760
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.1/mongodb-0.0.1.tgz
+    version: 0.0.1
   openflow:
   - apiVersion: v2
     appVersion: 1.4.34
@@ -1455,8 +1466,7 @@ entries:
       name: mongodb
       repository: https://charts.bitnami.com/bitnami
       version: 7.x.x
-    description: Prepare to take off with the ultimate chat platform, experience the
-      next level of team communications
+    description: Prepare to take off with the ultimate chat platform, experience the next level of team communications
     digest: 5004fe42ba8b158f913e38d3417b6d3153d6122302b9e7658dea6f2c5d4dd054
     home: https://rocket.chat/
     icon: https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon.svg

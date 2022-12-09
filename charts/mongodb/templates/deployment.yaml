@@ -1,71 +1,82 @@
-{{- if eq .Values.architecture "standalone" }}
 apiVersion: v1
-kind: ConfigMap
+kind: ServiceAccount
 metadata:
-  name: mongo-conf-map
-data:
-  config.sh: |
-      sleep 5
-
-      cat <<EOT > /tmp/abc-script.js
-      if(JSON.stringify(rs.status()).indexOf("no replset config has been received") > -1) {
-          config = {
-          "_id" : "$replica_set",
-          "members" : [  {"_id" : 0, "host":"$(hostname):27017"} ]
-          };
-          console.log(config);
-          rs.initiate(config)
-      } else {
-          config = {
-          "_id" : "$replica_set",
-          "members" : [  {"_id" : 0, "host":"$(hostname):27017"} ]
-          };
-          rs.reconfig(config, {force: true})
-      }
-      rs.status();
-      EOT
-
-      mongosh admin --quiet /tmp/abc-script.js
-
+  name: mongo-user
+  namespace: {{.Release.Namespace}}
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
+  name: mongo-rb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: mongo-user
+  namespace: {{.Release.Namespace}}
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: mongo-conf-map
+# data:
+#   config.sh: |
+#       sleep 5
+
+#       cat <<EOT > /tmp/abc-script.js
+#       var hasrepl = false;
+#       var replicas = {{ .Values.replicas }};
+#       config = {
+#       "_id" : {{ .Values.rsname | quote }},
+#       "members" : []
+#       };
+#       for(var i=0; i < replicas; i++) {
+#         config.members.push({"_id" : i, "host":"mongo-" + i + ".mongo:27017"});
+#       }
+#       try {
+#         const rplStatus = db.adminCommand({ replSetGetStatus : 1 });
+#         hasrepl = true;
+#       } catch (e) {
+#       }
+#       console.log(config);
+#       if(!hasrepl) {
+#           rs.initiate(config)
+#       } else {
+#           // rs.reconfig(config, {force: true})
+#       }
+
+#       rs.status();
+#       EOT
+
+#       mongosh admin --quiet /tmp/abc-script.js
+
+# ---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
   labels:
     app: mongo
-  name: mongo
 spec:
-  replicas: 1
+  serviceName: "mongo"
   selector:
     matchLabels:
       app: mongo
-  strategy: {}
+  replicas: {{ .Values.replicas }}
+  serviceName: "mongo" # match headless service name
   template:
     metadata:
       labels:
         app: mongo
     spec:
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
-      {{- end }}
+      serviceAccountName: mongo-user
       containers:
-      - image: mongo
-        name: mongo
-        # add support for keyFile later ? https://github.com/docker-library/mongo/issues/211
+      - name: mongo
+        image: mongo
+        imagePullPolicy: Always
         args: ["--dbpath","/data/db", "--replSet", {{ .Values.rsname | quote }}]
-        lifecycle:
-          postStart:
-            exec:
-              command:
-              - /bin/sh
-              - -c
-              - >
-                if [ ! -f /data/db/admin-user.lock ]; then
-                  sleep 5;
-                  mongosh --eval "if(JSON.stringify(rs.status()).indexOf('no replset config has been received') > -1) { config = {'_id' : '$replica_set','members' : [  {'_id' : 0, 'host':'$(hostname):27017'} ]}; rs.initiate(config) } else { config = { '_id' : '$replica_set', 'members' : [  {'_id' : 0, 'host':'$(hostname):27017'} ] }; rs.reconfig(config, {force: true}) }"
-                  touch /data/db/admin-user.lock;
-                fi;
         # livenessProbe:
         #   exec:
         #     command:
@@ -88,33 +99,45 @@ spec:
         #   timeoutSeconds: 5
         #   successThreshold: 1
         #   failureThreshold: 6
+      # volumes:
+      #   - name: mongo-conf
+      #     configMap:
+      #       name: mongo-conf-map
+      #       items:
+      #         - key: config.sh
+      #           path: config.sh
+      - name: mongo-sidecar
+        image: cloudhack/openflow:mongo-k8s-sidecar
+        imagePullPolicy: Always
         env:
-        - name: replica_set
-          value: {{ .Values.rsname | quote }}
-        - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mongo-creds
-              key: username
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mongo-creds
-              key: password
+          - name: MONGO_SIDECAR_POD_LABELS
+            value: "app=mongo"
+          - name: KUBERNETES_MONGO_SERVICE_NAME
+            value: "mongo"
+          - name: KUBE_NAMESPACE
+            value: "{{.Release.Namespace}}"
+            
+        # lifecycle:
+        #   postStart:
+        #     exec:
+        #       command:
+        #       - /bin/sh
+        #       - /data/conf/config.sh
         volumeMounts:
-        - name: mongo-conf
-          mountPath: /data/conf
-        - name: "mongo-data-dir"
-          mountPath: "/data/db"
-      volumes:
-      - name: "mongo-data-dir"
-        persistentVolumeClaim:
-          claimName: "mongo-data"
-      - name: mongo-conf
-        configMap:
-          name: mongo-conf-map
-          items:
-            - key: config.sh
-              path: config.sh
-        
-{{- end }}
+        # - name: mongo-conf
+        #   mountPath: /data/conf
+        - name: data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      annotations:
+        helm.sh/resource-policy: "keep"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}
+  {{- if .Values.persistence.storageclass }}
+      storageClassName: "{{ .Values.persistence.storageclass }}"
+  {{- end }}
