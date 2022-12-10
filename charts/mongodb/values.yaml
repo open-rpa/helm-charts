@@ -5,8 +5,9 @@ persistence:
   size: 10Gi
   storageclass:
 auth:
-  adminuser: adminuser
-  adminpass: password123
+  enabled: false
+  adminuser: 
+  adminpass: 
 service:
   type: NodePort
   nodePort: 32000

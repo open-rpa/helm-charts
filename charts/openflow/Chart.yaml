@@ -2,12 +2,16 @@ apiVersion: v2
 name: openflow
 description: A Helm chart for deploying a single openflow instance
 type: application
-version: 0.1.107
+version: 0.1.108
 appVersion: 1.4.34
 dependencies:
+# - name: mongodb
+#   version: "10.x"
+#   repository: "https://charts.bitnami.com/bitnami"
+#   condition: mongodb.enabled
 - name: mongodb
-  version: "10.x"
-  repository: "https://charts.bitnami.com/bitnami"
+  version: "0.x"
+  repository: "https://open-rpa.github.io/helm-charts/"
   condition: mongodb.enabled
 # - name: loki
 #   version: "2.x"
