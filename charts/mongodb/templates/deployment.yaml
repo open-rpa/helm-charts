@@ -17,42 +17,78 @@ subjects:
   name: mongo-user
   namespace: {{.Release.Namespace}}
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: mongo-conf-map
-# data:
-#   config.sh: |
-#       sleep 5
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-conf-map
+data:
+  config.sh: |
+    sleep 5
 
-#       cat <<EOT > /tmp/abc-script.js
-#       var hasrepl = false;
-#       var replicas = {{ .Values.replicas }};
-#       config = {
-#       "_id" : {{ .Values.rsname | quote }},
-#       "members" : []
-#       };
-#       for(var i=0; i < replicas; i++) {
-#         config.members.push({"_id" : i, "host":"mongo-" + i + ".mongo:27017"});
-#       }
-#       try {
-#         const rplStatus = db.adminCommand({ replSetGetStatus : 1 });
-#         hasrepl = true;
-#       } catch (e) {
-#       }
-#       console.log(config);
-#       if(!hasrepl) {
-#           rs.initiate(config)
-#       } else {
-#           // rs.reconfig(config, {force: true})
-#       }
+    cat <<EOT > /tmp/abc-script.js
+    var hasrepl = false;
+    var replicas = {{ .Values.replicas }};
+    config = {
+    "_id" : {{ .Values.rsname | quote }},
+    "members" : []
+    };
+    for(var i=0; i < replicas; i++) {
+      config.members.push({"_id" : i, "host":"mongo-" + i + ".mongo:27017"});
+    }
+    try {
+      const rplStatus = db.adminCommand({ replSetGetStatus : 1 });
+      hasrepl = true;
+    } catch (e) {
+    }
+    console.log(config);
+    if(!hasrepl) {
+        rs.initiate(config)
+    } else {
+        // rs.reconfig(config, {force: true})
+    }
 
-#       rs.status();
-#       EOT
+    rs.status();
+    EOT
 
-#       mongosh admin --quiet /tmp/abc-script.js
-
-# ---
+    mongosh admin --quiet /tmp/abc-script.js
+  init-mongo.js: |
+    db.createUser({
+      user: '{{ .Values.auth.user }}',
+      pwd: '{{ .Values.auth.pass }}',
+      roles: [
+        {
+          role: 'readWrite',
+          db: '{{ .Values.auth.initdb }}',
+        },
+      ],
+    });
+    db = new Mongo().getDB("{{ .Values.auth.initdb }}");
+    db.createCollection('test', { capped: false });
+    db.test.insert([
+      { "item": 1 },
+      { "item": 2 },
+      { "item": 3 },
+      { "item": 4 },
+      { "item": 5 }
+    ]);
+  mongodb.key: |
+    D3vzi4V4znL2WrDcWX6MWOi3NvH0sSeYp9pyHTw9Tmgi3q6ljn62qMLPAz4VHHRM
+    ER/6A4rFPM3PlVQ5WSx8zD+OFMwuJOZQ8hiQSqz312pBFvm3geV/i5bc42nm9XAM
+    2MaDUIKugRT8a0G4qgJLSYhDlwKYnD09DKeRvbEQ5USt41nzF+Ki72vKmz4qDS8h
+    KDBq4P2TWBbUTKwkBKOLf4CCpCF/9DMZszj61L8P6Dl7rFkSW3b5cN2VOBwREMVP
+    dCHqf4J7PueiWvOHDdMXNcOLvTLKN+R0GFr/TFwnoAlMGj1hgWj0BrfrZM967wIv
+    yaqs/8QoaQlwLB73lZSFgE/TN38fEYYmraQ56naGP24EeEDjMl6HZQLnSxySykju
+    iYnd9Xk+NqdXhc1fIty2rPyAehJ4yWDsynnWQaA91nSo2k24cHO5OKYqR4eZmDwp
+    Lo/5kj48AlvOgCmZ6Uq5x47KJJrR6fxmBGbvMg5GmK5GNXnJKzzSzi3BzoB7bSHW
+    /lE1bnpNKr9A5BQml1P6C4DkUTRJamRQHGB9yainxeynFcq22D7FgDvqnJLkKgE1
+    gm51w8URMRI+Hh7EbffQoAJI82pvyKSCRi1NX5O55AZjKVYURkeVwe02fNveIDj0
+    5agZpfIZly0G8WLzTiiNf6dxa24YFUjPBu2Cq6PlGQRx5SE2/U8S+6IRKo1mV+fu
+    Tu5vqcYKFrkYEDamzYit62Pwh0hjpj8RX5qvRMBgCnk5mfZs8vijGa1TUm7RIiJB
+    pLjySD7wwWiir+E9Dm6JJOdIX0YIHYRrWvi3cxRmTT6ZeONMOo7+tTitysBtkGzp
+    l5pf0qehvi0qy6W8wCgYWbdHo9PpHFLbLz7bVsyZLNxa4cLs5C43e1Gk34QXwmOA
+    6OzimBSq1GrKp+gM0sQhuCgAsM2nsyzOt1CESegnjRhwkkgWl/9QpDfdmlN1dFva
+    SybYuaQA1QZYuzJ8acHohP/q6r9l
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -72,11 +108,42 @@ spec:
         app: mongo
     spec:
       serviceAccountName: mongo-user
+      {{- if and .Values.auth.enabled .Values.auth.initkeyfile }}
+      initContainers:
+        - name: set-key-ownership
+          image: alpine:3.6
+          command: ["sh", "-c", "cp /data/conf/mongodb.key /data/db/mongodb.key && chown -R 999:999 /data/db/mongodb.key"]
+          volumeMounts:
+          - name: mongo-conf
+            mountPath: /data/conf
+          - name: data
+            mountPath: /data/db
+      {{- end }}
       containers:
       - name: mongo
         image: mongo
         imagePullPolicy: Always
-        args: ["--dbpath","/data/db", "--replSet", {{ .Values.rsname | quote }}]
+        # args: ["--dbpath","/data/db", "--replSet", {{ .Values.rsname | quote }}, "-keyFile", "/data/conf/mongodb.key"]
+        args: 
+        - "--dbpath"
+        - "/data/db"
+        - "--replSet" 
+        - {{ .Values.rsname | quote }}
+        {{- if .Values.auth.enabled }}
+        - "--keyFile"
+        - "/data/db/mongodb.key"
+        {{- end }}
+        env:
+          {{- if .Values.auth.enabled }}
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: "{{.Values.auth.adminuser}}"
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: "{{.Values.auth.adminpass}}"
+          {{- end }}
+          {{- if .Values.auth.initdb }}
+          - name: MONGO_INITDB_DATABASE
+            value: "{{.Values.auth.initdb}}"
+          {{- end }}
         # livenessProbe:
         #   exec:
         #     command:
@@ -99,13 +166,11 @@ spec:
         #   timeoutSeconds: 5
         #   successThreshold: 1
         #   failureThreshold: 6
-      # volumes:
-      #   - name: mongo-conf
-      #     configMap:
-      #       name: mongo-conf-map
-      #       items:
-      #         - key: config.sh
-      #           path: config.sh
+        volumeMounts:
+        - name: mongo-conf
+          mountPath: /data/conf
+        - name: data
+          mountPath: /data/db
       - name: mongo-sidecar
         image: cloudhack/openflow:mongo-k8s-sidecar
         imagePullPolicy: Always
@@ -116,28 +181,42 @@ spec:
             value: "mongo"
           - name: KUBE_NAMESPACE
             value: "{{.Release.Namespace}}"
-            
+          {{- if .Values.auth.enabled }}
+          - name: MONGODB_USERNAME
+            value: "{{.Values.auth.adminuser}}"
+          - name: MONGODB_PASSWORD
+            value: "{{.Values.auth.adminpass}}"
+          {{- end }}
         # lifecycle:
         #   postStart:
         #     exec:
         #       command:
         #       - /bin/sh
         #       - /data/conf/config.sh
-        volumeMounts:
-        # - name: mongo-conf
-        #   mountPath: /data/conf
-        - name: data
-          mountPath: /data/db
+      volumes:
+        - name: mongo-conf
+          configMap:
+            name: mongo-conf-map
+            defaultMode: 0600
+            items:
+              - key: config.sh
+                path: config.sh
+              - key: mongodb.key
+                path: mongodb.key
+              - key: init-mongo.js
+                path: init-mongo.js
   volumeClaimTemplates:
   - metadata:
       name: data
       annotations:
+    {{- if .Values.persistence.preserve }}
         helm.sh/resource-policy: "keep"
+    {{- end }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
+    {{- if .Values.persistence.storageclass }}
+        storageClassName: "{{ .Values.persistence.storageclass }}"
+    {{- end }}
         requests:
           storage: {{ .Values.persistence.size }}
-  {{- if .Values.persistence.storageclass }}
-      storageClassName: "{{ .Values.persistence.storageclass }}"
-  {{- end }}

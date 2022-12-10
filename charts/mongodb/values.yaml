@@ -1,13 +1,20 @@
 rsname: rs0
 nodeSelector: {}
 replicas: 2
+client:
+  enabled: false
 persistence:
   size: 10Gi
   storageclass:
+  preserve: true
 auth:
   enabled: false
-  adminuser: 
-  adminpass: 
+  initkeyfile: true
+  adminuser: admin
+  adminpass: secret
+  initdb: openflow
+  user: openflow
+  pass: secret
 service:
   type: NodePort
   nodePort: 32000

@@ -1,3 +1,4 @@
+{{- if .Values.client.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,3 +26,4 @@ spec:
 # mongosh --host mongo --port 27017 -u adminuser -p password123
 # show dbs
 # show collections
+{{- end }}
