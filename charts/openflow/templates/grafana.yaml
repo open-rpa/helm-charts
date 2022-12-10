@@ -190,7 +190,7 @@ data:
               {{- if .Values.victoriametrics.selectendpoint }}
                 "url": "{{ .Values.victoriametrics.selectendpoint }}",
               {{- else }}
-                endpoint: "http://{{ .Release.Name }}-victoria-metrics-cluster-vmselect.{{ .Release.Namespace }}.svc.cluster.local:8480/select/0/prometheus/"
+                endpoint: "http://{{ .Release.Name }}-victoria-metrics-cluster-vmselect.{{ .Release.Namespace }}.svc.cluster.local:8480/select/0/prometheus/",
               {{- end }}
               "access":"proxy",
               "editable": true,
