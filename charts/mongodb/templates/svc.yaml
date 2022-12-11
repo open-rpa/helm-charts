@@ -13,6 +13,7 @@ spec:
       port: 27017
       targetPort: 27017
 ---
+# - $domain := print (required "domain required!" .Values.domain) "." (required "domainsuffix required!" .Values.domainsuffix) 
 # apiVersion: traefik.containo.us/v1alpha1
 # kind: IngressRoute
 # metadata:
@@ -22,7 +23,7 @@ spec:
 #     - web
 #     - websecure
 #   routes:
-#     - match: Host(`mongo*.{{$domain}}`)
+#     - match: Host(`mongo*.$domain`)
 #       kind: Rule
 #       services:
 #         - name: mongo
@@ -35,7 +36,7 @@ spec:
 #   entryPoints:
 #    - mongodb
 #   routes:
-#   - match: HostSNI('mongo*.{{$domain}}')
+#   - match: HostSNI('mongo*.$domain')
 #     services:
 #     - name: mongo
 #       port: 27017
