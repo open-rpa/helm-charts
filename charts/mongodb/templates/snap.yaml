@@ -5,9 +5,10 @@ metadata:
   name: mongo
 spec:
   # A LabelSelector to control which PVCs should be snapshotted
-  {{- if .Values.claimSelector }}
-  claimSelector:  
-  {{- toYaml .Values.claimSelector | nindent 4 }}
+  {{- if .Values.snap.claimSelector }}
+  claimSelector:
+    matchLabels:
+  {{- toYaml .Values.snap.claimSelector | nindent 6 }}
   {{- end }}
   # Set to true to make the schedule inactive
   disabled: false  # optional
