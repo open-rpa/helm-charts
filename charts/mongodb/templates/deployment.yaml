@@ -207,6 +207,8 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: data
+      labels:
+        app: mongo
       annotations:
     {{- if .Values.persistence.preserve }}
         helm.sh/resource-policy: "keep"
