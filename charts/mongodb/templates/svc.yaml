@@ -1,20 +1,3 @@
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   labels:
-#     app: mongo
-#   name: mongo
-# spec:
-#   ports:
-#   - port: 27017
-#     protocol: TCP
-#     targetPort: 27017
-#     {{- if and (eq "NodePort" .Values.service.type) .Values.service.nodePort }}
-#     nodePort: {{ .Values.service.nodePort }}
-#     {{- end }}
-#   selector:
-#     app: mongo
-#   type: {{ .Values.service.type }}
 apiVersion: v1
 kind: Service
 metadata:
