@@ -138,7 +138,13 @@ spec:
         {{- end }}
         env:
           {{- if .Values.auth.enabled }}
+          - name: MONGO_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "rocketchat.fullname" . }}
+                key: mongo-uri
           - name: MONGO_INITDB_ROOT_USERNAME
+            
             value: "{{.Values.auth.adminuser}}"
           - name: MONGO_INITDB_ROOT_PASSWORD
             value: "{{.Values.auth.adminpass}}"
