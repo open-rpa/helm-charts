@@ -21,7 +21,7 @@ service:
   nodePort: 32000
 snap:
   enabled: false
-  retention: "168h" # specified in hours. (168h = 1 week)
+  retention: # specified in hours. (168h = 1 week)
   maxCount: # The maximum number of snapshots per PVC to keep
   # The cronspec (https://en.wikipedia.org/wiki/Cron#Overview)
   # that defines the schedule. It is interpreted with
