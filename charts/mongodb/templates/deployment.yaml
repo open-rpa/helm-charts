@@ -123,6 +123,9 @@ spec:
       - name: mongo
         image: mongo
         imagePullPolicy: Always
+        ports:
+          - containerPort: 27017
+            name: mongo
         # args: ["--dbpath","/data/db", "--replSet", {{ .Values.rsname | quote }}, "-keyFile", "/data/conf/mongodb.key"]
         args: 
         - "--dbpath"

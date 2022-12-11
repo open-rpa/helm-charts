@@ -29,3 +29,32 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
+---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: ingressroute.mongo
+# spec:
+#   entryPoints:
+#     - web
+#     - websecure
+#   routes:
+#     - match: Host(`mongo*.{{$domain}}`)
+#       kind: Rule
+#       services:
+#         - name: mongo
+#           port: 27017
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRouteTCP
+# metadata:
+#   name: mongo-ingress
+# spec:
+#   entryPoints:
+#    - mongodb
+#   routes:
+#   - match: HostSNI('mongo*.{{$domain}}')
+#     services:
+#     - name: mongo
+#       port: 27017
+
+
