@@ -10,7 +10,7 @@ dependencies:
 #   repository: "https://charts.bitnami.com/bitnami"
 #   condition: mongodb.enabled
 - name: mongodb
-  version: "0.x"
+  version: "x"
   repository: "https://open-rpa.github.io/helm-charts/"
   condition: mongodb.enabled
 # - name: loki
