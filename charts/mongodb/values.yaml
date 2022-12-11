@@ -1,26 +1,23 @@
 rsname: rs0
 nodeSelector: {}
 replicas: 2
-client:
-  enabled: false
 persistence:
   size: 10Gi
   storageclass:
   preserve: true
 auth:
   enabled: false
-  initkeyfile: true
+  initkeyfile: true # once setup, you can disable this, but need to re-enable if adding more replica's if using auth 
   adminuser: admin
   adminpass: secret
   initdb: openflow
-  user: openflow
-  pass: secret
   key: D3vzi4V4znL2WrDcWX6MWOi3NvH0sSeYp9pyHTw9Tmgi3q6ljn62qMLPAz4VHHRMER/6A4rFPM3PlVQ5WSx8zD+OFMwuJOZQ8hiQSqz312pBFvm3geV/i5bc42nm9XAM2MaDUIKugRT8a0G4qgJLSYhDlwKYnD09DKeRvbEQ5USt41nzF+Ki72vKmz4qDS8hKDBq4P2TWBbUTKwkBKOLf4CCpCF/9DMZszj61L8P6Dl7rFkSW3b5cN2VOBwREMVPdCHqf4J7PueiWvOHDdMXNcOLvTLKN+R0GFr/TFwnoAlMGj1hgWj0BrfrZM967wIvyaqs/8QoaQlwLB73lZSFgE/TN38fEYYmraQ56naGP24EeEDjMl6HZQLnSxySykjuiYnd9Xk+NqdXhc1fIty2rPyAehJ4yWDsynnWQaA91nSo2k24cHO5OKYqR4eZmDwpLo/5kj48AlvOgCmZ6Uq5x47KJJrR6fxmBGbvMg5GmK5GNXnJKzzSzi3BzoB7bSHW/lE1bnpNKr9A5BQml1P6C4DkUTRJamRQHGB9yainxeynFcq22D7FgDvqnJLkKgE1gm51w8URMRI+Hh7EbffQoAJI82pvyKSCRi1NX5O55AZjKVYURkeVwe02fNveIDj05agZpfIZly0G8WLzTiiNf6dxa24YFUjPBu2Cq6PlGQRx5SE2/U8S+6IRKo1mV+fuTu5vqcYKFrkYEDamzYit62Pwh0hjpj8RX5qvRMBgCnk5mfZs8vijGa1TUm7RIiJBpLjySD7wwWiir+E9Dm6JJOdIX0YIHYRrWvi3cxRmTT6ZeONMOo7+tTitysBtkGzpl5pf0qehvi0qy6W8wCgYWbdHo9PpHFLbLz7bVsyZLNxa4cLs5C43e1Gk34QXwmOA6OzimBSq1GrKp+gM0sQhuCgAsM2nsyzOt1CESegnjRhwkkgWl/9QpDfdmlN1dFvaSybYuaQA1QZYuzJ8acHohP/q6r9l
 service:
   type: NodePort
   nodePort: 32000
-snap:
+snap: # enable pre-confiured snapsht schedule and easy support for starting a restore mongodb, using https://backube.github.io/snapscheduler
   enabled: false
+  restoresnap:
   retention: # specified in hours. (168h = 1 week)
   maxCount: # The maximum number of snapshots per PVC to keep
   # The cronspec (https://en.wikipedia.org/wiki/Cron#Overview)
@@ -37,3 +34,6 @@ snap:
   # claimSelector: {}
   claimSelector:
     app: mongo
+  snapshotclass:
+    create: false
+    driver: pd.csi.storage.gke.io

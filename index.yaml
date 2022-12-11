@@ -77,6 +77,36 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
+    created: "2022-12-11T10:44:12.749040976Z"
+    description: A Helm chart for deploying a mongodb
+    digest: 75f8510dbc0a2ec5cc0043d4aca5dc65da263b485fa341292aa0c3856cf10b01
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.4/mongodb-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2022-12-11T10:44:12.563408941Z"
+    description: A Helm chart for deploying a mongodb
+    digest: d7fb010be574cd257d18e860ebcc5c179236e89f5ce42c45994bed2012eac383
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.3/mongodb-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2022-12-11T10:44:12.385448827Z"
+    description: A Helm chart for deploying a mongodb
+    digest: d326b4012c37040a953089963599915a2495f80a2ab49303f0e9954195101b58
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.2/mongodb-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 6.0.0
     created: "2022-12-09T21:39:42.191400738Z"
     description: A Helm chart for deploying a mongodb
     digest: e6f1396abc3ce15a9eebd2e63b1f221186cd918c82370d60411a4e41a657b760
@@ -1466,7 +1496,8 @@ entries:
       name: mongodb
       repository: https://charts.bitnami.com/bitnami
       version: 7.x.x
-    description: Prepare to take off with the ultimate chat platform, experience the next level of team communications
+    description: Prepare to take off with the ultimate chat platform, experience the
+      next level of team communications
     digest: 5004fe42ba8b158f913e38d3417b6d3153d6122302b9e7658dea6f2c5d4dd054
     home: https://rocket.chat/
     icon: https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon.svg
@@ -1488,4 +1519,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-11-23T12:27:59.4222883+01:00"
+generated: "2022-12-11T10:44:13.596492224Z"
