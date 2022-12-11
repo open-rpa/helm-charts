@@ -295,13 +295,9 @@ spec:
   {{- if eq .Values.mongodb.auth.enabled true }}
             - name: mongodb_url
               value: "mongodb://{{ .Values.mongodb.auth.adminuser }}:{{ .Values.mongodb.auth.adminpass }}@mongo-0.mongo:27017,mongo-1.mongo:27017/{{ .Values.mongodb.auth.database }}?authSource=admin&replicaSet={{ .Values.mongodb.rsname }}"
-            - name: mongodb_db
-              value: {{ .Values.mongodb.auth.database | quote }}
   {{- else }}
             - name: mongodb_url
               value: "mongodb://mongo-0.mongo:27017,mongo-1.mongo:27017/{{ .Values.mongodb.auth.database }}?replicaSet={{ .Values.mongodb.rsname }}"
-            - name: mongodb_db
-              value: {{ .Values.mongodb.auth.database | quote }}
   {{- end }}
   {{- if .Values.openflow.mongodb_db }}
             - name: mongodb_db
