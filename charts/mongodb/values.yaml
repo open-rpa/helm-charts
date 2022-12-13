@@ -46,6 +46,8 @@ ingress:
    - websecure
 snap: # enable pre-confiured snapsht schedule and easy support for starting a restore mongodb, using https://backube.github.io/snapscheduler
   enabled: false
+  # to easily access a snapshot, get snapshot name using kubectl get volumesnapshots
+  # then add it to restoresnap below, this will spinup a mongorestore pod, with mongodb running using the snapshot
   restoresnap:
   retention: # specified in hours. (168h = 1 week)
   maxCount: # The maximum number of snapshots per PVC to keep
