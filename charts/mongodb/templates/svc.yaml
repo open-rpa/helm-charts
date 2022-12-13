@@ -29,7 +29,7 @@ spec:
   loadBalancerIP: {{ .ip }}
     {{- end }}
   {{- else }}  
-  type: {{ .Values.service.type }}
+  type: {{ $.Values.service.type }}
   {{- end }}
   selector:
     statefulset.kubernetes.io/pod-name: mongo-{{ $mongocount }}
