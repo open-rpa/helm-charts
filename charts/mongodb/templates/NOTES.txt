@@ -1,0 +1,32 @@
+{{- printf "\n" -}}
+{{- $replicahosts := include "replicahosts" . -}}
+{{- $extreplicahosts := include "extreplicahosts" . -}}
+
+mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $replicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
+{{- if and .Values.service.domainprefix (ge (len .Values.service.external) 0) }}
+mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
+{{- printf "\n" -}}
+{{- end -}}
+
+{{- if and .Values.service.domainprefix .Values.ingress.enabled }}
+mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --tls --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
+{{- printf "\n" -}}
+{{- end -}}
+
+{{- range $mongocount, $e := until (.Values.replicas|int) -}}
+
+{{- if and $.Values.service.domainprefix (ge (len $.Values.service.external) 0) -}}
+{{- if $.Values.ingress.enabled -}}
+mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --tls --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
+{{- printf "\n" -}}
+{{- else -}}
+mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
+{{- printf "\n" -}}
+{{- end -}}
+{{- else -}}
+mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --quiet mongodb://mongo-{{ $mongocount }}.mongo/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
+{{- printf "\n" -}}
+{{- end -}}
+
+{{- end -}}
+

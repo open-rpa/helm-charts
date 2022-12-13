@@ -13,32 +13,60 @@ spec:
       port: 27017
       targetPort: 27017
 ---
-# - $domain := print (required "domain required!" .Values.domain) "." (required "domainsuffix required!" .Values.domainsuffix) 
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRoute
-# metadata:
-#   name: ingressroute.mongo
-# spec:
-#   entryPoints:
-#     - web
-#     - websecure
-#   routes:
-#     - match: Host(`mongo*.$domain`)
-#       kind: Rule
-#       services:
-#         - name: mongo
-#           port: 27017
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRouteTCP
-# metadata:
-#   name: mongo-ingress
-# spec:
-#   entryPoints:
-#    - mongo
-#   routes:
-#   - match: HostSNI('mongo*.$domain')
-#     services:
-#     - name: mongo
-#       port: 27017
 
-
+{{- range $mongocount, $e := until (.Values.replicas|int) -}}
+{{ $c := $mongocount | int }}
+{{ $c = add1 $c }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-{{ $mongocount }}
+spec:
+  externalTrafficPolicy: Local
+  {{- if ge (len $.Values.service.external) ($c) -}}
+    {{- with (index $.Values.service.external $mongocount) }}
+  type: LoadBalancer
+  loadBalancerIP: {{ .ip }}
+    {{- end }}
+  {{- else }}  
+  type: {{ .Values.service.type }}
+  {{- end }}
+  selector:
+    statefulset.kubernetes.io/pod-name: mongo-{{ $mongocount }}
+  ports:
+    - protocol: TCP
+  {{- if ge (len $.Values.service.external) ($c) -}}
+    {{- with (index $.Values.service.external $mongocount) }}
+      port: {{ .port }}
+    {{- end }}
+  {{- else }}  
+      port: 27017
+  {{- end }}
+      targetPort: 27017
+---
+  {{- if $.Values.service.addtcproute }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: mongo-{{ $mongocount }}
+spec:
+  entryPoints:
+  {{ toYaml $.Values.ingress.entryPoints | indent 4 }}
+  routes:
+  # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.service.domainprefix}}`)
+  - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}`)
+  # - match: HostSNI(`{{ .hostname }}`)
+    services:
+    - name: mongo
+      port: 27017
+    {{- if $.Values.ingress.certResolver }}
+  tls:
+    certResolver: {{$.Values.ingress.certResolver}}
+    domains:
+      - main: "{{$.Values.service.domainprefix}}"
+        sans:
+          - "*.{{$.Values.service.domainprefix}}"
+    {{- end }}
+---
+  {{- end }}
+{{- end }}

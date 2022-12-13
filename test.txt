@@ -1,0 +1,7 @@
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+            - "mongo-0.demo3.openiap.io"
+{{- range $mongocount, $e := until (.Values.replicas|int) }}
+            - "mongo-{{ $mongocount }}.{{ $.Values.ingress.domain }}"
+{{- end }}

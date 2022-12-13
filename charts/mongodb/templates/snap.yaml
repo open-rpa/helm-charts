@@ -2,7 +2,7 @@
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
-  name: mongo-snap
+  name: mongo-snap-{{.Release.Namespace}}
 driver: {{ .Values.snap.snapshotclass.driver }}
 deletionPolicy: Delete
 {{- end }}
@@ -33,7 +33,7 @@ spec:
     {{- if .Values.snap.snapshotClassName }}
     snapshotClassName: {{ .Values.snap.snapshotClassName }}
     {{- else if eq .Values.snap.snapshotclass.create true }}
-    snapshotClassName: mongo-snap
+    snapshotClassName: mongo-snap-{{.Release.Namespace}}
     {{- end }}
 {{- end }}
 {{- if .Values.snap.restoresnap }}
