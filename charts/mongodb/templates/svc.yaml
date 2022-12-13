@@ -13,7 +13,7 @@ spec:
       port: 27017
       targetPort: 27017
 ---
-
+{{- if .Values.service.enabled -}}
 {{- range $mongocount, $e := until (.Values.replicas|int) -}}
 {{ $c := $mongocount | int }}
 {{ $c = add1 $c }}
@@ -69,4 +69,5 @@ spec:
     {{- end }}
 ---
   {{- end }}
+{{- end }}
 {{- end }}

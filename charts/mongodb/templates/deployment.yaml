@@ -43,6 +43,10 @@ spec:
         app: mongo
     spec:
       serviceAccountName: mongo-user
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
       containers:
       - name: mongo
         image: mongo
@@ -141,6 +145,8 @@ spec:
                 key: key
           {{- end }}
           {{- if and .Values.auth.initdb .Values.auth.username .Values.auth.password }}
+          - name: MONGODB_INITDB_ROLE
+            value: {{ .Values.auth.initdbrole | quote }}
           - name: MONGODB_INITDB
             value: {{ .Values.auth.initdb | quote }}
           - name: MONGODB_INITDB_AUTH_Db
