@@ -441,24 +441,16 @@ victoriametrics: # for exposing all all metric data for grafana, optionally also
     storageclass:
   resources: {}
 mongodb:
-  enabled: true # by setting this to enable AND setting architecture to either standalone or replicaset, a mongodb installation will be deployed as well
-  architecture: standalone
-  metrics:
-    enabled: false
+  enabled: true # by setting this to enable a 3 node replicaset wil be deployed and the config updated to use this
+  # for this to work, all 5 fields below must be filled
   auth:
-    enabled: true
+    adminuser: admin
+    adminpass: secret
+    initdb: openflow
     username: openflow
-    password: supersecret
-    database: openflow
-  mongodbUsername: openflow
-  mongodbDatabase: supersecret
+    password: secret
   persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 8Gi
-  nodeSelector: {}
-  arbiter:
-    nodeSelector: {}
+    size: 20Gi
 rediscommander:
   enabled: false
   exposed: false

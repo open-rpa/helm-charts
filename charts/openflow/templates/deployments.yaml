@@ -292,14 +292,12 @@ spec:
             - name: mongodb_url
               value: {{ required "A valid .Values.openflow.external_mongodb_url entry required!" .Values.openflow.external_mongodb_url | quote }}
 {{- else }}
-  {{- if eq .Values.mongodb.auth.enabled true }}
             - name: mongodb_url
-              value: "mongodb://{{ .Values.mongodb.auth.adminuser }}:{{ .Values.mongodb.auth.adminpass }}@mongo-0.mongo:27017,mongo-1.mongo:27017/{{ .Values.mongodb.auth.database }}?authSource=admin&replicaSet={{ .Values.mongodb.rsname }}"
-  {{- else }}
-            - name: mongodb_url
-              value: "mongodb://mongo-0.mongo:27017,mongo-1.mongo:27017/{{ .Values.mongodb.auth.database }}?replicaSet={{ .Values.mongodb.rsname }}"
-  {{- end }}
-  {{- if .Values.openflow.mongodb_db }}
+              value: {{ include "mongodburl" . | quote }}
+  {{- if .Values.mongodb.auth.initdb }}
+            - name: mongodb_db
+              value: {{ .Values.mongodb.auth.initdb | quote }}
+  {{- else if .Values.openflow.mongodb_db }}
             - name: mongodb_db
               value: {{ .Values.openflow.mongodb_db | quote }}
   {{- else }}

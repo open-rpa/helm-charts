@@ -7,7 +7,8 @@ metadata:
 spec:
   clusterIP: None 
   selector:
-    app: mongo
+    service: mongo # add both mongo and mongoarbiter
+    # app: mongo
   ports:
     - protocol: TCP
       port: 27017
@@ -44,7 +45,7 @@ spec:
   {{- end }}
       targetPort: 27017
 ---
-  {{- if $.Values.service.addtcproute }}
+  {{- if $.Values.ingress.enabled }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -55,7 +56,6 @@ spec:
   routes:
   # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.service.domainprefix}}`)
   - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}`)
-  # - match: HostSNI(`{{ .hostname }}`)
     services:
     - name: mongo
       port: 27017

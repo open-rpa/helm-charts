@@ -29,18 +29,18 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mongo
-  labels:
-    app: mongo
 spec:
   selector:
     matchLabels:
       app: mongo
+      service: mongo
   replicas: {{ .Values.replicas }}
   serviceName: "mongo" # match headless service name
   template:
     metadata:
       labels:
         app: mongo
+        service: mongo
     spec:
       serviceAccountName: mongo-user
       {{- if .Values.nodeSelector }}
@@ -102,16 +102,22 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data/db
-      - name: mongo-sidecar
+      - name: sidecar
         image: openiap/mongo-k8s-sidecar
         imagePullPolicy: Always
-        # command: ["/bin/sh"]
-        # args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- if .Values.debugsidecar }}
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- end }}
         env:
           - name: MONGO_SIDECAR_POD_LABELS
             value: "app=mongo"
+          - name: MONGO_SIDECAR_ARBITER_LABELS
+            value: "app=mongoarbiter"
           - name: MONGODB_AUTH_DATABASE
             value: {{ .Values.auth.authdb | quote }}
+          - name: MONGO_SIDECAR_UNHEALTHY_SECONDS
+            value: {{ .Values.sidecar_unhealthy_seconds | quote }}
           - name: MONGODB_RSNAME
             value: {{ .Values.rsname | quote }}
           - name: KUBE_NAMESPACE
@@ -163,11 +169,24 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data/db
+    {{- if .Values.exporter.enabled }}
+      - name: exporter
+        image: {{ .Values.exporter.image | quote }}
+        imagePullPolicy: Always
+        args: ["--mongodb.uri={{ include "mongodb.mongodblocalurl" . }}"]
+        env:
+          - name: MONGOD_EXPORTER_FLAGS
+            value: {{ .Values.exporter.flags | quote }}
+        ports:
+          - containerPort: 9216
+            name: metrics
+    {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: data
       labels:
         app: mongo
+        service: mongo
       annotations:
     {{- if .Values.persistence.preserve }}
         helm.sh/resource-policy: "keep"
@@ -180,3 +199,101 @@ spec:
     {{- end }}
         requests:
           storage: {{ .Values.persistence.size }}
+---
+{{ if and (.Values.arbiter.enabled) (gt (.Values.arbiter.replicas| int) 0) }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongoarbiter
+spec:
+  selector:
+    matchLabels:
+      app: mongoarbiter
+      service: mongo
+  replicas: {{ .Values.arbiter.replicas }}
+  serviceName: "mongoarbiter"
+  template:
+    metadata:
+      labels:
+        app: mongoarbiter
+        service: mongo
+    spec:
+      serviceAccountName: mongo-user
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
+      containers:
+      - name: mongoarbiter
+        image: mongo
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 27017
+            name: mongo
+        args: 
+        - "--dbpath"
+        - "/data/db"
+        - "--replSet" 
+        - {{ .Values.rsname | quote }}
+        {{- if .Values.auth.enabled }}
+        - "--keyFile"
+        - "/data/db/mongodb.key"
+        {{- end }}
+        env:
+          {{- if .Values.auth.enabled }}
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: {{ .Values.auth.adminuser | quote }}
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "mongo-creds"
+                key: adminpass
+          {{- end }}
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+      - name: sidecar
+        image: openiap/mongo-k8s-sidecar
+        imagePullPolicy: Always
+{{- if .Values.debugsidecar }}
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- end }}
+        env:
+          - name: MONGODB_IS_ARBITER
+            value: "1"
+          {{- if .Values.auth.enabled }}
+          - name: MONGODB_KEYFILE
+            value: "/data/db/mongodb.key"
+          - name: MONGODB_KEYFILEUID
+            value: "999"
+          - name: MONGODB_KEYFILEGID
+            value: "999"
+          - name: MONGODB_KEYFILE_CONTENT
+            valueFrom:
+              secretKeyRef:
+                name: "mongo-creds"
+                key: key
+          {{- end }}
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        app: mongoarbiter
+        service: mongo
+      annotations:
+    {{- if .Values.persistence.preserve }}
+        helm.sh/resource-policy: "keep"
+    {{- end }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+    {{- if .Values.persistence.storageclass }}
+        storageClassName: {{ .Values.persistence.storageclass | quote }}
+    {{- end }}
+        requests:
+          storage: {{ .Values.arbiter.size }}
+{{- end }}

@@ -1,20 +1,25 @@
 {{- printf "\n" -}}
-{{- $replicahosts := include "replicahosts" . -}}
-{{- $extreplicahosts := include "extreplicahosts" . -}}
+{{- $replicahosts := include "mongodb.replicahosts" . -}}
+{{- $extreplicahosts := include "mongodb.extreplicahosts" . -}}
 
+{{- if $.Values.auth.initdb }}
+---- Connect to {{ $.Values.rsname }} replicate set ------
+{{- printf "\n" -}}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $replicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
-{{- if and .Values.service.domainprefix (ge (len .Values.service.external) 0) }}
+  {{- if and .Values.service.domainprefix (ge (len .Values.service.external) 0) }}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
-{{- printf "\n" -}}
-{{- end -}}
+  {{- printf "\n" -}}
+  {{- end -}}
 
-{{- if and .Values.service.domainprefix .Values.ingress.enabled }}
+  {{- if and .Values.service.domainprefix .Values.ingress.enabled }}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --tls --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
+  {{- printf "\n" -}}
+  {{- end -}}
+  {{- end -}}
+
+---- Connect to {{ $.Values.auth.authdb }} database ------
 {{- printf "\n" -}}
-{{- end -}}
-
 {{- range $mongocount, $e := until (.Values.replicas|int) -}}
-
 {{- if and $.Values.service.domainprefix (ge (len $.Values.service.external) 0) -}}
 {{- if $.Values.ingress.enabled -}}
 mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --tls --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
@@ -23,10 +28,13 @@ mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --tls 
 mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
 {{- printf "\n" -}}
 {{- end -}}
-{{- else -}}
+{{- end -}}
+
+{{- end -}}
+
+{{- range $mongocount, $e := until (.Values.replicas|int) -}}
 mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --quiet mongodb://mongo-{{ $mongocount }}.mongo/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
 {{- printf "\n" -}}
-{{- end -}}
 
 {{- end -}}
 
