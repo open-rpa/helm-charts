@@ -130,13 +130,17 @@ spec:
           - name: KUBERNETES_MONGO_SERVICE_NAME
             value: "mongo"
           {{- end }}
+          - name: MONGO_AUTH_ENABLED
+            value: {{ .Values.auth.enabled | quote }}
           - name: MONGODB_USERNAME
             value: {{ .Values.auth.adminuser | quote }}
+          {{- if .Values.auth.adminpass }}
           - name: MONGODB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: "mongo-creds"
                 key: adminpass
+          {{- end }}
           {{- if .Values.auth.enabled }}
           - name: MONGODB_KEYFILE
             value: "/data/db/mongodb.key"
