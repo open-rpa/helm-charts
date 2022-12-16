@@ -122,7 +122,7 @@ spec:
             value: {{ .Values.rsname | quote }}
           - name: KUBE_NAMESPACE
             value: {{.Release.Namespace | quote }}
-          {{- if and .Values.service.domainprefix (ge (len .Values.service.external) 0) }}
+          {{- if and .Values.service.domainprefix (gt (len .Values.service.external) 0) }}
           - name: EXTERNAL_DOMAIN
             value: {{.Values.service.domainprefix}}
           {{- end }}
@@ -130,13 +130,6 @@ spec:
           - name: KUBERNETES_MONGO_SERVICE_NAME
             value: "mongo"
           {{- end }}
-          {{- if .Values.auth.enabled }}
-          - name: MONGODB_KEYFILE
-            value: "/data/db/mongodb.key"
-          - name: MONGODB_KEYFILEUID
-            value: "999"
-          - name: MONGODB_KEYFILEGID
-            value: "999"
           - name: MONGODB_USERNAME
             value: {{ .Values.auth.adminuser | quote }}
           - name: MONGODB_PASSWORD
@@ -144,6 +137,13 @@ spec:
               secretKeyRef:
                 name: "mongo-creds"
                 key: adminpass
+          {{- if .Values.auth.enabled }}
+          - name: MONGODB_KEYFILE
+            value: "/data/db/mongodb.key"
+          - name: MONGODB_KEYFILEUID
+            value: "999"
+          - name: MONGODB_KEYFILEGID
+            value: "999"
           - name: MONGODB_KEYFILE_CONTENT
             valueFrom:
               secretKeyRef:
@@ -262,7 +262,8 @@ spec:
         env:
           - name: MONGODB_IS_ARBITER
             value: "1"
-          {{- if .Values.auth.enabled }}
+          - name: MONGO_AUTH_ENABLED
+            value: {{ .Values.auth.enabled | quote }}
           - name: MONGODB_KEYFILE
             value: "/data/db/mongodb.key"
           - name: MONGODB_KEYFILEUID
@@ -274,7 +275,6 @@ spec:
               secretKeyRef:
                 name: "mongo-creds"
                 key: key
-          {{- end }}
         volumeMounts:
         - name: data
           mountPath: /data/db

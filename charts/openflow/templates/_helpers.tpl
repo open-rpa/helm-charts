@@ -25,8 +25,11 @@
     {{- $port = .port -}}
   {{- end -}}
 {{- end -}}
-
+{{- if $.Values.mongodb.ingress.enabled -}}
+{{- printf "mongo-%v.%s:%v" $mongocount $.Values.mongodb.ingress.domainprefix $.Values.mongodb.ingress.externalport -}}
+{{- else -}}
 {{- printf "mongo-%v.%s:%v" $mongocount $.Values.mongodb.service.domainprefix $port -}}
+{{- end -}}
 {{- if ne ($.Values.mongodb.replicas|int) ($c) -}}
 {{- printf "," -}}
 {{- end -}}

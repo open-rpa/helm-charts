@@ -6,12 +6,13 @@
 ---- Connect to {{ $.Values.rsname }} replicate set ------
 {{- printf "\n" -}}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $replicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
-  {{- if and .Values.service.domainprefix (ge (len .Values.service.external) 0) }}
+{{- printf "\n" -}}
+  {{- if and .Values.service.domainprefix (gt (len .Values.service.external) 0) }}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
   {{- printf "\n" -}}
   {{- end -}}
 
-  {{- if and .Values.service.domainprefix .Values.ingress.enabled }}
+  {{- if and .Values.ingress.domainprefix .Values.ingress.enabled }}
 mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --tls --quiet mongodb://{{ $extreplicahosts }}/{{ $.Values.auth.initdb }}?replicaSet={{ $.Values.rsname }}
   {{- printf "\n" -}}
   {{- end -}}
@@ -20,9 +21,9 @@ mongosh -u {{ $.Values.auth.username }} -p {{ $.Values.auth.password }} --tls --
 ---- Connect to {{ $.Values.auth.authdb }} database ------
 {{- printf "\n" -}}
 {{- range $mongocount, $e := until (.Values.replicas|int) -}}
-{{- if and $.Values.service.domainprefix (ge (len $.Values.service.external) 0) -}}
+{{- if and $.Values.service.domainprefix (gt (len $.Values.service.external) 0) -}}
 {{- if $.Values.ingress.enabled -}}
-mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --tls --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
+mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --tls --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.ingress.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}
 {{- printf "\n" -}}
 {{- else -}}
 mongosh -u {{ $.Values.auth.adminuser }} -p {{ $.Values.auth.adminpass }} --quiet mongodb://mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}/{{ $.Values.auth.authdb }} --authenticationDatabase {{ $.Values.auth.authdb }}

@@ -52,10 +52,12 @@ metadata:
   name: mongo-{{ $mongocount }}
 spec:
   entryPoints:
-  {{ toYaml $.Values.ingress.entryPoints | indent 4 }}
+  {{- range $.Values.ingress.entryPoints }}
+    - {{ . | quote }}
+  {{- end }}
   routes:
-  # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.service.domainprefix}}`)
-  - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.service.domainprefix}}`)
+  # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.ingress.domainprefix}}`)
+  - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.ingress.domainprefix}}`)
     services:
     - name: mongo
       port: 27017
@@ -63,9 +65,9 @@ spec:
   tls:
     certResolver: {{$.Values.ingress.certResolver}}
     domains:
-      - main: "{{$.Values.service.domainprefix}}"
+      - main: "{{$.Values.ingress.domainprefix}}"
         sans:
-          - "*.{{$.Values.service.domainprefix}}"
+          - "*.{{$.Values.ingress.domainprefix}}"
     {{- end }}
 ---
   {{- end }}

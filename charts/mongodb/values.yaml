@@ -43,7 +43,7 @@ service:
   # To expose those using ingress controller or public ip enable this.
   enabled: false
   type: NodePort # NodePort or LoadBalancer , if external has values this will always be type LoadBalancer
-  domainprefix: # Domain prefix used for each public ip ( or mapped to traefic ) 
+  domainprefix: # Domain prefix used for each public ip
   external: []
     # to create a service with a dedicated ip per replica, add each IP here. ORder matter,
     #  the first will be set assigned to mongo-0, the second to mongo-1 and so on
@@ -56,7 +56,9 @@ ingress:
   # IngressRouteTCP can only inspect hostnames when using TLS, so make sure lets encrypt is configure and fill out certResolver name
   # and either create a dedicated port, and use a port with ssl support, normally called websecure
   enabled: false
+  domainprefix: # Domain prefix used for ingress rule
   certResolver: 
+  externalport: 443 # used for generating connection strings, what port is the entryPoint mapped to ?
   entryPoints:
    - websecure
 snap: # enable pre-confiured snapsht schedule and easy support for starting a restore mongodb, using https://backube.github.io/snapscheduler

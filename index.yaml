@@ -77,6 +77,16 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
+    created: "2022-12-16T12:48:48.38588112+01:00"
+    description: A Helm chart for deploying a mongodb
+    digest: 34687282f42700b1a2ededa144721bc91c205204c250eadf9cd9b398719d6952
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.8/mongodb-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
+    appVersion: 6.0.0
     created: "2022-12-15T10:29:30.472965839Z"
     description: A Helm chart for deploying a mongodb
     digest: d6214e2b736be4d1238fc6cf98be01db7203f95bd9dd33b684d20ebddd278a28
@@ -146,6 +156,29 @@ entries:
     - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.1/mongodb-0.0.1.tgz
     version: 0.0.1
   openflow:
+  - apiVersion: v2
+    appVersion: 1.4.34
+    created: "2022-12-16T12:48:48.632978063+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://open-rpa.github.io/helm-charts/
+      version: x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    - condition: victoria-metrics-cluster.enabled
+      name: victoria-metrics-cluster
+      repository: https://victoriametrics.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: 92d81735aed4ec10fb2d406f2f12286fb8ce2e32d356882b909d8eb7c5cfc072
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.110/openflow-0.1.110.tgz
+    version: 0.1.110
   - apiVersion: v2
     appVersion: 1.4.34
     created: "2022-11-23T12:27:59.2129458+01:00"
@@ -1549,4 +1582,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-12-15T10:29:30.715817218Z"
+generated: "2022-12-16T12:48:48.633424654+01:00"
