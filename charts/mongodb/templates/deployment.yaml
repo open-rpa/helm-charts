@@ -59,6 +59,18 @@ spec:
         args: 
         # - "-c"
         # - "/usr/local/bin/docker-entrypoint.sh"
+        {{- if .Values.tls.enabled }}
+        - "--tlsMode"
+        - "preferTLS"
+        - "--tlsCertificateKeyFile"
+        - {{ .Values.tls.certfile | quote }}
+          {{- if .Values.tls.certpassword }}
+        - "--tlsCertificateKeyFilePassword"
+        - {{ .Values.tls.certpassword | quote }}
+         {{- end }}
+        # - "--tlsCAFile"
+        # - {{ .Values.tls.cafile | quote }}
+        {{- end }}
         - "--dbpath"
         - "/data/db"
         - "--replSet" 
@@ -121,8 +133,33 @@ spec:
           - name: MONGODB_RSNAME
             value: {{ .Values.rsname | quote }}
           - name: KUBE_NAMESPACE
-            value: {{.Release.Namespace | quote }}
-          {{- if and .Values.service.domainprefix (gt (len .Values.service.external) 0) }}
+            value: {{ .Release.Namespace | quote }}
+          {{- if .Values.tls.enabled }}
+          - name: TLS_SELFSIGN
+            value: {{ .Values.tls.enabled | quote }}
+          - name: TLS_KEYFILE
+            value: {{ .Values.tls.certfile | quote }}
+            {{- if .Values.tls.ca_private }}
+          - name: TLS_CA_PRIVATE
+            value: {{ .Values.tls.ca_private | quote }}
+            {{- end }}
+            {{- if .Values.tls.ca_cert }}
+          - name: TLS_CA_CERT
+            value: {{ .Values.tls.ca_cert | quote }}
+            {{- end }}
+            {{- if .Values.tls.certpassword }}
+          - name: TLS_KEYPASSWORD
+            value: {{ .Values.tls.certpassword | quote }}
+            {{- end }}
+          - name: TLS_CAFILE
+            value: {{ .Values.tls.cafile | quote }}
+          - name: TLS_DNS_HOSTS
+            value: {{ .Values.tls.dns_hosts | quote }}
+          {{- end }}
+          {{- if (and .Values.ingress.domainprefix .Values.ingress.enabled) }}
+          - name: EXTERNAL_DOMAIN
+            value: {{.Values.ingress.domainprefix}}
+          {{- else if and .Values.service.domainprefix (gt (len .Values.service.external) 0) }}
           - name: EXTERNAL_DOMAIN
             value: {{.Values.service.domainprefix}}
           {{- end }}
@@ -242,6 +279,20 @@ spec:
         {{- if .Values.auth.enabled }}
         - "--keyFile"
         - "/data/db/mongodb.key"
+        {{- end }}
+        {{- if .Values.tls.enabled }}
+        - "--tlsMode"
+        - "preferTLS"
+        - "--tlsCertificateKeyFile"
+        - {{ .Values.tls.certfile | quote }}
+          {{- if .Values.tls.certpassword }}
+        - "--tlsCertificateKeyFilePassword"
+        - {{ .Values.tls.certpassword | quote }}
+         {{- end }}
+         {{- if .Values.tls.addcafilearg }}
+        - "--tlsCAFile"
+        - {{ .Values.tls.cafile | quote }}
+        {{- end }}
         {{- end }}
         env:
           {{- if .Values.auth.enabled }}

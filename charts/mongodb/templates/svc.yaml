@@ -59,9 +59,12 @@ spec:
   # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.ingress.domainprefix}}`)
   - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.ingress.domainprefix}}`)
     services:
-    - name: mongo
+    - name: mongo-{{ $mongocount }}
       port: 27017
-    {{- if $.Values.ingress.certResolver }}
+    {{- if $.Values.ingress.passthrough }}
+  tls:
+    passthrough: true
+    {{- else if $.Values.ingress.certResolver }}
   tls:
     certResolver: {{$.Values.ingress.certResolver}}
     domains:

@@ -77,6 +77,16 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
+    created: "2022-12-18T22:56:07.22086273+01:00"
+    description: A Helm chart for deploying a mongodb
+    digest: b57825b6ef2f99558982def8c7bab893146581aa5e23e238df9d2039a3625fe3
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.9/mongodb-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
+    appVersion: 6.0.0
     created: "2022-12-16T12:48:48.38588112+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 34687282f42700b1a2ededa144721bc91c205204c250eadf9cd9b398719d6952
@@ -1582,4 +1592,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2022-12-16T12:48:48.633424654+01:00"
+generated: "2022-12-18T22:56:07.441147908+01:00"
