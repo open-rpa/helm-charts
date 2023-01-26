@@ -2,8 +2,8 @@ apiVersion: v2
 name: openflow
 description: A Helm chart for deploying a single openflow instance
 type: application
-version: 0.1.110
-appVersion: 1.4.34
+version: 0.1.111
+appVersion: 1.4.36
 dependencies:
 # - name: mongodb
 #   version: "10.x"

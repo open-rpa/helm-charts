@@ -312,10 +312,61 @@ spec:
     - secretName: {{ .Values.certificate.tlsSecret }}
 {{- end }}
 ---
-apiVersion: v1
-kind: Secret
+{{- if eq .Values.grpc.exposed true }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: deleteme
-  labels:
-type: Opaque
-data:
+  name: grpc-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    ingress.kubernetes.io/protocol: h2c
+{{- if eq .Values.protocol "https" }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+  {{- if .Values.certificate.tlsSecret }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certresolver }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
+  {{- if .Values.certificate.certmain }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
+  {{- end }}
+  {{- if .Values.certificate.certsans }}
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
+  {{- end }}
+{{- else }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+{{- end }}
+{{- if (eq .Values.openflow.traefik_ipblock true) }}
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-ipblock@kubernetescrd"
+{{- end }}
+spec:
+  rules:
+    - host: "grpc.{{ $apidomain }}"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-grpc
+                port:
+                  name: grpc
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute.grpc
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`grpc2.{{$domain}}`)
+      kind: Rule
+      services:
+        - name: api-grpc
+          port: 4317
+          scheme: h2c
+{{- end }}

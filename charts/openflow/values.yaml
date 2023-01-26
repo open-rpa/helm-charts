@@ -11,6 +11,9 @@ certificate:
   certsans: # set subjecter alternative names in the certificate. for instance: *.demo.openiap.io
 nodeSelector: {} # remeber to set under mongodb too
 port: # if the external port to access this is differente from 80/443, then set this the port users will access this instance on
+grpc:
+  exposed: false
+  internalport: 50051
 openflow:
   image: openiap/openflow # set image for api deployment
   deploymentstrategy: Recreate # Recreate or RollingUpdate
@@ -437,7 +440,7 @@ victoriametrics: # for exposing all all metric data for grafana, optionally also
   retentionPeriod: # override default retension of 1 month https://github.com/VictoriaMetrics/VictoriaMetrics#retention
   persistence:
     enabled: false
-    size: 10Gi
+    size: 100Gi
     storageclass:
   resources: {}
 mongodb:

@@ -3,23 +3,34 @@
 {{- . | mustToPrettyJson | printf "\nThe JSON output of the dumped var is: \n%s" | fail }}
 {{- end -}}
 
-{{- define "name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "common.name" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if ne .Release.Name $name -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 {{- end -}}
 
-{{- define "fullname" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- define "common.arbitername" -}}
+{{- $name := include "common.name" . -}}
+{{- printf "%s-arbiter" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "common.snapname" -}}
+{{- $name := include "common.name" . -}}
+{{- printf "%s-snap" $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 # {{- $replicahosts := include "mongodb.replicahosts" . -}}
 # {{- template "var_dump" $replicahosts }}
 
 {{- define "mongodb.replicahosts" -}}
+{{- $name := include "common.name" . -}}
 {{- range $mongocount, $e := until (.Values.replicas|int) -}}
 {{- $c := $mongocount | int -}}
 {{- $c = add1 $c -}}
-{{- printf "mongo-%v.mongo:27017" $mongocount -}}
+{{- printf "%v-%v.%v:27017" $name $mongocount $name -}}
 {{- if ne ($.Values.replicas|int) ($c) -}}
 {{- printf "," -}}
 {{- end -}}
@@ -28,6 +39,7 @@
 
 
 {{- define "mongodb.extreplicahosts" -}}
+{{- $name := include "common.name" . -}}
 {{- range $mongocount, $e := until (.Values.replicas|int) -}}
 {{- $c := $mongocount | int -}}
 {{- $c = add1 $c -}}
@@ -38,9 +50,9 @@
   {{- end -}}
 {{- end -}}
 {{- if $.Values.ingress.enabled -}}
-{{- printf "mongo-%v.%s:%v" $mongocount $.Values.ingress.domainprefix $.Values.ingress.externalport -}}
+{{- printf "%v-%v.%s:%v" $name $mongocount $.Values.ingress.domainprefix $.Values.ingress.externalport -}}
 {{- else -}}
-{{- printf "mongo-%v.%s:%v" $mongocount $.Values.service.domainprefix $port -}}
+{{- printf "%v-%v.%s:%v" $name $mongocount $.Values.service.domainprefix $port -}}
 {{- end -}}
 {{- if ne ($.Values.replicas|int) ($c) -}}
 {{- printf "," -}}
@@ -57,6 +69,9 @@
 {{- printf "mongodb://%s:%s@%s/?replicaSet=%s" $.Values.auth.adminuser $.Values.auth.adminpass $replicahosts $.Values.rsname -}}
 {{- else -}}
 {{- printf "mongodb://%s/?replicaSet=%s" $replicahosts $.Values.rsname -}}
+{{- end -}}
+{{- if eq .Values.tls.enabled true -}}
+{{- printf "&tls=true" -}}
 {{- end -}}
 {{- end -}}
 

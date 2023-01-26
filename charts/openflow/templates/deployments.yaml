@@ -290,7 +290,9 @@ spec:
               value: "uri:{{ $apidomain }}"
 {{- if .Values.openflow.external_mongodb_url }}
             - name: mongodb_url
-              value: {{ required "A valid .Values.openflow.external_mongodb_url entry required!" .Values.openflow.external_mongodb_url | quote }}
+              value: {{ .Values.openflow.external_mongodb_url | quote }}
+            - name: mongodb_db
+              value: {{ .Values.openflow.mongodb_db | quote }}
 {{- else }}
             - name: mongodb_url
               value: {{ include "mongodburl" . | quote }}

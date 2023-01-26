@@ -271,7 +271,9 @@ spec:
       {{- end }}
       containers:
         - command:
+        {{- if .Values.exporter.command }}
             - {{ .Values.exporter.command }}
+        {{- end }}
             - "--config=/conf/otel-collector-config.yaml"
             #           Memory Ballast size should be max 1/3 to 1/2 of memory.
             # - "--mem-ballast-size-mib=683"

@@ -1,13 +1,14 @@
+{{- $dot := . }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: mongo-user
+  name: {{ include "common.name" $dot }}-user
   namespace: {{.Release.Namespace}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: mongo-role
+  name: {{ include "common.name" $dot }}-role
 rules:
 - apiGroups: ["*"]
   resources: ["pods"]
@@ -16,39 +17,39 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: mongo-rb
+  name: {{ include "common.name" $dot }}-rb
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: mongo-role
+  name: {{ include "common.name" $dot }}-role
 subjects:
 - kind: ServiceAccount
-  name: mongo-user
+  name: {{ include "common.name" $dot }}-user
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: {{ include "common.name" $dot }}
 spec:
   selector:
     matchLabels:
-      app: mongo
-      service: mongo
+      app: {{ include "common.name" $dot }}
+      service: {{ include "common.name" $dot }}
   replicas: {{ .Values.replicas }}
-  serviceName: "mongo" # match headless service name
+  serviceName: "{{ include "common.name" $dot }}" # match headless service name
   template:
     metadata:
       labels:
-        app: mongo
-        service: mongo
+        app: {{ include "common.name" $dot }}
+        service: {{ include "common.name" $dot }}
     spec:
-      serviceAccountName: mongo-user
+      serviceAccountName: {{ include "common.name" $dot }}-user
       {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       containers:
-      - name: mongo
+      - name: {{ include "common.name" $dot }}
         image: mongo
         imagePullPolicy: Always
         ports:
@@ -61,15 +62,17 @@ spec:
         # - "/usr/local/bin/docker-entrypoint.sh"
         {{- if .Values.tls.enabled }}
         - "--tlsMode"
-        - "preferTLS"
+        - {{ .Values.tls.mode | quote }}
         - "--tlsCertificateKeyFile"
         - {{ .Values.tls.certfile | quote }}
           {{- if .Values.tls.certpassword }}
         - "--tlsCertificateKeyFilePassword"
         - {{ .Values.tls.certpassword | quote }}
          {{- end }}
-        # - "--tlsCAFile"
-        # - {{ .Values.tls.cafile | quote }}
+         {{- if .Values.tls.addcafilearg }}
+        - "--tlsCAFile"
+        - {{ .Values.tls.cafile | quote }}
+        {{- end }}
         {{- end }}
         - "--dbpath"
         - "/data/db"
@@ -123,9 +126,9 @@ spec:
 {{- end }}
         env:
           - name: MONGO_SIDECAR_POD_LABELS
-            value: "app=mongo"
+            value: "app={{ include "common.name" $dot }}"
           - name: MONGO_SIDECAR_ARBITER_LABELS
-            value: "app=mongoarbiter"
+            value: "app={{ include "common.arbitername" $dot }}"
           - name: MONGODB_AUTH_DATABASE
             value: {{ .Values.auth.authdb | quote }}
           - name: MONGO_SIDECAR_UNHEALTHY_SECONDS
@@ -136,7 +139,7 @@ spec:
             value: {{ .Release.Namespace | quote }}
           {{- if .Values.tls.enabled }}
           - name: TLS_SELFSIGN
-            value: {{ .Values.tls.enabled | quote }}
+            value: {{ .Values.tls.selfsigned | quote }}
           - name: TLS_KEYFILE
             value: {{ .Values.tls.certfile | quote }}
             {{- if .Values.tls.ca_private }}
@@ -165,7 +168,7 @@ spec:
           {{- end }}
           {{- if .Values.addservicename  }}
           - name: KUBERNETES_MONGO_SERVICE_NAME
-            value: "mongo"
+            value: "{{ include "common.name" $dot }}"
           {{- end }}
           - name: MONGO_AUTH_ENABLED
             value: {{ .Values.auth.enabled | quote }}
@@ -214,7 +217,7 @@ spec:
       - name: exporter
         image: {{ .Values.exporter.image | quote }}
         imagePullPolicy: Always
-        args: ["--mongodb.uri={{ include "mongodb.mongodblocalurl" . }}"]
+        args: ["--mongodb.uri={{ include "mongodb.mongodblocalurl" $dot }}"]
         env:
           - name: MONGOD_EXPORTER_FLAGS
             value: {{ .Values.exporter.flags | quote }}
@@ -226,8 +229,8 @@ spec:
   - metadata:
       name: data
       labels:
-        app: mongo
-        service: mongo
+        app: {{ include "common.name" $dot }}
+        service: {{ include "common.name" $dot }}
       annotations:
     {{- if .Values.persistence.preserve }}
         helm.sh/resource-policy: "keep"
@@ -245,27 +248,27 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongoarbiter
+  name: {{ include "common.arbitername" $dot }}
 spec:
   selector:
     matchLabels:
-      app: mongoarbiter
-      service: mongo
+      app: {{ include "common.arbitername" $dot }}
+      service: {{ include "common.name" $dot }}
   replicas: {{ .Values.arbiter.replicas }}
-  serviceName: "mongoarbiter"
+  serviceName: "{{ include "common.arbitername" $dot }}"
   template:
     metadata:
       labels:
-        app: mongoarbiter
-        service: mongo
+        app: {{ include "common.arbitername" $dot }}
+        service: {{ include "common.name" $dot }}
     spec:
-      serviceAccountName: mongo-user
+      serviceAccountName: {{ include "common.name" $dot }}-user
       {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       containers:
-      - name: mongoarbiter
+      - name: {{ include "common.arbitername" $dot }}
         image: mongo
         imagePullPolicy: Always
         ports:
@@ -281,8 +284,8 @@ spec:
         - "/data/db/mongodb.key"
         {{- end }}
         {{- if .Values.tls.enabled }}
-        - "--tlsMode"
-        - "preferTLS"
+        - "--tlsMode" 
+        - {{ .Values.tls.mode | quote }}
         - "--tlsCertificateKeyFile"
         - {{ .Values.tls.certfile | quote }}
           {{- if .Values.tls.certpassword }}
@@ -319,6 +322,28 @@ spec:
             value: "1"
           - name: MONGO_AUTH_ENABLED
             value: {{ .Values.auth.enabled | quote }}
+          {{- if .Values.tls.enabled }}
+          - name: TLS_SELFSIGN
+            value: {{ .Values.tls.selfsigned | quote }}
+          - name: TLS_KEYFILE
+            value: {{ .Values.tls.certfile | quote }}
+            {{- if .Values.tls.ca_private }}
+          - name: TLS_CA_PRIVATE
+            value: {{ .Values.tls.ca_private | quote }}
+            {{- end }}
+            {{- if .Values.tls.ca_cert }}
+          - name: TLS_CA_CERT
+            value: {{ .Values.tls.ca_cert | quote }}
+            {{- end }}
+            {{- if .Values.tls.certpassword }}
+          - name: TLS_KEYPASSWORD
+            value: {{ .Values.tls.certpassword | quote }}
+            {{- end }}
+          - name: TLS_CAFILE
+            value: {{ .Values.tls.cafile | quote }}
+          - name: TLS_DNS_HOSTS
+            value: {{ .Values.tls.dns_hosts | quote }}
+          {{- end }}
           - name: MONGODB_KEYFILE
             value: "/data/db/mongodb.key"
           - name: MONGODB_KEYFILEUID
@@ -337,8 +362,8 @@ spec:
   - metadata:
       name: data
       labels:
-        app: mongoarbiter
-        service: mongo
+        app: {{ include "common.arbitername" $dot }}
+        service: {{ include "common.name" $dot }}
       annotations:
     {{- if .Values.persistence.preserve }}
         helm.sh/resource-policy: "keep"

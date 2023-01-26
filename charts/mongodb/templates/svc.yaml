@@ -1,14 +1,15 @@
+{{- $dot := . }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo
+  name: {{ include "common.name" $dot }}
   labels:
-    name: mongo
+    name: {{ include "common.name" $dot }}
 spec:
   clusterIP: None 
   selector:
-    service: mongo # add both mongo and mongoarbiter
-    # app: mongo
+    # service: {{ include "common.name" $dot }} # add both mongo and mongoarbiter
+    app: {{ include "common.name" $dot }} # only select mongo
   ports:
     - protocol: TCP
       port: 27017
@@ -21,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-{{ $mongocount }}
+  name: {{ include "common.name" $dot }}-{{ $mongocount }}
 spec:
   externalTrafficPolicy: Local
   {{- if ge (len $.Values.service.external) ($c) -}}
@@ -33,7 +34,7 @@ spec:
   type: {{ $.Values.service.type }}
   {{- end }}
   selector:
-    statefulset.kubernetes.io/pod-name: mongo-{{ $mongocount }}
+    statefulset.kubernetes.io/pod-name: {{ include "common.name" $dot }}-{{ $mongocount }}
   ports:
     - protocol: TCP
   {{- if ge (len $.Values.service.external) ($c) -}}
@@ -49,17 +50,16 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: mongo-{{ $mongocount }}
+  name: {{ include "common.name" $dot }}-{{ $mongocount }}
 spec:
   entryPoints:
   {{- range $.Values.ingress.entryPoints }}
     - {{ . | quote }}
   {{- end }}
   routes:
-  # - match: HostSNIRegexp(`mongo-{subdomain:[[:ascii:]]+}.{{$.Values.ingress.domainprefix}}`)
-  - match: HostSNI(`mongo-{{ $mongocount }}.{{$.Values.ingress.domainprefix}}`)
+  - match: HostSNI(`{{ include "common.name" $dot }}-{{ $mongocount }}.{{$.Values.ingress.domainprefix}}`)
     services:
-    - name: mongo-{{ $mongocount }}
+    - name: {{ include "common.name" $dot }}-{{ $mongocount }}
       port: 27017
     {{- if $.Values.ingress.passthrough }}
   tls:

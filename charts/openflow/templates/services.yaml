@@ -33,3 +33,21 @@ spec:
       name: rabbitmq-mgnt
   selector:
     role: rabbitmq
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-grpc
+  labels:
+    name: api-grpc
+  # annotations:  
+  #   traefik.ingress.kubernetes.io/service.serversscheme: h2c
+spec:
+  type: NodePort
+#  sessionAffinity: ClientIP
+  ports:
+    - port: {{ .Values.grpc.internalport }}
+      name: grpc
+  selector:
+    role: api
+---

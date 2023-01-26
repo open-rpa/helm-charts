@@ -1,8 +1,9 @@
+{{- $dot := . }}
 {{- if eq .Values.snap.snapshotclass.create true }}
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
-  name: mongo-snap-{{.Release.Namespace}}
+  name: {{ include "common.snapname" $dot }}
 driver: {{ .Values.snap.snapshotclass.driver }}
 deletionPolicy: Delete
 {{- end }}
@@ -11,7 +12,7 @@ deletionPolicy: Delete
 apiVersion: snapscheduler.backube/v1
 kind: SnapshotSchedule
 metadata:
-  name: mongo
+  name: {{ include "common.snapname" $dot }}
 spec:
   # A LabelSelector to control which PVCs should be snapshotted
   {{- if .Values.snap.claimSelector }}
@@ -33,7 +34,7 @@ spec:
     {{- if .Values.snap.snapshotClassName }}
     snapshotClassName: {{ .Values.snap.snapshotClassName }}
     {{- else if eq .Values.snap.snapshotclass.create true }}
-    snapshotClassName: mongo-snap-{{.Release.Namespace}}
+    snapshotClassName: {{ include "common.snapname" $dot }}
     {{- end }}
 {{- end }}
 {{- if .Values.snap.restoresnap }}
@@ -41,7 +42,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongorestore
+  name: {{ include "common.snapname" $dot }}restore
 spec:
   dataSource:
     name: {{ .Values.snap.restoresnap }}
@@ -59,31 +60,18 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: mongorestore
+  name: {{ include "common.snapname" $dot }}restore
 spec:
   containers:
-  - name: mongo
+  - name: {{ include "common.snapname" $dot }}restore
     image: mongo
     ports:
     - containerPort: 27017
     volumeMounts:
-    - name: mongo-conf
-      mountPath: /data/conf
     - name: data
       mountPath: /data/db
   volumes:
-    - name: mongo-conf
-      configMap:
-        name: mongo-conf-map
-        defaultMode: 0600
-        items:
-          - key: config.sh
-            path: config.sh
-          - key: mongodb.key
-            path: mongodb.key
-          - key: init-mongo.js
-            path: init-mongo.js
     - name: data
       persistentVolumeClaim:
-        claimName: mongorestore
+        claimName: {{ include "common.snapname" $dot }}restore
 {{- end }}
