@@ -48,9 +48,12 @@ spec:
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
       - name: {{ include "common.name" $dot }}
-        image: mongo
+        image: {{ .Values.image | quote }}
         imagePullPolicy: Always
         ports:
           - containerPort: 27017
@@ -118,7 +121,7 @@ spec:
         - name: data
           mountPath: /data/db
       - name: sidecar
-        image: openiap/mongo-k8s-sidecar
+        image: {{ .Values.sidecarimage | quote }}
         imagePullPolicy: Always
 {{- if .Values.debugsidecar }}
         command: ["/bin/sh"]
@@ -267,9 +270,12 @@ spec:
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
       - name: {{ include "common.arbitername" $dot }}
-        image: mongo
+        image: {{ .Values.image | quote }}
         imagePullPolicy: Always
         ports:
           - containerPort: 27017
@@ -311,7 +317,7 @@ spec:
         - name: data
           mountPath: /data/db
       - name: sidecar
-        image: openiap/mongo-k8s-sidecar
+        image: {{ .Values.sidecarimage | quote }}
         imagePullPolicy: Always
 {{- if .Values.debugsidecar }}
         command: ["/bin/sh"]

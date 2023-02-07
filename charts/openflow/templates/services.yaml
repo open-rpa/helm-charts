@@ -40,11 +40,12 @@ metadata:
   name: api-grpc
   labels:
     name: api-grpc
-  # annotations:  
-  #   traefik.ingress.kubernetes.io/service.serversscheme: h2c
+  annotations:  
+    traefik.ingress.kubernetes.io/service.serversscheme: h2c
 spec:
-  type: NodePort
+  # type: NodePort
 #  sessionAffinity: ClientIP
+  # clusterIP: None 
   ports:
     - port: {{ .Values.grpc.internalport }}
       name: grpc

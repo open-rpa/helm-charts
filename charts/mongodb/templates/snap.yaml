@@ -62,9 +62,16 @@ kind: Pod
 metadata:
   name: {{ include "common.snapname" $dot }}restore
 spec:
+  {{- if .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml .Values.nodeSelector | nindent 12 }}
+  {{- end }}
+  {{- if .Values.imagePullSecrets }}
+  imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+  {{- end }}      
   containers:
   - name: {{ include "common.snapname" $dot }}restore
-    image: mongo
+    image: {{ .Values.image | quote }}
     ports:
     - containerPort: 27017
     volumeMounts:

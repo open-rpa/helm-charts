@@ -269,6 +269,9 @@ spec:
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - command:
         {{- if .Values.exporter.command }}

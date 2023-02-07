@@ -31,6 +31,9 @@ spec:
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - image: {{ .Values.grafana.image }}
           imagePullPolicy: Always

@@ -41,9 +41,12 @@ spec:
       {{- if .Values.nodeSelector }}
       nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: zipkin
-          image: openzipkin/zipkin
+          image: {{ .Values.zipkin.image | quote }}
           imagePullPolicy: IfNotPresent
           resources:
             {{- toYaml .Values.zipkin.resources | nindent 12 }}

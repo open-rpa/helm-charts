@@ -10,12 +10,18 @@ certificate:
   certmain: # to predefine certificate name, set this, usefull if using wildcard certificates, for instance: demo.openiap.io
   certsans: # set subjecter alternative names in the certificate. for instance: *.demo.openiap.io
 nodeSelector: {} # remeber to set under mongodb too
+imagePullSecrets: 
 port: # if the external port to access this is differente from 80/443, then set this the port users will access this instance on
 grpc:
   exposed: false
   internalport: 50051
 openflow:
   image: openiap/openflow # set image for api deployment
+  prestop:
+    enabled: false
+    command: "wget http://localhost:3000/heapdump"
+  heapdump_onstop: false
+  terminationGracePeriodSeconds: 15
   deploymentstrategy: Recreate # Recreate or RollingUpdate
   sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
   # nodered_image: openiap/nodered
@@ -26,6 +32,7 @@ openflow:
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
   cache_store_type: memory # Default memory or redis
+  redisimage: redis
   cache_store_ttl_seconds: # Items expire from store after this amount of seconds
   cache_store_max: # Max items to store when using memory store
   cache_store_redis_password: # When store type is "redis" use this password for redis
@@ -251,6 +258,7 @@ openflow:
   wapid_key: 
   wapid_mail: 
 rabbitmq:
+  image: rabbitmq:3.8.3-management
   exposed: false
   default_user: admin
   # vm_memory_high_watermark: 1GB
@@ -292,6 +300,7 @@ loki:
     storageclass:
   nodeSelector: {}
 prometheus: # deprecated, we use victoriametrics now.
+  image: prom/prometheus
   enabled: false
   exposed: false
   persistence:
@@ -325,6 +334,8 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
     insecure_skip_verify: true # whether to skip verifying the certificate or not
     data_prepper_host: 
   kubestatemetrics:
+    image: quay.io/coreos/kube-state-metrics
+    exporterimage: cloudhack/metrics-server-exporter
     enabled: false
     deploy: false
     exporttarget: metrics-server-exporter.kube-system.svc.cluster.local:8000
@@ -417,6 +428,7 @@ jaeger: # for visualizing and optionally also saving all spans, we can use jaege
   # esLookback:
   #   enabled: false
 zipkin: # for visualizing and optionally also saving all spans, we can use zipkin.
+  image: openzipkin/zipkin
   enabled: false
   exposed: false # expose in ingress
   selftracing: false # log spans to self, for troubleshooting zipkin it self
@@ -433,6 +445,7 @@ cassandra:
 victoria-metrics-cluster:
   enabled: false
 victoriametrics: # for exposing all all metric data for grafana, optionally also saving all metric data, we use victoriametrics
+  image: victoriametrics/victoria-metrics
   enabled: false
   exposed: false
   # insertendpoint: http://openflow-victoria-metrics-cluster-vminsert.stats.svc.cluster.local:8480/insert/0/prometheus/
@@ -456,5 +469,6 @@ mongodb:
   persistence:
     size: 20Gi
 rediscommander:
+  image: rediscommander/redis-commander
   enabled: false
   exposed: false

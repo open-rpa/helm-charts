@@ -320,6 +320,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
     ingress.kubernetes.io/protocol: h2c
+    # ingress.kubernetes.io/protocol: h2c
 {{- if eq .Values.protocol "https" }}
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
   {{- if .Values.certificate.tlsSecret }}
@@ -367,6 +368,6 @@ spec:
       kind: Rule
       services:
         - name: api-grpc
-          port: 4317
+          port: {{ .Values.grpc.internalport }}
           scheme: h2c
 {{- end }}

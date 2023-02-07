@@ -56,9 +56,16 @@ spec:
         k8s-app: metrics-server-exporter
     spec:
       serviceAccountName: metrics-server-exporter
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: metrics-server-exporter
-          image: cloudhack/metrics-server-exporter
+          image: {{ .Values.exporter.kubestatemetrics.exporterimage | quote }}
           # command: ["python", "app.py", "--insecure-tls"]
           ports:
             - containerPort: 8000
@@ -228,9 +235,16 @@ spec:
         k8s-app: kube-state-metrics
     spec:
       serviceAccountName: kube-state-metrics
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: kube-state-metrics
-          image: quay.io/coreos/kube-state-metrics
+          image: {{ .Values.exporter.kubestatemetrics.image | quote }}
           ports:
             - containerPort: 8080
               name: stats

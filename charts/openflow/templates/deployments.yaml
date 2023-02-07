@@ -42,10 +42,20 @@ spec:
       {{- if .Values.openflow.topologySpreadConstraints }}
       topologySpreadConstraints:
         {{- toYaml .Values.openflow.topologySpreadConstraints | nindent 12 }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
       {{- end }}      
       containers:
         - name: api
           image: {{ default "openiap/openflow" .Values.openflow.image | quote }}
+      {{- if .Values.openflow.prestop.enabled }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c", {{ .Values.openflow.prestop.command | quote }}]
+      {{- end }}
+          terminationGracePeriodSeconds: {{ .Values.openflow.terminationGracePeriodSeconds  }}
           imagePullPolicy: Always
           resources:
             {{- toYaml .Values.openflow.resources | nindent 12 }}
@@ -86,6 +96,8 @@ spec:
             timeoutSeconds: {{ .Values.openflow.startupProbe.timeoutSeconds }}
 {{- end }}
           env:
+            - name: heapdump_onstop
+              value: {{ .Values.openflow.heapdump_onstop | quote }}
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
             - name: otel_trace_dashboardauth
@@ -467,10 +479,12 @@ spec:
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: rabbitmq
-          #image: rabbitmq:3-management
-          image: rabbitmq:3.8.3-management
+          image: {{ .Values.rabbitmq.image | quote }}
           resources:
             {{- toYaml .Values.rabbitmq.resources | nindent 12 }}
           ports:

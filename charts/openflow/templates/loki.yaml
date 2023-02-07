@@ -24,6 +24,9 @@ spec:
       nodeSelector:
         {{- toYaml .Values.loki.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - image: {{ .Values.loki.image }}
           imagePullPolicy: Always

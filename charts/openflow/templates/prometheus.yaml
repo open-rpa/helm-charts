@@ -18,11 +18,14 @@ spec:
       {{- if .Values.nodeSelector }}
       nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       securityContext:
         fsGroup: 65534
       containers:
         - name: prometheus-cont
-          image: prom/prometheus
+          image: {{ .Values.prometheus.image | quote }}
           resources:
             {{- toYaml .Values.prometheus.resources | nindent 12 }}
           args:

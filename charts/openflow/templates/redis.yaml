@@ -21,9 +21,12 @@ spec:
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: redis
-          image: redis
+          image: {{ .Values.openflow.redisimage | quote }}
           imagePullPolicy: Always
           resources:
             {{- toYaml .Values.openflow.resources | nindent 12 }}
@@ -71,9 +74,12 @@ spec:
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
       {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      {{- end }}      
       containers:
         - name: rediscommander
-          image: rediscommander/redis-commander
+          image: {{ .Values.rediscommander.image | quote }}
           imagePullPolicy: Always
           resources:
             {{- toYaml .Values.openflow.resources | nindent 12 }}
