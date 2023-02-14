@@ -46,6 +46,7 @@ spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
       {{- end }}      
+      terminationGracePeriodSeconds: {{ .Values.openflow.terminationGracePeriodSeconds  }}
       containers:
         - name: api
           image: {{ default "openiap/openflow" .Values.openflow.image | quote }}
@@ -55,7 +56,6 @@ spec:
               exec:
                 command: ["/bin/sh","-c", {{ .Values.openflow.prestop.command | quote }}]
       {{- end }}
-          terminationGracePeriodSeconds: {{ .Values.openflow.terminationGracePeriodSeconds  }}
           imagePullPolicy: Always
           resources:
             {{- toYaml .Values.openflow.resources | nindent 12 }}
