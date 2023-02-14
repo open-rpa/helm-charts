@@ -44,7 +44,8 @@ spec:
         {{- toYaml .Values.openflow.topologySpreadConstraints | nindent 12 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       terminationGracePeriodSeconds: {{ .Values.openflow.terminationGracePeriodSeconds  }}
       containers:
@@ -480,7 +481,8 @@ spec:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       containers:
         - name: rabbitmq
