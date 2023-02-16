@@ -241,6 +241,8 @@ spec:
               value: {{ .Values.openflow.websocket_max_package_count | quote }}
             - name: nodered_images
               value: {{ .Values.openflow.nodered_images | quote }}
+            - name: agent_images
+              value: {{ .Values.openflow.agent_images | quote }}
             - name: amqp_force_queue_prefix
               value: {{ .Values.openflow.amqp_force_queue_prefix | quote }}
             - name: amqp_force_exchange_prefix
