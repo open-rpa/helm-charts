@@ -49,7 +49,8 @@ spec:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       containers:
       - name: {{ include "common.name" $dot }}
@@ -240,10 +241,10 @@ spec:
     {{- end }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      resources:
     {{- if .Values.persistence.storageclass }}
-        storageClassName: {{ .Values.persistence.storageclass | quote }}
+      storageClassName: {{ .Values.persistence.storageclass | quote }}
     {{- end }}
+      resources:
         requests:
           storage: {{ .Values.persistence.size }}
 ---
@@ -271,7 +272,8 @@ spec:
         {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       containers:
       - name: {{ include "common.arbitername" $dot }}

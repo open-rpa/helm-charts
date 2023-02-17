@@ -44,7 +44,8 @@ spec:
         {{- toYaml .Values.openflow.topologySpreadConstraints | nindent 12 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       terminationGracePeriodSeconds: {{ .Values.openflow.terminationGracePeriodSeconds  }}
       containers:
@@ -240,6 +241,8 @@ spec:
               value: {{ .Values.openflow.websocket_max_package_count | quote }}
             - name: nodered_images
               value: {{ .Values.openflow.nodered_images | quote }}
+            - name: agent_images
+              value: {{ .Values.openflow.agent_images | quote }}
             - name: amqp_force_queue_prefix
               value: {{ .Values.openflow.amqp_force_queue_prefix | quote }}
             - name: amqp_force_exchange_prefix
@@ -480,7 +483,8 @@ spec:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
-      imagePullSecrets: {{ .Values.imagePullSecrets | quote }}
+      imagePullSecrets: 
+        {{- toYaml .Values.imagePullSecrets | nindent 12 }}
       {{- end }}      
       containers:
         - name: rabbitmq
