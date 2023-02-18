@@ -28,6 +28,14 @@ openflow:
   # set possible image to be used when deploying new Nodered deployments
   nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
   agent_images: 
+  oidc_config:
+  agent_oidc_client_id:
+  agent_oidc_client_secret:
+  agent_oidc_userinfo_endpoint:
+  agent_oidc_issuer:
+  agent_oidc_authorization_endpoint:
+  agent_oidc_token_endpoint:
+
   # What url to show inside the robot's getting started page
   getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up

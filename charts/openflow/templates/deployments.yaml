@@ -243,6 +243,20 @@ spec:
               value: {{ .Values.openflow.nodered_images | quote }}
             - name: agent_images
               value: {{ .Values.openflow.agent_images | quote }}
+            - name: oidc_config
+              value: {{ .Values.openflow.oidc_config | quote }}
+            - name: agent_oidc_client_id
+              value: {{ .Values.openflow.agent_oidc_client_id | quote }}
+            - name: agent_oidc_client_secret
+              value: {{ .Values.openflow.agent_oidc_client_secret | quote }}
+            - name: agent_oidc_userinfo_endpoint
+              value: {{ .Values.openflow.agent_oidc_userinfo_endpoint | quote }}
+            - name: agent_oidc_issuer
+              value: {{ .Values.openflow.agent_oidc_issuer | quote }}
+            - name: agent_oidc_authorization_endpoint
+              value: {{ .Values.openflow.agent_oidc_authorization_endpoint | quote }}
+            - name: agent_oidc_token_endpoint
+              value: {{ .Values.openflow.agent_oidc_token_endpoint | quote }}
             - name: amqp_force_queue_prefix
               value: {{ .Values.openflow.amqp_force_queue_prefix | quote }}
             - name: amqp_force_exchange_prefix
