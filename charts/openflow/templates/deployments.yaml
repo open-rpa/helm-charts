@@ -431,57 +431,63 @@ spec:
             - name: expected_max_roles
               value: {{ .Values.openflow.expected_max_roles | quote }}
             - name: max_recursive_group_depth
-              value: {{ .Values.openflow.max_recursive_group_depth | quote }}              
+              value: {{ .Values.openflow.max_recursive_group_depth | quote }}
             - name: decorate_roles_fetching_all_roles
-              value: {{ .Values.openflow.decorate_roles_fetching_all_roles | quote }}              
+              value: {{ .Values.openflow.decorate_roles_fetching_all_roles | quote }}
             - name: roles_cached_in_seconds
-              value: {{ .Values.openflow.roles_cached_in_seconds | quote }}              
+              value: {{ .Values.openflow.roles_cached_in_seconds | quote }}
             - name: validate_user_form
-              value: {{ .Values.openflow.validate_user_form | quote }}              
+              value: {{ .Values.openflow.validate_user_form | quote }}
             - name: auto_hourly_housekeeping
-              value: {{ .Values.openflow.auto_hourly_housekeeping | quote }}              
+              value: {{ .Values.openflow.auto_hourly_housekeeping | quote }}
             - name: housekeeping_update_usage_hourly
-              value: {{ .Values.openflow.housekeeping_update_usage_hourly | quote }}              
+              value: {{ .Values.openflow.housekeeping_update_usage_hourly | quote }}
             - name: housekeeping_update_usersize_hourly
-              value: {{ .Values.openflow.housekeeping_update_usersize_hourly | quote }}              
+              value: {{ .Values.openflow.housekeeping_update_usersize_hourly | quote }}
             - name: housekeeping_skip_collections
-              value: {{ .Values.openflow.housekeeping_skip_collections | quote }}              
+              value: {{ .Values.openflow.housekeeping_skip_collections | quote }}
             - name: workitem_queue_monitoring_enabled
-              value: {{ .Values.openflow.workitem_queue_monitoring_enabled | quote }}              
+              value: {{ .Values.openflow.workitem_queue_monitoring_enabled | quote }}
             - name: workitem_queue_monitoring_interval
-              value: {{ .Values.openflow.workitem_queue_monitoring_interval | quote }}              
+              value: {{ .Values.openflow.workitem_queue_monitoring_interval | quote }}
             - name: stripe_force_vat
-              value: {{ .Values.openflow.stripe_force_vat | quote }}              
+              value: {{ .Values.openflow.stripe_force_vat | quote }}
             - name: stripe_force_checkout
-              value: {{ .Values.openflow.stripe_force_checkout | quote }}              
+              value: {{ .Values.openflow.stripe_force_checkout | quote }}
             - name: DEBUG
-              value: {{ .Values.openflow.debug | quote }}              
+              value: {{ .Values.openflow.debug | quote }}
             - name: HTTP_PROXY
-              value: {{ .Values.openflow.HTTP_PROXY | quote }}              
+              value: {{ .Values.openflow.HTTP_PROXY | quote }}
             - name: HTTPS_PROXY
-              value: {{ .Values.openflow.HTTPS_PROXY | quote }}              
+              value: {{ .Values.openflow.HTTPS_PROXY | quote }}
             - name: NO_PROXY
-              value: {{ .Values.openflow.NO_PROXY | quote }}              
+              value: {{ .Values.openflow.NO_PROXY | quote }}
+            - name: http_proxy
+              value: {{ .Values.openflow.HTTP_PROXY | quote }}
+            - name: https_proxy
+              value: {{ .Values.openflow.HTTPS_PROXY | quote }}
+            - name: no_proxy
+              value: {{ .Values.openflow.NO_PROXY | quote }}
             - name: agent_HTTP_PROXY
-              value: {{ .Values.openflow.agent_HTTP_PROXY | quote }}              
+              value: {{ .Values.openflow.agent_HTTP_PROXY | quote }}
             - name: agent_HTTPS_PROXY
-              value: {{ .Values.openflow.agent_HTTPS_PROXY | quote }}              
+              value: {{ .Values.openflow.agent_HTTPS_PROXY | quote }}
             - name: agent_NO_PROXY
-              value: {{ .Values.openflow.agent_NO_PROXY | quote }}              
+              value: {{ .Values.openflow.agent_NO_PROXY | quote }}
             - name: shorttoken_expires_in
-              value: {{ .Values.openflow.shorttoken_expires_in | quote }}              
+              value: {{ .Values.openflow.shorttoken_expires_in | quote }}
             - name: longtoken_expires_in
-              value: {{ .Values.openflow.longtoken_expires_in | quote }}              
+              value: {{ .Values.openflow.longtoken_expires_in | quote }}
             - name: downloadtoken_expires_in
-              value: {{ .Values.openflow.downloadtoken_expires_in | quote }}              
+              value: {{ .Values.openflow.downloadtoken_expires_in | quote }}
             - name: personalnoderedtoken_expires_in
-              value: {{ .Values.openflow.personalnoderedtoken_expires_in | quote }}              
+              value: {{ .Values.openflow.personalnoderedtoken_expires_in | quote }}
             - name: wapid_pub
-              value: {{ .Values.openflow.wapid_pub | quote }}              
+              value: {{ .Values.openflow.wapid_pub | quote }}
             - name: wapid_key
-              value: {{ .Values.openflow.wapid_key | quote }}              
+              value: {{ .Values.openflow.wapid_key | quote }}
             - name: wapid_mail
-              value: {{ .Values.openflow.wapid_mail | quote }}              
+              value: {{ .Values.openflow.wapid_mail | quote }}
 ---
 apiVersion: apps/v1
 kind: Deployment
