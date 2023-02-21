@@ -99,6 +99,10 @@ spec:
           env:
             - name: heapdump_onstop
               value: {{ .Values.openflow.heapdump_onstop | quote }}
+            - name: use_openshift_routes
+              value: {{ .Values.openflow.use_openshift_routes | quote }}
+            - name: USE_KUBERNETES
+              value: "true"
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
             - name: otel_trace_dashboardauth
@@ -277,10 +281,8 @@ spec:
               value: {{ .Release.Namespace | quote }}
             - name: allow_personal_nodered
               value: {{ .Values.openflow.allow_personal_nodered | quote }}
-            - name: auto_create_personal_nodered_group
-              value: {{ .Values.openflow.auto_create_personal_nodered_group | quote }}
-            - name: auto_create_personal_noderedapi_group
-              value: {{ .Values.openflow.auto_create_personal_noderedapi_group | quote }}              
+            - name: agent_domain_schema
+              value: {{ .Values.openflow.agent_domain_schema | quote }}
             - name: nodered_domain_schema
               value: "$nodered_id$.{{ $domain }}"
             - name: protocol
@@ -460,6 +462,12 @@ spec:
               value: {{ .Values.openflow.HTTPS_PROXY | quote }}              
             - name: NO_PROXY
               value: {{ .Values.openflow.NO_PROXY | quote }}              
+            - name: agent_HTTP_PROXY
+              value: {{ .Values.openflow.agent_HTTP_PROXY | quote }}              
+            - name: agent_HTTPS_PROXY
+              value: {{ .Values.openflow.agent_HTTPS_PROXY | quote }}              
+            - name: agent_NO_PROXY
+              value: {{ .Values.openflow.agent_NO_PROXY | quote }}              
             - name: shorttoken_expires_in
               value: {{ .Values.openflow.shorttoken_expires_in | quote }}              
             - name: longtoken_expires_in

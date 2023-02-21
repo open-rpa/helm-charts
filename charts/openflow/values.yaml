@@ -20,6 +20,7 @@ openflow:
   prestop:
     enabled: false
     command: "wget http://localhost:3000/heapdump"
+  use_openshift_routes: false
   heapdump_onstop: false
   terminationGracePeriodSeconds: 15
   deploymentstrategy: Recreate # Recreate or RollingUpdate
@@ -238,9 +239,14 @@ openflow:
   personalnoderedtoken_expires_in: # default: 365d
   otel_debug_log: false
   debug: # Configure logging for the debug plugin
-  NO_PROXY: # Set NO_PROXY for all api and nodered nodes
-  HTTP_PROXY: # Set HTTP_PROXY for all api and nodered nodes
-  HTTPS_PROXY: # Set HTTPS_PROXY for all api and nodered nodes
+  NO_PROXY: # Set NO_PROXY for all api and agents
+  HTTP_PROXY: # Set HTTP_PROXY for all api and agents
+  HTTPS_PROXY: # Set HTTPS_PROXY for all api and agents
+  agent_NO_PROXY: # Set NO_PROXY for all agents only
+  agent_HTTP_PROXY: # Set HTTP_PROXY for all agents only
+  agent_HTTPS_PROXY: # Set HTTPS_PROXY for all agents only
+  agent_domain_schema: # default is $slug$.domain ( for instance $slug$.app.openiap.io )
+  
   # limits:
   #   #   cpu: "1"
   #   #memory: 1Gi
