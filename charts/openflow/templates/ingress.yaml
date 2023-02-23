@@ -3,6 +3,23 @@
 {{- if .Values.apidomain }}
   {{- $apidomain = print .Values.apidomain "." (required "domainsuffix required!" .Values.domainsuffix) }}
 {{- end }}
+{{- if eq .Values.use_openshift_routes true }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: openflow-route
+spec:
+  host: "{{ $apidomain }}"
+  port:
+    targetPort: 3000 
+  to:
+    kind: Service
+    name: api
+  {{- if eq .Values.protocol "https" }}
+  tls:
+    termination: edge
+  {{- end }}
+{{- else }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -42,7 +59,7 @@ spec:
                 name: api
                 port:
                   name: www
-{{- if eq .Values.rabbitmq.exposed true }}
+  {{- if eq .Values.rabbitmq.exposed true }}
     - host: "mq.{{ $domain }}"
       http:
         paths:
@@ -53,8 +70,8 @@ spec:
                 name: rabbitmq
                 port:
                   name: rabbitmq-mgnt
-{{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
+  {{- end }}
+  {{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
     - host: "grafana.{{ $domain }}"
       http:
         paths:
@@ -65,8 +82,8 @@ spec:
                 name: grafana
                 port:
                   name: grafana
-{{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
+  {{- end }}
+  {{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
     - host: "victoria.{{ $domain }}"
       http:
         paths:
@@ -77,51 +94,13 @@ spec:
                 name: victoriametrics
                 port:
                   name: victoriametrics
-{{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.prometheus.enabled true) (eq .Values.prometheus.exposed true) }}
-    # - host: "prometheus.{{ $domain }}"
-    #   http:
-    #     paths:
-    #       - path: /
-    #         backend:
-    #           serviceName: prometheus
-    #           servicePort: prometheus
-{{- end }}
-{{- if and .Values.openflow.license_key (eq .Values.exporter.enabled true) (eq .Values.exporter.exposed true) }}
-    # not used, we use IngressRoute instead ( defined in otel template )
-    # - host: "exporter.{{ $domain }}"
-    #   http:
-    #     paths:
-    #       - path: /
-    #         pathType: ImplementationSpecific
-    #         backend:
-    #           service:
-    #             name: otel-collector
-    #             port:
-    #               name: otlphttp
-    # - host: "otel.{{ $domain }}"
-    #   http:
-    #     paths:
-    #       - path: /
-    #         pathType: ImplementationSpecific
-    #         backend:
-    #           service:
-    #             name: otel-collector
-    #             port:
-    #               name: collector
-    # #              number: 55681
-    # # - host: "metrics.{{ $domain }}"
-    # #   http:
-    # #     paths:
-    # #       - path: /
-    # #         backend:
-    # #           serviceName: otel-collector
-    # #           servicePort: prometheus
-{{- end }}
-{{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
+  {{- end }}
+  {{- if and .Values.certificate.tlsSecret (eq .Values.protocol "https") }}
   tls:
     - secretName: {{ .Values.certificate.tlsSecret | quote }}
+  {{- end }}
 {{- end }}
+
 {{- if (eq .Values.openflow.traefik_ipblock true) }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -252,7 +231,11 @@ spec:
 {{- end }}
 {{- end }}
 ---
-{{ $ingress := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress") }}
+
+{{- if eq .Values.use_openshift_routes true }}
+{{- else }}
+
+  {{ $ingress := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress") }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -289,13 +272,13 @@ spec:
                 name: api
                 port:
                   name: www
-{{ if $ingress }}
-  {{- range $k, $v := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress").spec.rules }}
-    {{ if ne $k 0 }}
+  {{ if $ingress }}
+    {{- range $k, $v := (lookup "networking.k8s.io/v1" "Ingress" .Release.Namespace "useringress").spec.rules }}
+      {{ if ne $k 0 }}
     - host: {{ $v.host }}
       http:
         paths:
-        {{- range $k1, $v1 := $v.http.paths }}
+          {{- range $k1, $v1 := $v.http.paths }}
           - path: {{ $v1.path }}
             pathType: ImplementationSpecific
             backend:
@@ -303,16 +286,16 @@ spec:
                 name: {{$v1.backend.service.name }} 
                 port:
                   name: www
-        {{- end }}
+          {{- end }}
+      {{ end }}
     {{ end }}
   {{ end }}
-{{ end }}
-{{- if .Values.certificate.tlsSecret }}
+  {{- if .Values.certificate.tlsSecret }}
   tls:
     - secretName: {{ .Values.certificate.tlsSecret }}
-{{- end }}
+  {{- end }}
 ---
-{{- if eq .Values.grpc.exposed true }}
+  {{- if eq .Values.grpc.exposed true }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -321,27 +304,27 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     ingress.kubernetes.io/protocol: h2c
     # ingress.kubernetes.io/protocol: h2c
-{{- if eq .Values.protocol "https" }}
+  {{- if eq .Values.protocol "https" }}
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
-  {{- if .Values.certificate.tlsSecret }}
+    {{- if .Values.certificate.tlsSecret }}
     traefik.ingress.kubernetes.io/router.tls: "true"
-  {{- end }}
-  {{- if .Values.certificate.certresolver }}
+    {{- end }}
+    {{- if .Values.certificate.certresolver }}
     traefik.ingress.kubernetes.io/router.tls.certresolver: {{ .Values.certificate.certresolver | quote }}
     traefik.ingress.kubernetes.io/router.tls: "true"
-  {{- end }}
-  {{- if .Values.certificate.certmain }}
+    {{- end }}
+    {{- if .Values.certificate.certmain }}
     traefik.ingress.kubernetes.io/router.tls.domains.0.main: {{ .Values.certificate.certmain | quote }}
-  {{- end }}
-  {{- if .Values.certificate.certsans }}
+    {{- end }}
+    {{- if .Values.certificate.certsans }}
     traefik.ingress.kubernetes.io/router.tls.domains.0.sans: {{ .Values.certificate.certsans | quote }}
-  {{- end }}
-{{- else }}
+    {{- end }}
+  {{- else }}
     traefik.ingress.kubernetes.io/router.entrypoints: web
-{{- end }}
-{{- if (eq .Values.openflow.traefik_ipblock true) }}
+  {{- end }}
+  {{- if (eq .Values.openflow.traefik_ipblock true) }}
     traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-ipblock@kubernetescrd"
-{{- end }}
+  {{- end }}
 spec:
   rules:
     - host: "grpc.{{ $apidomain }}"
@@ -370,4 +353,7 @@ spec:
         - name: api-grpc
           port: {{ .Values.grpc.internalport }}
           scheme: h2c
+  {{- end }}
+
 {{- end }}
+
