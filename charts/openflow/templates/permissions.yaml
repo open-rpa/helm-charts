@@ -55,13 +55,37 @@ rules:
   resources:
   - routes
   verbs:
+  - create
+  - delete
   - get
   - list
-  - watch
-  - create
-  - update
   - patch
+  - patch
+  - watch
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes/custom-host
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - routes
+  verbs:
+  - create
   - delete
+  - get
+  - list
+  - patch
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - routes/custom-host
+  verbs:
+  - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
