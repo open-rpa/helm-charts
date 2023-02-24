@@ -28,7 +28,7 @@ openflow:
   # nodered_image: openiap/nodered
   # set possible image to be used when deploying new Nodered deployments
   nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
-  agent_images: 
+  agent_images: '[{"name":"nodejs", "image":"openiap/nodeagent"}, {"name":"nodejs chrome", "image":"openiap/nodechromiumagent"}, {"name":"NodeRED", "image":"openiap/noderedagent", "port": 3000}, {"name":"DotNet 6", "image":"openiap/dotnetagent"}, {"name":"python", "image":"openiap/pyagent"}, {"name":"python chrome", "image":"openiap/pychromiumagent"}, {"name":"Grafana Instance", "image":"openiap/grafana", "port": 3000, "volumes": [{"type": "pvc", "name": "data", "mountpath": "/var/lib/grafana", "storageclass": "standard", "size": "1Gi"}] }]'
   oidc_config:
   agent_oidc_client_id:
   agent_oidc_client_secret:
