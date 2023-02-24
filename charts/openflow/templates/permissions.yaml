@@ -72,6 +72,7 @@ rules:
   - ""
   resources:
   - routes
+  - persistentvolumeclaims
   verbs:
   - create
   - delete
