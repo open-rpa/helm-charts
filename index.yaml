@@ -187,6 +187,29 @@ entries:
     version: 0.0.1
   openflow:
   - apiVersion: v2
+    appVersion: 1.5.0
+    created: "2023-04-23T11:33:59.226347694+02:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://open-rpa.github.io/helm-charts/
+      version: x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    - condition: victoria-metrics-cluster.enabled
+      name: victoria-metrics-cluster
+      repository: https://victoriametrics.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: 68bff0dccba9a319d3f768499787d8c05b8b7695b0b6d704ebf82ef86a4290f8
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.113/openflow-0.1.113.tgz
+    version: 0.1.113
+  - apiVersion: v2
     appVersion: 1.4.36
     created: "2023-02-07T17:22:50.777430789+01:00"
     dependencies:
@@ -1635,4 +1658,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2023-02-07T17:22:50.778148928+01:00"
+generated: "2023-04-23T11:33:59.226884054+02:00"
