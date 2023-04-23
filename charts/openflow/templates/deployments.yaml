@@ -213,6 +213,8 @@ spec:
               value: {{ .Values.openflow.enable_web_tours | quote }}
             - name: enable_nodered_tours
               value: {{ .Values.openflow.enable_nodered_tours | quote }}
+            - name: grafana_url
+              value: {{ .Values.openflow.grafana_url | quote }}
             - name: ping_clients_interval
               value: {{ .Values.openflow.ping_clients_interval | quote }}
             - name: license_key
@@ -282,15 +284,17 @@ spec:
             - name: allow_personal_nodered
               value: {{ .Values.openflow.allow_personal_nodered | quote }}
             - name: agent_domain_schema
-              value: {{ .Values.openflow.agent_domain_schema | quote }}
+              value: {{ default (print "$slug$." $domain) .Values.openflow.agent_domain_schema | quote }}
             - name: nodered_domain_schema
-              value: "$nodered_id$.{{ $domain }}"
+              value: {{ default (print "$nodered_id$." $domain) .Values.openflow.nodered_domain_schema | quote }}
             - name: protocol
               value: {{ .Values.protocol | quote }}
             - name: port
               value: {{ .Values.openflow.port | quote }}
             - name: skip_history_collections
               value: {{ .Values.openflow.skip_history_collections | quote }}
+            - name: history_delta_count
+              value: {{ .Values.openflow.history_delta_count | quote }}
             - name: tls_passphrase
               value: {{ default "" .Values.openflow.tls_passphrase | quote }}
             - name: auto_create_users
