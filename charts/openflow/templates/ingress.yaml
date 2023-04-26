@@ -337,6 +337,18 @@ spec:
                 name: api-grpc
                 port:
                   name: grpc
+  {{- if (ne $apidomain $domain) }}
+    - host: "grpc.{{ $domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-grpc
+                port:
+                  name: grpc
+  {{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
