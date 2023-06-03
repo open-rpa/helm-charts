@@ -105,6 +105,12 @@ spec:
               value: "true"
             - name: getting_started_url
               value: {{ .Values.openflow.getting_started_url | quote }}
+            - name: enable_openai
+              value: {{ .Values.openflow.enable_openai | quote }}
+            - name: enable_openaiauth
+              value: {{ .Values.openflow.enable_openaiauth | quote }}
+            - name: openai_token
+              value: {{ .Values.openflow.openai_token | quote }}
             - name: otel_trace_dashboardauth
               value: {{ .Values.openflow.otel_trace_dashboardauth | quote }}
             - name: otel_trace_pingclients
@@ -125,6 +131,26 @@ spec:
               value: {{ .Values.openflow.otel_trace_mongodb_update_per_users | quote }}
             - name: otel_trace_mongodb_delete_per_users
               value: {{ .Values.openflow.otel_trace_mongodb_delete_per_users | quote }}
+            - name: grpc_keepalive_time_ms
+              value: {{ .Values.openflow.grpc_keepalive_time_ms | quote }}
+            - name: grpc_keepalive_timeout_ms
+              value: {{ .Values.openflow.grpc_keepalive_timeout_ms | quote }}
+            - name: grpc_http2_min_ping_interval_without_data_ms
+              value: {{ .Values.openflow.grpc_http2_min_ping_interval_without_data_ms | quote }}
+            - name: grpc_max_connection_idle_ms
+              value: {{ .Values.openflow.grpc_max_connection_idle_ms | quote }}
+            - name: grpc_max_connection_age_ms
+              value: {{ .Values.openflow.grpc_max_connection_age_ms | quote }}
+            - name: grpc_max_connection_age_grace_ms
+              value: {{ .Values.openflow.grpc_max_connection_age_grace_ms | quote }}
+            - name: grpc_http2_max_pings_without_data
+              value: {{ .Values.openflow.grpc_http2_max_pings_without_data | quote }}
+            - name: grpc_keepalive_permit_without_calls
+              value: {{ .Values.openflow.grpc_keepalive_permit_without_calls | quote }}
+            - name: grpc_max_receive_message_length
+              value: {{ .Values.openflow.grpc_max_receive_message_length | quote }}
+            - name: grpc_max_send_message_length
+              value: {{ .Values.openflow.grpc_max_send_message_length | quote }}
             - name: socket_rate_limit
               value: {{ .Values.openflow.socket_rate_limit | quote }}
             - name: socket_rate_limit_points
@@ -201,6 +227,8 @@ spec:
               value: {{ .Values.openflow.amqp_allow_replyto_empty_queuename | quote }}
             - name: ensure_indexes
               value: {{ .Values.openflow.ensure_indexes | quote }}
+            - name: metadata_collections
+              value: {{ .Values.openflow.metadata_collections | quote }}
             - name: enable_openflow_amqp
               value: {{ .Values.openflow.enable_openflow_amqp | quote }}
             - name: openflow_amqp_expiration

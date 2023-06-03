@@ -67,6 +67,9 @@ openflow:
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
+  enable_openai: false # Enable chat gpt 4, plugin endpoint at .well-known/ai-plugin.json
+  enable_openaiauth: true # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
+  openai_token: # Set token to use when authrorizing to openai plugin ( you get this the first time you add the plugin inside chat gpt 4 )
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
   allow_personal_nodered: true # enable the nodered tab in openflow
@@ -159,6 +162,7 @@ openflow:
   mongodb_maxpoolsize:
   # Auto-create default indexes doing startup, default: true
   ensure_indexes:
+  metadata_collections: # List of timeserie collections that uses metadata
   # openflow will keep track of all changes on all documents except inside these collections
   enable_openflow_amqp: true
   openflow_amqp_expiration: # messages send to backend expire after this amount of time. default: 25 min
@@ -206,6 +210,17 @@ openflow:
   otel_trace_mongodb_insert_per_users: # track inserts per user, default: false
   otel_trace_mongodb_update_per_users: # track updates per user, default: false
   otel_trace_mongodb_delete_per_users: # track deletes per user, default: false
+  grpc_keepalive_time_ms: # default: 20000 * 1000
+  grpc_keepalive_timeout_ms: # default: 1000
+  grpc_http2_min_ping_interval_without_data_ms: # default: 5000
+  grpc_max_connection_idle_ms: # default: 71992547
+  grpc_max_connection_age_ms: # default: 71992547
+  grpc_max_connection_age_grace_ms: # default: 71992547
+  grpc_http2_max_pings_without_data: # default: 71992547
+  grpc_keepalive_permit_without_calls: # default: 1
+  grpc_max_receive_message_length: # default: 1024 * 1024 * 1024
+  grpc_max_send_message_length: # default: 1024 * 1024 * 1024
+
   aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
   nodered_allow_nodeselector: false # allow collection of all kubernete nodes labels and setting nodeSelector on nodered instances
   nodered_requests_memory: # set requested memory usage for new nodered instances, for instance: 128Mi
