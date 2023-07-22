@@ -45,6 +45,8 @@ spec:
           env:
             - name: GF_AUTH_GENERIC_OAUTH_ENABLED
               value: "true"
+            - name: GF_AUTH_OAUTH_ALLOW_INSECURE_EMAIL_LOOKUP
+              value: "true"
             - name: GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP
               value: "true"
             - name: GF_AUTH_GENERIC_OAUTH_NAME
