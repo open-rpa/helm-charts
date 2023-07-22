@@ -32,12 +32,12 @@ spec:
         prometheus.io/port: {{ .Values.openflow.port | quote }}
     spec:
       serviceAccountName: openflow-api-user
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml .Values.nodeSelector | nindent 12 }}
-      {{- else if .Values.openflow.nodeSelector }}
+      {{- if .Values.openflow.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.openflow.nodeSelector | nindent 12 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.openflow.topologySpreadConstraints }}
       topologySpreadConstraints:
