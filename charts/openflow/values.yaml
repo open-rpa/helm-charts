@@ -468,6 +468,7 @@ zipkin: # for visualizing and optionally also saving all spans, we can use zipki
   cassandra: false # persist all data to cassandra, instead of only keeping them temporarily
   javaopts: "-Xms128m -Xmx512m -XX:+ExitOnOutOfMemoryError" # set java memory limits, this should be lower but close to the kubernetes limits.
   resources: {}
+  nodeSelector: {}
 cassandra:
   enabled: false
   persistence:

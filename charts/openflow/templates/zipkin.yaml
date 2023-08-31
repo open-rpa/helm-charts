@@ -38,8 +38,12 @@ spec:
         environment: production
         app: zipkin
     spec:
-      {{- if .Values.nodeSelector }}
-      nodeSelector: {{- include "common.tplvalues.render" (dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- if .Values.zipkin.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.zipkin.nodeSelector | nindent 12 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 12 }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets: 

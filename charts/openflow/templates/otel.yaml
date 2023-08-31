@@ -173,7 +173,7 @@ data:
   {{- if eq .Values.zipkin.enabled true }}
             - zipkin
   {{- end }}
-  {{- if eq .Values.zipkin.enabled true }}
+  {{- if eq .Values.loki.enabled true }}
             - loki
   {{- end }}
   {{- if (eq .Values.exporter.opensearch.traceenabled true) }}
