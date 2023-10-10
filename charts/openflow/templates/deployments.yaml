@@ -247,6 +247,8 @@ spec:
               value: {{ .Values.openflow.ping_clients_interval | quote }}
             - name: license_key
               value: {{ default "" .Values.openflow.license_key | quote }}
+            - name: license_private_key
+              value: {{ default "" .Values.openflow.license_private_key | quote }}
             - name: stripe_api_key
               value: {{ default "" .Values.openflow.stripe_api_key | quote }}
             - name: stripe_api_secret

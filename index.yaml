@@ -187,6 +187,29 @@ entries:
     version: 0.0.1
   openflow:
   - apiVersion: v2
+    appVersion: 1.5.1
+    created: "2023-10-10T15:01:05.912968846+02:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://open-rpa.github.io/helm-charts/
+      version: x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    - condition: victoria-metrics-cluster.enabled
+      name: victoria-metrics-cluster
+      repository: https://victoriametrics.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: 0262ca2585416c88d6b8bec7b7bc72636fef91a8d163fdfae1db6168352023aa
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.114/openflow-0.1.114.tgz
+    version: 0.1.114
+  - apiVersion: v2
     appVersion: 1.5.0
     created: "2023-04-23T11:33:59.226347694+02:00"
     dependencies:
@@ -1635,8 +1658,7 @@ entries:
       name: mongodb
       repository: https://charts.bitnami.com/bitnami
       version: 7.x.x
-    description: Prepare to take off with the ultimate chat platform, experience the
-      next level of team communications
+    description: Prepare to take off with the ultimate chat platform, experience the next level of team communications
     digest: 5004fe42ba8b158f913e38d3417b6d3153d6122302b9e7658dea6f2c5d4dd054
     home: https://rocket.chat/
     icon: https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon.svg
