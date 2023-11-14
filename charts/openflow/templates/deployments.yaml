@@ -107,6 +107,8 @@ spec:
               value: {{ .Values.openflow.getting_started_url | quote }}
             - name: enable_openai
               value: {{ .Values.openflow.enable_openai | quote }}
+            - name: enable_openapi
+              value: {{ .Values.openflow.enable_openapi | quote }}
             - name: enable_openaiauth
               value: {{ .Values.openflow.enable_openaiauth | quote }}
             - name: openai_token

@@ -67,7 +67,8 @@ openflow:
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
-  enable_openai: false # Enable chat gpt 4, plugin endpoint at .well-known/ai-plugin.json
+  enable_openai: false # Enable chat gpt 4, openapi endpoint, and ezpose plugin endpoint at .well-known/ai-plugin.json
+  enable_openapi: false # Enable generic OpenAPI endpoint, same as enable_openai but without .well-known/ai-plugin.json 
   enable_openaiauth: true # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
   openai_token: # Set token to use when authrorizing to openai plugin ( you get this the first time you add the plugin inside chat gpt 4 )
   auto_create_users: true # if trying to login using unknown username, auto create it ?
@@ -368,7 +369,8 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
     insecure_skip_verify: true # whether to skip verifying the certificate or not
     data_prepper_host: 
   kubestatemetrics:
-    image: quay.io/coreos/kube-state-metrics
+    # image: quay.io/coreos/kube-state-metrics
+    image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.0
     exporterimage: cloudhack/metrics-server-exporter
     enabled: false
     deploy: false
