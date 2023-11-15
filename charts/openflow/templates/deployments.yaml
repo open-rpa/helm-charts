@@ -313,8 +313,6 @@ spec:
               value: {{ .Values.openflow.use_ingress_beta1_syntax | quote }}
             - name: namespace
               value: {{ .Release.Namespace | quote }}
-            - name: allow_personal_nodered
-              value: {{ .Values.openflow.allow_personal_nodered | quote }}
             - name: agent_domain_schema
               value: {{ default (print "$slug$." $domain) .Values.openflow.agent_domain_schema | quote }}
             - name: nodered_domain_schema

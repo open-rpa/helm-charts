@@ -73,7 +73,6 @@ openflow:
   openai_token: # Set token to use when authrorizing to openai plugin ( you get this the first time you add the plugin inside chat gpt 4 )
   auto_create_users: true # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
-  allow_personal_nodered: true # enable the nodered tab in openflow
   auto_create_personal_nodered_group: true # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
   auto_create_personal_noderedapi_group: false # Auto create the role used for api access to users personal nodered
   persist_user_impersonation: # When impersonating, update on user object who you are impersonating, to persist the information
