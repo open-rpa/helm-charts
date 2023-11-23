@@ -20,15 +20,12 @@ openflow:
   prestop:
     enabled: false
     command: "wget http://localhost:3000/heapdump"
-  use_openshift_routes: false
-  heapdump_onstop: false
+  use_openshift_routes: 
+  heapdump_onstop: 
   terminationGracePeriodSeconds: 15
   deploymentstrategy: Recreate # Recreate or RollingUpdate
   sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
-  # nodered_image: openiap/nodered
-  # set possible image to be used when deploying new Nodered deployments
-  nodered_images: '[{ "name": "Latest Plain Nodered", "image": "openiap/nodered" }]'
-  agent_images: '[{"name":"nodejs", "image":"openiap/nodeagent"}, {"name":"nodejs chrome", "image":"openiap/nodechromiumagent"}, {"name":"NodeRED", "image":"openiap/noderedagent", "port": 3000}, {"name":"DotNet 6", "image":"openiap/dotnetagent"}, {"name":"python", "image":"openiap/pyagent"}, {"name":"python chrome", "image":"openiap/pychromiumagent"}, {"name":"Grafana Instance", "image":"openiap/grafana", "port": 3000, "volumes": [{"type": "pvc", "name": "data", "mountpath": "/var/lib/grafana", "storageclass": "standard", "size": "1Gi"}] }]'
+  agent_images:
   oidc_config:
   agent_oidc_client_id:
   agent_oidc_client_secret:
@@ -36,12 +33,13 @@ openflow:
   agent_oidc_issuer:
   agent_oidc_authorization_endpoint:
   agent_oidc_token_endpoint:
+  saml_issuer:
 
   # What url to show inside the robot's getting started page
-  getting_started_url: https://skadefro.github.io/openrpa.dk/gettingstarted.html
+  getting_started_url: # https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
-  cache_store_type: memory # Default memory or redis
+  cache_store_type: 
   redisimage: redis
   cache_store_ttl_seconds: # Items expire from store after this amount of seconds
   cache_store_max: # Max items to store when using memory store
@@ -67,35 +65,35 @@ openflow:
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
-  enable_openai: false # Enable chat gpt 4, openapi endpoint, and ezpose plugin endpoint at .well-known/ai-plugin.json
-  enable_openapi: false # Enable generic OpenAPI endpoint, same as enable_openai but without .well-known/ai-plugin.json 
-  enable_openaiauth: true # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
+  enable_openai: # Enable chat gpt 4, openapi endpoint, and ezpose plugin endpoint at .well-known/ai-plugin.json
+  enable_openapi: # Enable generic OpenAPI endpoint, same as enable_openai but without .well-known/ai-plugin.json 
+  enable_openaiauth: # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
   openai_token: # Set token to use when authrorizing to openai plugin ( you get this the first time you add the plugin inside chat gpt 4 )
-  auto_create_users: true # if trying to login using unknown username, auto create it ?
+  auto_create_users: # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
-  auto_create_personal_nodered_group: true # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
-  auto_create_personal_noderedapi_group: false # Auto create the role used for api access to users personal nodered
+  auto_create_personal_nodered_group: # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
+  auto_create_personal_noderedapi_group: # Auto create the role used for api access to users personal nodered
   persist_user_impersonation: # When impersonating, update on user object who you are impersonating, to persist the information
   # allow api node to listen on https, not recomended in docker, use a reverse proxy instead
   tls_crt:
   tls_key:
   tls_ca:
   tls_passphrase:
-  multi_tenant: false # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
-  amqp_force_queue_prefix: false # to avoid users registering the same message queue names, force all messages queues to be prefixed with username, this disables load balancing of multiple nodereds !
-  amqp_force_exchange_prefix: false # to avoid users registering the same message exchange names, force all messages exchanges to be prefixed with username, this disables load balancing of multiple nodereds !
-  amqp_force_sender_has_read: true # If queue is a mongodb id, check user is member of the role or has read permission on the object it represents
-  amqp_force_sender_has_invoke: false # Force user to have invoke permission on the mq or user object in order to send to it
-  amqp_force_consumer_has_update: false # Force user has update permission on the mq or user object in order to consume the queue ( else needs read if amqp_force_sender_has_read is true
-  amqp_enabled_exchange: false # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
-  upload_max_filesize_mb: 25 # max upload size for files in MB
+  multi_tenant: # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
+  amqp_force_queue_prefix:  # to avoid users registering the same message queue names, force all messages queues to be prefixed with username, this disables load balancing of multiple nodereds !
+  amqp_force_exchange_prefix:  # to avoid users registering the same message exchange names, force all messages exchanges to be prefixed with username, this disables load balancing of multiple nodereds !
+  amqp_force_sender_has_read:  # If queue is a mongodb id, check user is member of the role or has read permission on the object it represents
+  amqp_force_sender_has_invoke:  # Force user to have invoke permission on the mq or user object in order to send to it
+  amqp_force_consumer_has_update:  # Force user has update permission on the mq or user object in order to consume the queue ( else needs read if amqp_force_sender_has_read is true
+  amqp_enabled_exchange:  # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
+  upload_max_filesize_mb: # max upload size for files in MB
 
-  use_ingress_beta1_syntax: false # Use beta one syntax for ingress controller, default: false
+  use_ingress_beta1_syntax: # Use beta one syntax for ingress controller, default: false
   traefik_ipblock: false # Tell traefic to check IP before forwarding request, using OpenFlow blocklist endpoint
 
   # The SAML Provider need to sign all tokens issued, use this certificate to sign SAML tokens
-  signing_crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lKQUp5N0tIMTE1dkQ4TUEwR0NTcUdTSWIzRFFFQkN3VUFNRnN4Q3pBSkJnTlYKQkFZVEFrUkxNUk13RVFZRFZRUUlEQXBUYjIxbExWTjBZWFJsTVNFd0h3WURWUVFLREJoSmJuUmxjbTVsZENCWAphV1JuYVhSeklGQjBlU0JNZEdReEZEQVNCZ05WQkFNTUMzTnBaMjVwYm1kalpYSjBNQjRYRFRFNU1EUXdOekUwCk5ETXpORm9YRFRJNU1EUXdOREUwTkRNek5Gb3dXekVMTUFrR0ExVUVCaE1DUkVzeEV6QVJCZ05WQkFnTUNsTnYKYldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNUlFeDBaREVVTUJJRwpBMVVFQXd3TGMybG5ibWx1WjJObGNuUXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCCkFRQy9JSkdEaGxLTU9SWkoycXQwSWpjSDZOWUFtZDVxQzQ4dkNJRE54QWZCbmQxQnN4WlVjWkl5dkFlT28yNDcKM3I0eTYwNDgxRHVUS2JaMTBTNjRqRU05aW1XTXB1TFlJRnVyQ3BWNzVEWWhxMS85Q0FJVHJqNjlmVDluSkptcwpjM2lxTnJ1Tlg1bDlISXdadWtQM1ZNRkJRNWZVd3N1ZnE0YW1NbnVnZmtyUEVzSngxK3VJb0NYU3pyblZvcnZpClZ0ZFh4a3M4N0l1S0ZnMDJIZ1RQSzdwc0FXYTBRY3g2ck04bkV5TUhwNUdlR1Rvb1NNbkcyZ1RGNWZOSVFNdTMKVEVoc2p3SWRTYmRwck1Gb1VZV05Bc2FueTJOQk0wREhZRUdjQlZhZ0xWNUhFUW5ySUM3NEhtNjYxdG9HaU5VSAoveW04U3VndTgwWVFiVGxPcTFWNnNkaVRBZ01CQUFHalV6QlJNQjBHQTFVZERnUVdCQlMrYWc1NGtITllKZ29pCm9yRnlia293THR5R3ZqQWZCZ05WSFNNRUdEQVdnQlMrYWc1NGtITllKZ29pb3JGeWJrb3dMdHlHdmpBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQTZpZHBYdzdSR2pzcUpNanI2c1YvaQpXeXFsL2xkSy9sa1NCdnNBSENieDdQYi9rVUd2NHJNbndYMnBHdTR0YkFnSDc4eStmS3dzazllYkxDeTA4Y1k0Ckt5czhzbUpLenhWN0R6U3RVR1NvZmZMaFliVVVMK3UyNU5vVXc0TG1WQU5FU0NaMTZ3aTdPQUdJMkJnNFR6TXoKdnlIUHRaaE9wTXBNV2lzM2ZnRXFzV3QxS2VLcXo0Z2M5RnJtZDZPNlQzVVAxWTRBR3VEWnNScnpiU2RQS2JxbApxekprT2tQcGtHOGo3ZjFWNkk1ZlkzblZaSWk2YW1TcTM1RTJkQzVMY0dIQXRtT1lWL0c4TEQ3OUFnTVpFUU5vCkF2R2RnV1gvbXBFVkFjMmRFQkJlcUN6WjF1aVhWUjdERld2ZDFKTEpsdVRyTm9jMUROc0xNKzNEZFFiQ2JnYVcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-  singing_key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy9JSkdEaGxLTU9SWkoKMnF0MElqY0g2TllBbWQ1cUM0OHZDSUROeEFmQm5kMUJzeFpVY1pJeXZBZU9vMjQ3M3I0eTYwNDgxRHVUS2JaMQowUzY0akVNOWltV01wdUxZSUZ1ckNwVjc1RFlocTEvOUNBSVRyajY5ZlQ5bkpKbXNjM2lxTnJ1Tlg1bDlISXdaCnVrUDNWTUZCUTVmVXdzdWZxNGFtTW51Z2ZrclBFc0p4MSt1SW9DWFN6cm5Wb3J2aVZ0ZFh4a3M4N0l1S0ZnMDIKSGdUUEs3cHNBV2EwUWN4NnJNOG5FeU1IcDVHZUdUb29TTW5HMmdURjVmTklRTXUzVEVoc2p3SWRTYmRwck1GbwpVWVdOQXNhbnkyTkJNMERIWUVHY0JWYWdMVjVIRVFucklDNzRIbTY2MXRvR2lOVUgveW04U3VndTgwWVFiVGxPCnExVjZzZGlUQWdNQkFBRUNnZ0VBVXBjZ1NsV2hGamNWQ3BVVHdmdUhERVB4TmhGSHEwdVRkQitZaVZKTWg3NVAKL2pRRlVqaEJsT3JyMlJlR2F4aTEyQXNXby9LU1MrV2Frdzd4d1kzYkFKenRoUG9Zekl3dkVKcGlQa2MvblEwUgpUYVpJUDNqc1k3WGIwQlpnMGNTVVAvbW0wbENkWXhNUzk0c21FNXJzWitkdGxPTVlXc2NrU0cxSVB2SlVJV2FZCnl3NC9kaHJ3TWRsREVZS2tSbks1aDR1dXR1dzA1Q1VzNkZWN2F5cEJRRStGM3RxVlF3QWxGbWNueXdvZTB5WjQKZW1tWkRvT1dzNUk4cGNGbjZCSW1wZjN3UEg5UWhlQXJVaXRqV3YrZmI2cWRVaHJFVDBxMzh4dTZ5M1lJNFNLYQpXME9kUng4L3FTYllXdkpzbmxscDR0aUpDWE5IdnV6MVBKSGhxOUprQVFLQmdRRCt2dHlWcVJoaEJZTmd6WWorClFCaDNLcktrNEVqTXZaSGhEelhES0pMZ2JEVmJzNExrQkYySWZGOTF0S1k3d09CNVpXcU82Z3FqVVJBVE5hc1YKOExCOGE2TEpXYVJuTklLMnJkd1FwalFYcy92OVBSYnJwc2tTbDRJdUsyZWNBMjBSQkhicW5yNHZ5ZkQ4U3BzaApSdHlTUk5CRGVsaU01Z1JDM0JKKzBZbjBVUUtCZ1FEQUVZSUp3Y2xnQloyWmNNTlh1dW1lLzUxdHBHeGppRTJpCjZ3SDNsOHNTVDN1U1A4MHdndGdHaVFsUTRsR3BmSThqWkl4N0pwcGw0Qko1ZEtuVnpIS1dqMzA3YXYxcjdpU3QKLzJOVDNobzdaYkNlYzlhMHlJU2E3dTNGZGxzZ0VPcE45dURmbG5GQVQ3ZmIrM2d4Sk9DUWp1TkFCZXZaK2pScwpZY0ZhQWhGNW93S0JnUUNGUG9HVVNsRDFGblFrWXYwL3QzalVnK0hTK1hrNmxnRkNqYmthTGhPOURQeFB6Ykl0CjM5YW9lQjFhTExZeVZPMVVzZVl0Z0Y4MkUwVnNOc3NZKzc3a0pVeU5NclVhUWs0SWpTR3BGN1h4bS9PMi9vZ0oKbEVCaDJCdUFXTFdsMWVqcldNRjJjTGVidVcyeUdMZlJqUVg3LzhCTE95Z3I4bmZTSE5nVHV6Z0VNUUtCZ0JrZgpNUjhObGNWVmRyT25LQ1hGY09FM0ZlUk5hVS9yZUJ3akdQTEZpKzR0TDBDRno5VFVpR1R5YjZHQXVLV3VnUnBrCkFHdnJOSzYyakRRT3FsZ29rYVJYeUUySlJQUmxCYThzaEZWbjY0NXhVcFNuR2lJelNBVHIwM1hNY1ViVWI1RWIKQlhhNU9yN3FybVc3a3BENi9kUnFuQmEzcjQyblNFd1V6VEYwcTh4NUFvR0FIcXdRSyt1R0NTdlNsNENJUGhyRQpDREIvcytDK2NJNXVCeFJCMHVlNjc3L2lpdGZPSU9lOUNiTHE3R0tib0w4RVg3eXhKNVRLWjlYQmh5LzNCWmVNCllydEx3M2JicTNTN2hpUGFYSmE1dXZma3BWR1RnNEdzTnBJQ3VNTEJUaXJ6M0ZRV25UNFNZbzkrREVoalhEeVQKWlVOMERtUkJVNjNjWjRLSUlXd2xWUTA9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  signing_crt: # LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURqRENDQW5TZ0F3SUJBZ0lKQUp5N0tIMTE1dkQ4TUEwR0NTcUdTSWIzRFFFQkN3VUFNRnN4Q3pBSkJnTlYKQkFZVEFrUkxNUk13RVFZRFZRUUlEQXBUYjIxbExWTjBZWFJsTVNFd0h3WURWUVFLREJoSmJuUmxjbTVsZENCWAphV1JuYVhSeklGQjBlU0JNZEdReEZEQVNCZ05WQkFNTUMzTnBaMjVwYm1kalpYSjBNQjRYRFRFNU1EUXdOekUwCk5ETXpORm9YRFRJNU1EUXdOREUwTkRNek5Gb3dXekVMTUFrR0ExVUVCaE1DUkVzeEV6QVJCZ05WQkFnTUNsTnYKYldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNUlFeDBaREVVTUJJRwpBMVVFQXd3TGMybG5ibWx1WjJObGNuUXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCCkFRQy9JSkdEaGxLTU9SWkoycXQwSWpjSDZOWUFtZDVxQzQ4dkNJRE54QWZCbmQxQnN4WlVjWkl5dkFlT28yNDcKM3I0eTYwNDgxRHVUS2JaMTBTNjRqRU05aW1XTXB1TFlJRnVyQ3BWNzVEWWhxMS85Q0FJVHJqNjlmVDluSkptcwpjM2lxTnJ1Tlg1bDlISXdadWtQM1ZNRkJRNWZVd3N1ZnE0YW1NbnVnZmtyUEVzSngxK3VJb0NYU3pyblZvcnZpClZ0ZFh4a3M4N0l1S0ZnMDJIZ1RQSzdwc0FXYTBRY3g2ck04bkV5TUhwNUdlR1Rvb1NNbkcyZ1RGNWZOSVFNdTMKVEVoc2p3SWRTYmRwck1Gb1VZV05Bc2FueTJOQk0wREhZRUdjQlZhZ0xWNUhFUW5ySUM3NEhtNjYxdG9HaU5VSAoveW04U3VndTgwWVFiVGxPcTFWNnNkaVRBZ01CQUFHalV6QlJNQjBHQTFVZERnUVdCQlMrYWc1NGtITllKZ29pCm9yRnlia293THR5R3ZqQWZCZ05WSFNNRUdEQVdnQlMrYWc1NGtITllKZ29pb3JGeWJrb3dMdHlHdmpBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQTZpZHBYdzdSR2pzcUpNanI2c1YvaQpXeXFsL2xkSy9sa1NCdnNBSENieDdQYi9rVUd2NHJNbndYMnBHdTR0YkFnSDc4eStmS3dzazllYkxDeTA4Y1k0Ckt5czhzbUpLenhWN0R6U3RVR1NvZmZMaFliVVVMK3UyNU5vVXc0TG1WQU5FU0NaMTZ3aTdPQUdJMkJnNFR6TXoKdnlIUHRaaE9wTXBNV2lzM2ZnRXFzV3QxS2VLcXo0Z2M5RnJtZDZPNlQzVVAxWTRBR3VEWnNScnpiU2RQS2JxbApxekprT2tQcGtHOGo3ZjFWNkk1ZlkzblZaSWk2YW1TcTM1RTJkQzVMY0dIQXRtT1lWL0c4TEQ3OUFnTVpFUU5vCkF2R2RnV1gvbXBFVkFjMmRFQkJlcUN6WjF1aVhWUjdERld2ZDFKTEpsdVRyTm9jMUROc0xNKzNEZFFiQ2JnYVcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  singing_key: # LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy9JSkdEaGxLTU9SWkoKMnF0MElqY0g2TllBbWQ1cUM0OHZDSUROeEFmQm5kMUJzeFpVY1pJeXZBZU9vMjQ3M3I0eTYwNDgxRHVUS2JaMQowUzY0akVNOWltV01wdUxZSUZ1ckNwVjc1RFlocTEvOUNBSVRyajY5ZlQ5bkpKbXNjM2lxTnJ1Tlg1bDlISXdaCnVrUDNWTUZCUTVmVXdzdWZxNGFtTW51Z2ZrclBFc0p4MSt1SW9DWFN6cm5Wb3J2aVZ0ZFh4a3M4N0l1S0ZnMDIKSGdUUEs3cHNBV2EwUWN4NnJNOG5FeU1IcDVHZUdUb29TTW5HMmdURjVmTklRTXUzVEVoc2p3SWRTYmRwck1GbwpVWVdOQXNhbnkyTkJNMERIWUVHY0JWYWdMVjVIRVFucklDNzRIbTY2MXRvR2lOVUgveW04U3VndTgwWVFiVGxPCnExVjZzZGlUQWdNQkFBRUNnZ0VBVXBjZ1NsV2hGamNWQ3BVVHdmdUhERVB4TmhGSHEwdVRkQitZaVZKTWg3NVAKL2pRRlVqaEJsT3JyMlJlR2F4aTEyQXNXby9LU1MrV2Frdzd4d1kzYkFKenRoUG9Zekl3dkVKcGlQa2MvblEwUgpUYVpJUDNqc1k3WGIwQlpnMGNTVVAvbW0wbENkWXhNUzk0c21FNXJzWitkdGxPTVlXc2NrU0cxSVB2SlVJV2FZCnl3NC9kaHJ3TWRsREVZS2tSbks1aDR1dXR1dzA1Q1VzNkZWN2F5cEJRRStGM3RxVlF3QWxGbWNueXdvZTB5WjQKZW1tWkRvT1dzNUk4cGNGbjZCSW1wZjN3UEg5UWhlQXJVaXRqV3YrZmI2cWRVaHJFVDBxMzh4dTZ5M1lJNFNLYQpXME9kUng4L3FTYllXdkpzbmxscDR0aUpDWE5IdnV6MVBKSGhxOUprQVFLQmdRRCt2dHlWcVJoaEJZTmd6WWorClFCaDNLcktrNEVqTXZaSGhEelhES0pMZ2JEVmJzNExrQkYySWZGOTF0S1k3d09CNVpXcU82Z3FqVVJBVE5hc1YKOExCOGE2TEpXYVJuTklLMnJkd1FwalFYcy92OVBSYnJwc2tTbDRJdUsyZWNBMjBSQkhicW5yNHZ5ZkQ4U3BzaApSdHlTUk5CRGVsaU01Z1JDM0JKKzBZbjBVUUtCZ1FEQUVZSUp3Y2xnQloyWmNNTlh1dW1lLzUxdHBHeGppRTJpCjZ3SDNsOHNTVDN1U1A4MHdndGdHaVFsUTRsR3BmSThqWkl4N0pwcGw0Qko1ZEtuVnpIS1dqMzA3YXYxcjdpU3QKLzJOVDNobzdaYkNlYzlhMHlJU2E3dTNGZGxzZ0VPcE45dURmbG5GQVQ3ZmIrM2d4Sk9DUWp1TkFCZXZaK2pScwpZY0ZhQWhGNW93S0JnUUNGUG9HVVNsRDFGblFrWXYwL3QzalVnK0hTK1hrNmxnRkNqYmthTGhPOURQeFB6Ykl0CjM5YW9lQjFhTExZeVZPMVVzZVl0Z0Y4MkUwVnNOc3NZKzc3a0pVeU5NclVhUWs0SWpTR3BGN1h4bS9PMi9vZ0oKbEVCaDJCdUFXTFdsMWVqcldNRjJjTGVidVcyeUdMZlJqUVg3LzhCTE95Z3I4bmZTSE5nVHV6Z0VNUUtCZ0JrZgpNUjhObGNWVmRyT25LQ1hGY09FM0ZlUk5hVS9yZUJ3akdQTEZpKzR0TDBDRno5VFVpR1R5YjZHQXVLV3VnUnBrCkFHdnJOSzYyakRRT3FsZ29rYVJYeUUySlJQUmxCYThzaEZWbjY0NXhVcFNuR2lJelNBVHIwM1hNY1ViVWI1RWIKQlhhNU9yN3FybVc3a3BENi9kUnFuQmEzcjQyblNFd1V6VEYwcTh4NUFvR0FIcXdRSyt1R0NTdlNsNENJUGhyRQpDREIvcytDK2NJNXVCeFJCMHVlNjc3L2lpdGZPSU9lOUNiTHE3R0tib0w4RVg3eXhKNVRLWjlYQmh5LzNCWmVNCllydEx3M2JicTNTN2hpUGFYSmE1dXZma3BWR1RnNEdzTnBJQ3VNTEJUaXJ6M0ZRV25UNFNZbzkrREVoalhEeVQKWlVOMERtUkJVNjNjWjRLSUlXd2xWUTA9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
   # To enable enterprise features, add your licanse key here
   license_key:
   license_private_key:
@@ -104,9 +102,9 @@ openflow:
   # if not using helm to deploy mongodb, set your desired database to use
   mongodb_db:
   # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
-  supports_watch: true
+  supports_watch: 
   # Use colors in console log
-  log_with_colors: false
+  log_with_colors: 
   # log when adding, updating, removing or clearing cache items
   log_cache: 
   # Log verbose and higher events related to login provider
@@ -156,7 +154,7 @@ openflow:
   # Use smtp url for configuration  ( see https://nodemailer.com/smtp/ or https://www.npmjs.com/package/nodemailer/v/2.2.0-beta.0 ) 
   smtp_url: 
   # Allow temp work around for bug in open openflow-api code
-  amqp_allow_replyto_empty_queuename: false
+  amqp_allow_replyto_empty_queuename: 
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # To override the default maxPoolSize of the database connection, usefull when needing a lot of watches or have many clients
@@ -165,30 +163,28 @@ openflow:
   ensure_indexes:
   metadata_collections: # List of timeserie collections that uses metadata
   # openflow will keep track of all changes on all documents except inside these collections
-  enable_openflow_amqp: true
+  enable_openflow_amqp: 
   openflow_amqp_expiration: # messages send to backend expire after this amount of time. default: 25 min
   amqp_prefetch: # each api instance allows only this amount of message to be processed at the same time, default 50
-  enable_entity_restriction: false # Add restrictions on who can create entities in different collections, default false
-  enable_web_tours: true # Enable tours and notification about new features inside openflow
-  enable_nodered_tours: false # Enable tours and notification about new features inside NodeRED
+  enable_entity_restriction: # Add restrictions on who can create entities in different collections, default false
+  enable_web_tours: # Enable tours and notification about new features inside openflow
+  enable_nodered_tours: # Enable tours and notification about new features inside NodeRED
   grafana_url:  # add grafana link in main menu
-  ping_clients_interval: 10000 # each api node pings connected clients witht his interval, and update the user object for each online user
+  ping_clients_interval: # each api node pings connected clients witht his interval, and update the user object for each online user
 
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
-  skip_history_collections: audit,oauthtokens,openrpa_instances,workflow_instances,workitems,dbsize,mailhist
+  skip_history_collections: 
   history_delta_count: # default 1000
-  websocket_max_package_count: "1048576" # 1048576
-  websocket_package_size: 25000
+  websocket_max_package_count: # 1048576
+  websocket_package_size: 
   websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
   update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
-  oidc_access_token_ttl: 480 # 8 hours
-  oidc_authorization_code_ttl: 480
-  oidc_client_credentials_ttl: 480
-  oidc_refresh_token_ttl: 20160 # 14 days
-  oidc_session_ttl: 20160
+  oidc_access_token_ttl: 
+  oidc_authorization_code_ttl: 
+  oidc_client_credentials_ttl: 
+  oidc_refresh_token_ttl: 
+  oidc_session_ttl: 
 
-  # Give nodered time to install all packages, so skip liveliness check for this many seconds
-  nodered_initial_liveness_delay: 120
   # To allow buying addon products or dedicated nodered instance, add stripe api key and secret
   stripe_api_key:
   stripe_api_secret:
@@ -222,19 +218,9 @@ openflow:
   grpc_max_receive_message_length: # default: 1024 * 1024 * 1024
   grpc_max_send_message_length: # default: 1024 * 1024 * 1024
 
-  aes_secret: who_ever_said_nodejs_isnt_sexy_should_be_shot_and_hanged # use this to encrypt parts of mongodb documents and hash user passwords
-  nodered_allow_nodeselector: false # allow collection of all kubernete nodes labels and setting nodeSelector on nodered instances
-  nodered_requests_memory: # set requested memory usage for new nodered instances, for instance: 128Mi
-  nodered_requests_cpu: # set requested cpu usage for new nodered instances, for instance: 250n ( 1000n represents 1 vCPU )
-  nodered_limits_memory: # limit memory usage for new nodered instances, for instance: 256Mi (kubernetes will restart the pod)
-  nodered_limits_cpu: # limit cpu usage for new nodered instances, for instance: 450n ( 1000n represents 1 vCPU )
-  nodered_liveness_failurethreshold: 5 # allow nodered liveness probe to fail this amount of times before restarting it, default 5
-  nodered_liveness_timeoutseconds: 5 # each probe will timeout after this many seconds, default 5
-  noderedcatalogues: # list of package catalogs to use in nodered for finding packages to install, seperated by ; ... default is https://catalogue.nodered.org/catalogue.json
+  aes_secret: # use this to encrypt parts of mongodb documents and hash user passwords
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
-  nodered_ws_url: # force new nodereds (but not browser) to use this url to access the api
-  nodered_saml_entrypoint: # override openflow saml entry point for new nodereds ( to override url received in saml_federation_metadata )
   saml_federation_metadata: # Override SAML url for new nodered instances
   otel_measure_nodeid: # Collect otel metrics PER node in nodered ( default is per node type ), default: false
   otel_measure_queued_messages: # Collect otel metrics for openflow/nodered on socket messages waiting on a reply, default: false
@@ -244,8 +230,8 @@ openflow:
   otel_trace_url: # Open Telemetry exporter trace URL
   otel_metric_url: # Open Telemetry exporter metrix URL
   otel_servicename: # Open Telemetry service name
-  otel_trace_interval: 5000 # Open Telemetry trace sending interval
-  otel_metric_interval: 5000 # Open Telemetry metric sending interval
+  otel_trace_interval: # Open Telemetry trace sending interval
+  otel_metric_interval: # Open Telemetry metric sending interval
   expected_max_roles: # to avoid dos we limited the number of roles, default 4000
   decorate_roles_fetching_all_roles: # default true, will grab all roles from the database and find accumulated roles in that array, if set to false will do multiple queries to the database to find all nested roles for the user
   roles_cached_in_seconds: # if decorate_roles_fetching_all_roles is true, how many seconds will we cache all roles, default is 300, to disable cache set to 0
@@ -255,7 +241,7 @@ openflow:
   longtoken_expires_in: # default: 365d
   downloadtoken_expires_in: # default: 15m
   personalnoderedtoken_expires_in: # default: 365d
-  otel_debug_log: false
+  otel_debug_log: 
   debug: # Configure logging for the debug plugin
   NO_PROXY: # Set NO_PROXY for all api and agents
   HTTP_PROXY: # Set HTTP_PROXY for all api and agents
@@ -273,16 +259,14 @@ openflow:
   # requests:
   #   # cpu: "0.02"
   #   memory: 128Mi
-  auto_hourly_housekeeping: true # Enable an hourly job, that does basic house keeping, default false
-  housekeeping_update_usage_hourly: false # Doing house keeping, calculate each user and customers database usage every hour, default false ( if false runs every 12 hour )
-  housekeeping_update_usersize_hourly: true # Doing house keeping, update dblock and usage information per customer every hour, default false ( if false runs every 12 hour )
+  auto_hourly_housekeeping:  # Enable an hourly job, that does basic house keeping, default false
   housekeeping_skip_collections: # Comma seperated list of collections to skip while calculating database usage
 
   workitem_queue_monitoring_enabled: 
   workitem_queue_monitoring_interval: 
 
-  stripe_force_vat: false # When multi_tenant is enabled, force new customers to add VAT information, default false
-  stripe_force_checkout: false # When multi_tenant is enabled, force users to accept a stripe checkout session for each purchaes, default true
+  stripe_force_vat: # When multi_tenant is enabled, force new customers to add VAT information, default false
+  stripe_force_checkout: # When multi_tenant is enabled, force users to accept a stripe checkout session for each purchaes, default true
   auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
   nodered_docker_entrypoints: # Used for docker setups, not relevant for kubernetes
   nodered_docker_certresolver: # Used for docker setups, not relevant for kubernetes

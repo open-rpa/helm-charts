@@ -97,262 +97,12 @@ spec:
             timeoutSeconds: {{ .Values.openflow.startupProbe.timeoutSeconds }}
 {{- end }}
           env:
-            - name: heapdump_onstop
-              value: {{ .Values.openflow.heapdump_onstop | quote }}
-            - name: use_openshift_routes
-              value: {{ .Values.openflow.use_openshift_routes | quote }}
-            - name: USE_KUBERNETES
-              value: "true"
-            - name: getting_started_url
-              value: {{ .Values.openflow.getting_started_url | quote }}
-            - name: enable_openai
-              value: {{ .Values.openflow.enable_openai | quote }}
-            - name: enable_openapi
-              value: {{ .Values.openflow.enable_openapi | quote }}
-            - name: enable_openaiauth
-              value: {{ .Values.openflow.enable_openaiauth | quote }}
-            - name: openai_token
-              value: {{ .Values.openflow.openai_token | quote }}
-            - name: otel_trace_dashboardauth
-              value: {{ .Values.openflow.otel_trace_dashboardauth | quote }}
-            - name: otel_trace_pingclients
-              value: {{ .Values.openflow.otel_trace_pingclients | quote }}
-            - name: otel_trace_include_query
-              value: {{ .Values.openflow.otel_trace_include_query | quote }}
-            - name: otel_trace_connection_ips
-              value: {{ .Values.openflow.otel_trace_connection_ips | quote }}
-            - name: otel_trace_mongodb_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_per_users | quote }}
-            - name: otel_trace_mongodb_query_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_query_per_users | quote }}
-            - name: otel_trace_mongodb_aggregate_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_aggregate_per_users | quote }}
-            - name: otel_trace_mongodb_insert_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_insert_per_users | quote }}
-            - name: otel_trace_mongodb_update_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_update_per_users | quote }}
-            - name: otel_trace_mongodb_delete_per_users
-              value: {{ .Values.openflow.otel_trace_mongodb_delete_per_users | quote }}
-            - name: grpc_keepalive_time_ms
-              value: {{ .Values.openflow.grpc_keepalive_time_ms | quote }}
-            - name: grpc_keepalive_timeout_ms
-              value: {{ .Values.openflow.grpc_keepalive_timeout_ms | quote }}
-            - name: grpc_http2_min_ping_interval_without_data_ms
-              value: {{ .Values.openflow.grpc_http2_min_ping_interval_without_data_ms | quote }}
-            - name: grpc_max_connection_idle_ms
-              value: {{ .Values.openflow.grpc_max_connection_idle_ms | quote }}
-            - name: grpc_max_connection_age_ms
-              value: {{ .Values.openflow.grpc_max_connection_age_ms | quote }}
-            - name: grpc_max_connection_age_grace_ms
-              value: {{ .Values.openflow.grpc_max_connection_age_grace_ms | quote }}
-            - name: grpc_http2_max_pings_without_data
-              value: {{ .Values.openflow.grpc_http2_max_pings_without_data | quote }}
-            - name: grpc_keepalive_permit_without_calls
-              value: {{ .Values.openflow.grpc_keepalive_permit_without_calls | quote }}
-            - name: grpc_max_receive_message_length
-              value: {{ .Values.openflow.grpc_max_receive_message_length | quote }}
-            - name: grpc_max_send_message_length
-              value: {{ .Values.openflow.grpc_max_send_message_length | quote }}
-            - name: socket_rate_limit
-              value: {{ .Values.openflow.socket_rate_limit | quote }}
-            - name: socket_rate_limit_points
-              value: {{ .Values.openflow.socket_rate_limit_points | quote }}
-            - name: socket_rate_limit_duration
-              value: {{ .Values.openflow.socket_rate_limit_duration | quote }}
-            - name: socket_rate_limit_points_disconnect
-              value: {{ .Values.openflow.socket_rate_limit_points_disconnect | quote }}
-            - name: client_heartbeat_timeout
-              value: {{ .Values.openflow.client_heartbeat_timeout | quote }}
-            - name: client_signin_timeout
-              value: {{ .Values.openflow.client_signin_timeout | quote }}
-            - name: api_rate_limit
-              value: {{ .Values.openflow.api_rate_limit | quote }}
-            - name: api_rate_limit_points
-              value: {{ .Values.openflow.api_rate_limit_points | quote }}
-            - name: api_rate_limit_duration
-              value: {{ .Values.openflow.api_rate_limit_duration | quote }}
-            - name: supports_watch
-              value: {{ .Values.openflow.supports_watch | quote }}
-            - name: log_with_colors
-              value: {{ .Values.openflow.log_with_colors | quote }}
-            - name: log_cache
-              value: {{ .Values.openflow.log_cache | quote }}
-            - name: log_amqp
-              value: {{ .Values.openflow.log_amqp | quote }}
-            - name: log_login_provider
-              value: {{ .Values.openflow.log_login_provider | quote }}
-            - name: log_websocket
-              value: {{ .Values.openflow.log_websocket | quote }}
-            - name: log_oauth
-              value: {{ .Values.openflow.log_oauth | quote }}
-            - name: log_webserver
-              value: {{ .Values.openflow.log_webserver | quote }}
-            - name: log_database
-              value: {{ .Values.openflow.log_database | quote }}
-            - name: log_grafana
-              value: {{ .Values.openflow.log_grafana | quote }}
-            - name: log_housekeeping
-              value: {{ .Values.openflow.log_housekeeping | quote }}
-            - name: log_otel
-              value: {{ .Values.openflow.log_otel | quote }}
-            - name: log_blocked_ips
-              value: {{ .Values.openflow.log_blocked_ips | quote }}
-            - name: log_information
-              value: {{ .Values.openflow.log_information | quote }}
-            - name: log_debug
-              value: {{ .Values.openflow.log_debug | quote }}
-            - name: log_verbose
-              value: {{ .Values.openflow.log_verbose | quote }}
-            - name: log_silly
-              value: {{ .Values.openflow.log_silly | quote }}
-            - name: log_to_exchange
-              value: {{ .Values.openflow.log_to_exchange | quote }}
-            - name: validate_emails
-              value: {{ .Values.openflow.validate_emails | quote }}
-            - name: forgot_pass_emails
-              value: {{ .Values.openflow.forgot_pass_emails | quote }}
-            - name: debounce_lookup
-              value: {{ .Values.openflow.debounce_lookup | quote }}
-            - name: validate_emails_disposable
-              value: {{ .Values.openflow.validate_emails_disposable | quote }}
-            - name: smtp_service
-              value: {{ .Values.openflow.smtp_service | quote }}
-            - name: smtp_from
-              value: {{ .Values.openflow.smtp_from | quote }}
-            - name: smtp_user
-              value: {{ .Values.openflow.smtp_user | quote }}
-            - name: smtp_pass
-              value: {{ .Values.openflow.smtp_pass | quote }}
-            - name: smtp_url
-              value: {{ .Values.openflow.smtp_url | quote }}
-            - name: amqp_allow_replyto_empty_queuename
-              value: {{ .Values.openflow.amqp_allow_replyto_empty_queuename | quote }}
-            - name: ensure_indexes
-              value: {{ .Values.openflow.ensure_indexes | quote }}
-            - name: metadata_collections
-              value: {{ .Values.openflow.metadata_collections | quote }}
-            - name: enable_openflow_amqp
-              value: {{ .Values.openflow.enable_openflow_amqp | quote }}
-            - name: openflow_amqp_expiration
-              value: {{ .Values.openflow.openflow_amqp_expiration | quote }}
-            - name: amqp_prefetch
-              value: {{ .Values.openflow.amqp_prefetch | quote }}
-            - name: enable_entity_restriction
-              value: {{ .Values.openflow.enable_entity_restriction | quote }}
-            - name: enable_web_tours
-              value: {{ .Values.openflow.enable_web_tours | quote }}
-            - name: enable_nodered_tours
-              value: {{ .Values.openflow.enable_nodered_tours | quote }}
-            - name: grafana_url
-              value: {{ .Values.openflow.grafana_url | quote }}
-            - name: ping_clients_interval
-              value: {{ .Values.openflow.ping_clients_interval | quote }}
-            - name: license_key
-              value: {{ default "" .Values.openflow.license_key | quote }}
-            - name: license_private_key
-              value: {{ default "" .Values.openflow.license_private_key | quote }}
-            - name: stripe_api_key
-              value: {{ default "" .Values.openflow.stripe_api_key | quote }}
-            - name: stripe_api_secret
-              value: {{ default "" .Values.openflow.stripe_api_secret | quote }}
-            - name: NODE_ENV
-              value: {{ default "" .Values.NODE_ENV | quote }}
-            - name: nodered_initial_liveness_delay
-              value: {{ .Values.openflow.nodered_initial_liveness_delay | quote }}
-            - name: multi_tenant
-              value: {{ .Values.openflow.multi_tenant | quote }}
-            - name: update_acl_based_on_groups
-              value: {{ .Values.openflow.update_acl_based_on_groups | quote }}
-            - name: oidc_access_token_ttl
-              value: {{ .Values.openflow.oidc_access_token_ttl | quote }}
-            - name: oidc_authorization_code_ttl
-              value: {{ .Values.openflow.oidc_authorization_code_ttl | quote }}
-            - name: oidc_client_credentials_ttl
-              value: {{ .Values.openflow.oidc_client_credentials_ttl | quote }}
-            - name: oidc_refresh_token_ttl
-              value: {{ .Values.openflow.oidc_refresh_token_ttl | quote }}
-            - name: oidc_session_ttl
-              value: {{ .Values.openflow.oidc_session_ttl | quote }}
-            - name: websocket_package_size
-              value: {{ .Values.openflow.websocket_package_size | quote }}
-            - name: websocket_max_package_count
-              value: {{ .Values.openflow.websocket_max_package_count | quote }}
-            - name: nodered_images
-              value: {{ .Values.openflow.nodered_images | quote }}
-            - name: agent_images
-              value: {{ .Values.openflow.agent_images | quote }}
-            - name: oidc_config
-              value: {{ .Values.openflow.oidc_config | quote }}
-            - name: agent_oidc_client_id
-              value: {{ .Values.openflow.agent_oidc_client_id | quote }}
-            - name: agent_oidc_client_secret
-              value: {{ .Values.openflow.agent_oidc_client_secret | quote }}
-            - name: agent_oidc_userinfo_endpoint
-              value: {{ .Values.openflow.agent_oidc_userinfo_endpoint | quote }}
-            - name: agent_oidc_issuer
-              value: {{ .Values.openflow.agent_oidc_issuer | quote }}
-            - name: agent_oidc_authorization_endpoint
-              value: {{ .Values.openflow.agent_oidc_authorization_endpoint | quote }}
-            - name: agent_oidc_token_endpoint
-              value: {{ .Values.openflow.agent_oidc_token_endpoint | quote }}
-            - name: amqp_force_queue_prefix
-              value: {{ .Values.openflow.amqp_force_queue_prefix | quote }}
-            - name: amqp_force_exchange_prefix
-              value: {{ .Values.openflow.amqp_force_exchange_prefix | quote }}
-            - name: amqp_force_sender_has_read
-              value: {{ .Values.openflow.amqp_force_sender_has_read | quote }}
-            - name: amqp_force_sender_has_invoke
-              value: {{ .Values.openflow.amqp_force_sender_has_invoke | quote }}
-            - name: amqp_force_consumer_has_update
-              value: {{ .Values.openflow.amqp_force_consumer_has_update | quote }}
-            - name: amqp_enabled_exchange
-              value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
-            - name: upload_max_filesize_mb
-              value: {{ .Values.openflow.upload_max_filesize_mb | quote }}
-            - name: use_ingress_beta1_syntax
-              value: {{ .Values.openflow.use_ingress_beta1_syntax | quote }}
-            - name: namespace
-              value: {{ .Release.Namespace | quote }}
-            - name: agent_domain_schema
-              value: {{ default (print "$slug$." $domain) .Values.openflow.agent_domain_schema | quote }}
-            - name: nodered_domain_schema
-              value: {{ default (print "$nodered_id$." $domain) .Values.openflow.nodered_domain_schema | quote }}
-            - name: protocol
-              value: {{ .Values.protocol | quote }}
-            - name: port
-              value: {{ .Values.openflow.port | quote }}
-            - name: skip_history_collections
-              value: {{ .Values.openflow.skip_history_collections | quote }}
-            - name: history_delta_count
-              value: {{ .Values.openflow.history_delta_count | quote }}
-            - name: tls_passphrase
-              value: {{ default "" .Values.openflow.tls_passphrase | quote }}
-            - name: auto_create_users
-              value: {{ .Values.openflow.auto_create_users | quote }}
-            - name: auto_create_domains
-              value: {{ default "" .Values.openflow.auto_create_domains | quote }}
-            - name: persist_user_impersonation
-              value: {{ .Values.openflow.persist_user_impersonation | quote }}
-            - name: aes_secret
-              value: {{ .Values.openflow.aes_secret | quote }}
-            - name: tls_crt
-              value: {{ default "" .Values.openflow.tls_crt | quote }}
-            - name: tls_key
-              value: {{ default "" .Values.openflow.tls_key | quote }}
-            - name: tls_ca
-              value: {{ default "" .Values.openflow.tls_ca | quote }}
-            - name: signing_crt
-              value: {{ .Values.openflow.signing_crt | quote }}
-            - name: singing_key
-              value: {{ .Values.openflow.singing_key | quote }}
             - name: saml_federation_metadata
 {{- if .Values.openflow.saml_federation_metadata }}
               value: {{ .Values.openflow.saml_federation_metadata | quote }}
 {{- else }}
               value: "{{ $apiuri }}/issue/FederationMetadata/2007-06/FederationMetadata.xml"
 {{- end }}
-            - name: saml_issuer
-              value: "uri:{{ $apidomain }}"
 {{- if .Values.openflow.external_mongodb_url }}
             - name: mongodb_url
               value: {{ .Values.openflow.external_mongodb_url | quote }}
@@ -372,56 +122,13 @@ spec:
               value: {{ .Release.Namespace | quote }}
   {{- end }}
 {{- end }}
-            - name: mongodb_minpoolsize
-              value: {{ .Values.openflow.mongodb_minpoolsize | quote }}
-            - name: mongodb_maxpoolsize
-              value: {{ .Values.openflow.mongodb_maxpoolsize | quote }}
+
             - name: amqp_url
               value: "amqp://{{ .Values.rabbitmq.default_user }}:{{ .Values.rabbitmq.default_pass }}@rabbitmq"
-            - name: api_ws_url
-              value: {{ .Values.openflow.api_ws_url | quote }}
-            - name: nodered_ws_url
-              value: {{ .Values.openflow.nodered_ws_url | quote }}
-            - name: nodered_saml_entrypoint
-              value: {{ .Values.openflow.nodered_saml_entrypoint | quote }}
-            - name: domain
-              value: "{{ $apidomain }}"
-            - name: nodered_allow_nodeselector
-              value: {{ .Values.openflow.nodered_allow_nodeselector | quote }}
-            - name: nodered_requests_memory
-              value: {{ .Values.openflow.nodered_requests_memory | quote }}
-            - name: nodered_requests_cpu
-              value: {{ .Values.openflow.nodered_requests_cpu | quote }}
-            - name: nodered_limits_memory
-              value: {{ .Values.openflow.nodered_limits_memory | quote }}
-            - name: nodered_limits_cpu
-              value: {{ .Values.openflow.nodered_limits_cpu | quote }}
-            - name: nodered_liveness_failurethreshold
-              value: {{ .Values.openflow.nodered_liveness_failurethreshold | quote }}
-            - name: nodered_liveness_timeoutseconds
-              value: {{ .Values.openflow.nodered_liveness_timeoutseconds | quote }}
-            - name: noderedcatalogues
-              value: {{ .Values.openflow.noderedcatalogues | quote }}
-            - name: otel_measure_nodeid
-              value: {{ .Values.openflow.otel_measure_nodeid | quote }}
-            - name: otel_measure_queued_messages
-              value: {{ .Values.openflow.otel_measure_queued_messages | quote }}
-            - name: otel_measure_mongodb_watch
-              value: {{ .Values.openflow.otel_measure_mongodb_watch | quote }}
-            - name: otel_measure_onlineuser
-              value: {{ .Values.openflow.otel_measure_onlineuser | quote }}
-            - name: enable_analytics
-              value: {{ .Values.openflow.enable_analytics | quote }}
-            - name: cache_store_type
-              value: {{ .Values.openflow.cache_store_type | quote }}
-            - name: cache_store_redis_host
-              value: {{ .Values.openflow.cache_store_redis_host | quote }}
-            - name: cache_store_redis_password
-              value: {{ .Values.openflow.cache_store_redis_password | quote }}
-            - name: cache_store_ttl_seconds
-              value: {{ .Values.openflow.cache_store_ttl_seconds | quote }}
-            - name: cache_store_max
-              value: {{ .Values.openflow.cache_store_max | quote }}
+
+
+
+
 {{- if .Values.openflow.otel_trace_url }}
             - name: otel_trace_url
               value: {{ .Values.openflow.otel_trace_url | quote }}
@@ -436,6 +143,9 @@ spec:
     {{- end }}
   {{- end }}
 {{- end }}
+
+
+
 {{- if .Values.openflow.otel_metric_url }}
             - name: otel_metric_url
               value: {{ .Values.openflow.otel_metric_url | quote }}
@@ -454,74 +164,339 @@ spec:
 
 
 {{- end }}
-            - name: otel_debug_log
-              value: {{ .Values.openflow.otel_debug_log | quote }}
-            - name: otel_servicename
-              value: {{ .Values.openflow.otel_servicename | quote }}
-            - name: otel_trace_interval
-              value: {{ .Values.openflow.otel_trace_interval | quote }}
-            - name: otel_metric_interval
-              value: {{ .Values.openflow.otel_metric_interval | quote }}
+
+            - name: USE_KUBERNETES
+              value: "true"
+            - name: domain
+              value: "{{ $apidomain }}"
+            - name: namespace
+              value: {{ .Release.Namespace | quote }}
+
+          {{ if .Values.openflow.saml_issuer }}
+            - name: saml_issuer
+              value: {{ .Values.openflow.saml_issuer | quote }}
+          {{- end }}
+          {{ if .Values.openflow.cache_store_max }}
+            - name: cache_store_max
+              value: {{ .Values.openflow.cache_store_max | quote }}
+          {{- end }}
+          {{ if .Values.openflow.use_openshift_routes }}
+            - name: use_openshift_routes
+              value: {{ .Values.openflow.use_openshift_routes | quote }}
+          {{- end }}
+          {{ if .Values.openflow.socket_rate_limit }}
+            - name: socket_rate_limit
+              value: {{ .Values.openflow.socket_rate_limit | quote }}
+          {{- end }}
+          {{ if .Values.openflow.socket_rate_limit_points }}
+            - name: socket_rate_limit_points
+              value: {{ .Values.openflow.socket_rate_limit_points | quote }}
+          {{- end }}
+          {{ if .Values.openflow.socket_rate_limit_duration }}
+            - name: socket_rate_limit_duration
+              value: {{ .Values.openflow.socket_rate_limit_duration | quote }}
+          {{- end }}
+          {{ if .Values.openflow.socket_rate_limit_points_disconnect }}
+            - name: socket_rate_limit_points_disconnect
+              value: {{ .Values.openflow.socket_rate_limit_points_disconnect | quote }}
+          {{- end }}
+          {{ if .Values.openflow.api_rate_limit }}
+            - name: api_rate_limit
+              value: {{ .Values.openflow.api_rate_limit | quote }}
+          {{- end }}
+          {{ if .Values.openflow.api_rate_limit_points }}
+            - name: api_rate_limit_points
+              value: {{ .Values.openflow.api_rate_limit_points | quote }}
+          {{- end }}
+          {{ if .Values.openflow.api_rate_limit_duration }}
+            - name: api_rate_limit_duration
+              value: {{ .Values.openflow.api_rate_limit_duration | quote }}
+          {{- end }}
+          {{ if .Values.openflow.validate_emails }}
+            - name: validate_emails
+              value: {{ .Values.openflow.validate_emails | quote }}
+          {{- end }}
+          {{ if .Values.openflow.forgot_pass_emails }}
+            - name: forgot_pass_emails
+              value: {{ .Values.openflow.forgot_pass_emails | quote }}
+          {{- end }}
+          {{ if .Values.openflow.smtp_service }}
+            - name: smtp_service
+              value: {{ .Values.openflow.smtp_service | quote }}
+          {{- end }}
+          {{ if .Values.openflow.smtp_from }}
+            - name: smtp_from
+              value: {{ .Values.openflow.smtp_from | quote }}
+          {{- end }}
+          {{ if .Values.openflow.smtp_user }}
+            - name: smtp_user
+              value: {{ .Values.openflow.smtp_user | quote }}
+          {{- end }}
+          {{ if .Values.openflow.smtp_pass }}
+            - name: smtp_pass
+              value: {{ .Values.openflow.smtp_pass | quote }}
+          {{- end }}
+          {{ if .Values.openflow.smtp_url }}
+            - name: smtp_url
+              value: {{ .Values.openflow.smtp_url | quote }}
+          {{- end }}
+          {{ if .Values.openflow.ensure_indexes }}
+            - name: ensure_indexes
+              value: {{ .Values.openflow.ensure_indexes | quote }}
+          {{- end }}
+          {{ if .Values.openflow.enable_openflow_amqp }}
+            - name: enable_openflow_amqp
+              value: {{ .Values.openflow.enable_openflow_amqp | quote }}
+          {{- end }}
+          {{ if .Values.openflow.enable_entity_restriction }}
+            - name: enable_entity_restriction
+              value: {{ .Values.openflow.enable_entity_restriction | quote }}
+          {{- end }}
+          {{ if .Values.openflow.enable_web_tours }}
+            - name: enable_web_tours
+              value: {{ .Values.openflow.enable_web_tours | quote }}
+          {{- end }}
+          {{ if .Values.openflow.enable_nodered_tours }}
+            - name: enable_nodered_tours
+              value: {{ .Values.openflow.enable_nodered_tours | quote }}
+          {{- end }}
+          {{ if .Values.openflow.grafana_url }}
+            - name: grafana_url
+              value: {{ .Values.openflow.grafana_url | quote }}
+          {{- end }}
+          {{ if .Values.openflow.license_key }}
+            - name: license_key
+              value: {{ .Values.openflow.license_key | quote }}
+          {{- end }}
+          {{ if .Values.openflow.license_private_key }}
+            - name: license_private_key
+              value: {{ .Values.openflow.license_private_key | quote }}
+          {{- end }}
+          {{ if .Values.openflow.stripe_api_key }}
+            - name: stripe_api_key
+              value: {{ .Values.openflow.stripe_api_key | quote }}
+          {{- end }}
+          {{ if .Values.openflow.stripe_api_secret }}
+            - name: stripe_api_secret
+              value: {{ .Values.openflow.stripe_api_secret | quote }}
+          {{- end }}
+          {{ if .Values.NODE_ENV }}
+            - name: NODE_ENV
+              value: {{ .Values.NODE_ENV | quote }}
+          {{- end }}
+          {{ if .Values.openflow.multi_tenant }}
+            - name: multi_tenant
+              value: {{ .Values.openflow.multi_tenant | quote }}
+          {{- end }}
+          {{ if .Values.openflow.agent_images }}
+            - name: agent_images
+              value: {{ .Values.openflow.agent_images | quote }}
+          {{- end }}
+          {{ if .Values.openflow.amqp_enabled_exchange }}
+            - name: amqp_enabled_exchange
+              value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
+          {{- end }}
+          {{ if .Values.openflow.use_ingress_beta1_syntax }}
+            - name: use_ingress_beta1_syntax
+              value: {{ .Values.openflow.use_ingress_beta1_syntax | quote }}
+          {{- end }}
+          {{ if .Values.openflow.agent_domain_schema }}
+            - name: agent_domain_schema
+              value: {{ .Values.openflow.agent_domain_schema | quote }}
+          {{- end }}
+          {{ if .Values.protocol }}
+            - name: protocol
+              value: {{ .Values.protocol | quote }}
+          {{- end }}
+          {{ if .Values.openflow.port }}
+            - name: port
+              value: {{ .Values.openflow.port | quote }}
+          {{- end }}
+          {{ if .Values.openflow.skip_history_collections }}
+            - name: skip_history_collections
+              value: {{ .Values.openflow.skip_history_collections | quote }}
+          {{- end }}
+          {{ if .Values.openflow.history_delta_count }}
+            - name: history_delta_count
+              value: {{ .Values.openflow.history_delta_count | quote }}
+          {{- end }}
+          {{ if .Values.openflow.auto_create_users }}
+            - name: auto_create_users
+              value: {{ .Values.openflow.auto_create_users | quote }}
+          {{- end }}
+          {{ if .Values.openflow.auto_create_domains }}
+            - name: auto_create_domains
+              value: {{ .Values.openflow.auto_create_domains | quote }}
+          {{- end }}
+          {{ if .Values.openflow.aes_secret }}
+            - name: aes_secret
+              value: {{ .Values.openflow.aes_secret | quote }}
+          {{- end }}
+          {{ if .Values.openflow.signing_crt }}
+            - name: signing_crt
+              value: {{ .Values.openflow.signing_crt | quote }}
+          {{- end }}
+          {{ if .Values.openflow.singing_key }}
+            - name: singing_key
+              value: {{ .Values.openflow.singing_key | quote }}
+          {{- end }}
+          {{ if .Values.openflow.mongodb_minpoolsize }}
+            - name: mongodb_minpoolsize
+              value: {{ .Values.openflow.mongodb_minpoolsize | quote }}
+          {{- end }}
+          {{ if .Values.openflow.mongodb_maxpoolsize }}
+            - name: mongodb_maxpoolsize
+              value: {{ .Values.openflow.mongodb_maxpoolsize | quote }}
+          {{- end }}
+          {{ if .Values.openflow.api_ws_url }}
+            - name: api_ws_url
+              value: {{ .Values.openflow.api_ws_url | quote }}
+          {{- end }}
+          {{ if .Values.openflow.nodered_allow_nodeselector }}
+            - name: nodered_allow_nodeselector
+              value: {{ .Values.openflow.nodered_allow_nodeselector | quote }}
+          {{- end }}
+          {{ if .Values.openflow.enable_analytics }}
+            - name: enable_analytics
+              value: {{ .Values.openflow.enable_analytics | quote }}
+          {{- end }}
+          {{ if .Values.openflow.cache_store_type }}
+            - name: cache_store_type
+              value: {{ .Values.openflow.cache_store_type | quote }}
+          {{- end }}
+          {{ if .Values.openflow.cache_store_redis_host }}
+            - name: cache_store_redis_host
+              value: {{ .Values.openflow.cache_store_redis_host | quote }}
+          {{- end }}
+          {{ if .Values.openflow.cache_store_redis_password }}
+            - name: cache_store_redis_password
+              value: {{ .Values.openflow.cache_store_redis_password | quote }}
+          {{- end }}
+          {{ if .Values.openflow.cache_store_ttl_seconds }}
+            - name: cache_store_ttl_seconds
+              value: {{ .Values.openflow.cache_store_ttl_seconds | quote }}
+          {{- end }}          
+          {{ if .Values.openflow.expected_max_roles }}
             - name: expected_max_roles
               value: {{ .Values.openflow.expected_max_roles | quote }}
+          {{- end }}
+          {{ if .Values.openflow.max_recursive_group_depth }}
             - name: max_recursive_group_depth
               value: {{ .Values.openflow.max_recursive_group_depth | quote }}
+          {{- end }}
+          {{ if .Values.openflow.decorate_roles_fetching_all_roles }}
             - name: decorate_roles_fetching_all_roles
               value: {{ .Values.openflow.decorate_roles_fetching_all_roles | quote }}
+          {{- end }}
+          {{ if .Values.openflow.roles_cached_in_seconds }}
             - name: roles_cached_in_seconds
               value: {{ .Values.openflow.roles_cached_in_seconds | quote }}
+          {{- end }}
+          {{ if .Values.openflow.validate_user_form }}
             - name: validate_user_form
               value: {{ .Values.openflow.validate_user_form | quote }}
+          {{- end }}
+          {{ if .Values.openflow.auto_hourly_housekeeping  }}
             - name: auto_hourly_housekeeping
               value: {{ .Values.openflow.auto_hourly_housekeeping | quote }}
+          {{- end }}
+          {{ if .Values.openflow.housekeeping_update_usage_hourly }}
             - name: housekeeping_update_usage_hourly
               value: {{ .Values.openflow.housekeeping_update_usage_hourly | quote }}
+          {{- end }}
+          {{ if .Values.openflow.housekeeping_update_usersize_hourly }}
             - name: housekeeping_update_usersize_hourly
               value: {{ .Values.openflow.housekeeping_update_usersize_hourly | quote }}
+          {{- end }}
+          {{ if .Values.openflow.housekeeping_skip_collections }}
             - name: housekeeping_skip_collections
               value: {{ .Values.openflow.housekeeping_skip_collections | quote }}
+          {{- end }}
+          {{ if .Values.openflow.workitem_queue_monitoring_enabled }}
             - name: workitem_queue_monitoring_enabled
               value: {{ .Values.openflow.workitem_queue_monitoring_enabled | quote }}
+          {{- end }}
+          {{ if .Values.openflow.workitem_queue_monitoring_interval }}
             - name: workitem_queue_monitoring_interval
               value: {{ .Values.openflow.workitem_queue_monitoring_interval | quote }}
+          {{- end }}
+          {{ if .Values.openflow.stripe_force_vat }}
             - name: stripe_force_vat
               value: {{ .Values.openflow.stripe_force_vat | quote }}
+          {{- end }}
+          {{ if .Values.openflow.stripe_force_checkout }}
             - name: stripe_force_checkout
               value: {{ .Values.openflow.stripe_force_checkout | quote }}
+          {{- end }}
+          {{ if .Values.openflow.debug }}
             - name: DEBUG
               value: {{ .Values.openflow.debug | quote }}
+          {{- end }}
+          {{ if .Values.openflow.HTTP_PROXY }}
             - name: HTTP_PROXY
               value: {{ .Values.openflow.HTTP_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.HTTPS_PROXY }}
             - name: HTTPS_PROXY
               value: {{ .Values.openflow.HTTPS_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.NO_PROXY }}
             - name: NO_PROXY
               value: {{ .Values.openflow.NO_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.HTTP_PROXY }}
             - name: http_proxy
               value: {{ .Values.openflow.HTTP_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.HTTPS_PROXY }}
             - name: https_proxy
               value: {{ .Values.openflow.HTTPS_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.NO_PROXY }}
             - name: no_proxy
               value: {{ .Values.openflow.NO_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.agent_HTTP_PROXY }}
             - name: agent_HTTP_PROXY
               value: {{ .Values.openflow.agent_HTTP_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.agent_HTTPS_PROXY }}
             - name: agent_HTTPS_PROXY
               value: {{ .Values.openflow.agent_HTTPS_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.agent_NO_PROXY }}
             - name: agent_NO_PROXY
               value: {{ .Values.openflow.agent_NO_PROXY | quote }}
+          {{- end }}
+          {{ if .Values.openflow.shorttoken_expires_in }}
             - name: shorttoken_expires_in
               value: {{ .Values.openflow.shorttoken_expires_in | quote }}
+          {{- end }}
+          {{ if .Values.openflow.longtoken_expires_in }}
             - name: longtoken_expires_in
               value: {{ .Values.openflow.longtoken_expires_in | quote }}
+          {{- end }}
+          {{ if .Values.openflow.downloadtoken_expires_in }}
             - name: downloadtoken_expires_in
               value: {{ .Values.openflow.downloadtoken_expires_in | quote }}
+          {{- end }}
+          {{ if .Values.openflow.personalnoderedtoken_expires_in }}
             - name: personalnoderedtoken_expires_in
               value: {{ .Values.openflow.personalnoderedtoken_expires_in | quote }}
+          {{- end }}
+          {{ if .Values.openflow.wapid_pub }}
             - name: wapid_pub
               value: {{ .Values.openflow.wapid_pub | quote }}
+          {{- end }}
+          {{ if .Values.openflow.wapid_key }}
             - name: wapid_key
               value: {{ .Values.openflow.wapid_key | quote }}
+          {{- end }}
+          {{ if .Values.openflow.wapid_mail }}
             - name: wapid_mail
               value: {{ .Values.openflow.wapid_mail | quote }}
+          {{- end }}
+
 ---
 apiVersion: apps/v1
 kind: Deployment
