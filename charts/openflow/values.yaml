@@ -101,8 +101,6 @@ openflow:
   external_mongodb_url:
   # if not using helm to deploy mongodb, set your desired database to use
   mongodb_db:
-  # if not using mongodb replicate set, you cannot use the watch feature, then set this to false
-  supports_watch: 
   # Use colors in console log
   log_with_colors: 
   # log when adding, updating, removing or clearing cache items
