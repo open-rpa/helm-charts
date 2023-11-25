@@ -24,7 +24,7 @@ openflow:
   use_openshift_routes: 
   heapdump_onstop: 
   terminationGracePeriodSeconds: 15
-  deploymentstrategy: Recreate # Recreate or RollingUpdate
+  deploymentstrategy: RollingUpdate # Recreate or RollingUpdate
   sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
   agent_images:
   saml_issuer:
