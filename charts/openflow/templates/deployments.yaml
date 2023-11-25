@@ -173,6 +173,11 @@ spec:
               value: {{ .Release.Namespace | quote }}
 
 
+
+          {{ if .Values.openflow.oidc_access_token_ttl }}
+            - name: oidc_access_token_ttl
+              value: {{ .Values.openflow.oidc_access_token_ttl | quote }}
+          {{- end }}
           {{ if .Values.openflow.disable_db_config }}
             - name: disable_db_config
               value: {{ .Values.openflow.disable_db_config | quote }}

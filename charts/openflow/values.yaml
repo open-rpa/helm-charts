@@ -27,17 +27,9 @@ openflow:
   deploymentstrategy: Recreate # Recreate or RollingUpdate
   sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
   agent_images:
-  oidc_config:
-  agent_oidc_client_id:
-  agent_oidc_client_secret:
-  agent_oidc_userinfo_endpoint:
-  agent_oidc_issuer:
-  agent_oidc_authorization_endpoint:
-  agent_oidc_token_endpoint:
   saml_issuer:
 
   # What url to show inside the robot's getting started page
-  getting_started_url: # https://skadefro.github.io/openrpa.dk/gettingstarted.html
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
   cache_store_type: 
@@ -66,28 +58,14 @@ openflow:
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
-  enable_openai: # Enable chat gpt 4, openapi endpoint, and ezpose plugin endpoint at .well-known/ai-plugin.json
-  enable_openapi: # Enable generic OpenAPI endpoint, same as enable_openai but without .well-known/ai-plugin.json 
-  enable_openaiauth: # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
-  openai_token: # Set token to use when authrorizing to openai plugin ( you get this the first time you add the plugin inside chat gpt 4 )
+  enable_openapiauth: # Force user authentication to use openai plugin ( without will allows ADMIN access to the database, for tesing ONLY !!!! )
   auto_create_users: # if trying to login using unknown username, auto create it ?
   auto_create_domains: # limit auto created logins to emails using these domains, seperated by comma ,
   auto_create_personal_nodered_group: # to avoid users getting access denied first time creating nodered, pre-create the role and make user member of the role
   auto_create_personal_noderedapi_group: # Auto create the role used for api access to users personal nodered
-  persist_user_impersonation: # When impersonating, update on user object who you are impersonating, to persist the information
   # allow api node to listen on https, not recomended in docker, use a reverse proxy instead
-  tls_crt:
-  tls_key:
-  tls_ca:
-  tls_passphrase:
   multi_tenant: # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
-  amqp_force_queue_prefix:  # to avoid users registering the same message queue names, force all messages queues to be prefixed with username, this disables load balancing of multiple nodereds !
-  amqp_force_exchange_prefix:  # to avoid users registering the same message exchange names, force all messages exchanges to be prefixed with username, this disables load balancing of multiple nodereds !
-  amqp_force_sender_has_read:  # If queue is a mongodb id, check user is member of the role or has read permission on the object it represents
-  amqp_force_sender_has_invoke:  # Force user to have invoke permission on the mq or user object in order to send to it
-  amqp_force_consumer_has_update:  # Force user has update permission on the mq or user object in order to consume the queue ( else needs read if amqp_force_sender_has_read is true
   amqp_enabled_exchange:  # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
-  upload_max_filesize_mb: # max upload size for files in MB
 
   use_ingress_beta1_syntax: # Use beta one syntax for ingress controller, default: false
   traefik_ipblock: false # Tell traefic to check IP before forwarding request, using OpenFlow blocklist endpoint
@@ -98,49 +76,15 @@ openflow:
   # To enable enterprise features, add your licanse key here
   license_key:
   license_private_key:
-  # if not using helm to deploy mongodb, set this to the connection string if your mongodb
+  # if not using helm to deploy mongodb, set this to the connection string of your mongodb
   external_mongodb_url:
   # if not using helm to deploy mongodb, set your desired database to use
   mongodb_db:
-  # Use colors in console log
-  log_with_colors: 
-  # log when adding, updating, removing or clearing cache items
-  log_cache: 
-  # Log verbose and higher events related to login provider
-  log_login_provider: 
-  # Log verbose and higher websocket events
-  log_websocket: 
-  # Log verbose and higher oauth provider events
-  log_oauth: 
-  # Log verbose and higher webserver events
-  log_webserver: 
-  # Log verbose and higher database events 
-  log_database: 
-  # Log verbose and higher grafana events 
-  log_grafana: 
-  # Log verbose and higher events around house keeping
-  log_housekeeping:
-  # Log verbose and higher open telemtry registration events 
-  log_otel: 
-  # Log everytime a blocked ip connection is dropped
-  log_blocked_ips:
-  # Enable logging of all information events 
-  log_information: 
-  # Enable logging of all debug events 
-  log_debug: 
-  # Enable logging of all verbose events 
-  log_verbose: 
-  # Enable logging of all silly events 
-  log_silly: 
-  # Send all log events to a global echange
-  log_to_exchange:
   # enable email validation of all non-federated users, require smtp settings to bet set
   validate_emails: 
   # enable "forgot password" by email validation for non-federated users, require smtp settings to bet set
   forgot_pass_emails:
   # when validating email, check if disposable email, using https://debounce.io/free-disposable-check-api/
-  debounce_lookup: 
-  # when validating email, check if disposable email by looking for name in the domains collection for _type disposable
   validate_emails_disposable: 
   # Node mailer, service type
   smtp_service: 
@@ -152,8 +96,6 @@ openflow:
   smtp_pass: 
   # Use smtp url for configuration  ( see https://nodemailer.com/smtp/ or https://www.npmjs.com/package/nodemailer/v/2.2.0-beta.0 ) 
   smtp_url: 
-  # Allow temp work around for bug in open openflow-api code
-  amqp_allow_replyto_empty_queuename: 
   # To override the default minPoolSize of the database connection, usefull when needing a lot of watches or have many clients
   mongodb_minpoolsize:
   # To override the default maxPoolSize of the database connection, usefull when needing a lot of watches or have many clients
@@ -174,15 +116,7 @@ openflow:
   # Use an dedicated message queue for distributing messages among all api instances ( to load balending trafic more evenly )
   skip_history_collections: 
   history_delta_count: # default 1000
-  websocket_max_package_count: # 1048576
-  websocket_package_size: 
-  websocket_disconnect_out_of_sync: # close connection for clients that send double packages, default false
-  update_acl_based_on_groups: true # when a user is added to a role, that role is given read permission on the user, so all members of that role can see all members, can be disabled here
   oidc_access_token_ttl: 
-  oidc_authorization_code_ttl: 
-  oidc_client_credentials_ttl: 
-  oidc_refresh_token_ttl: 
-  oidc_session_ttl: 
 
   # To allow buying addon products or dedicated nodered instance, add stripe api key and secret
   stripe_api_key:
@@ -196,41 +130,14 @@ openflow:
   socket_rate_limit_points_disconnect: # If client builds up this amount of points, disconnect the client, default: 600
   client_heartbeat_timeout: # Disconnect clients who has not send any messages after this many seconds, default: 60
   client_signin_timeout: # Disconnect clients who has not signed in after this many seconds, default: 120
-  otel_trace_dashboardauth: # add trace for dashboardauth events, default: true
-  otel_trace_pingclients: # add trace for each ping clients in openflow, default: true
-  otel_trace_include_query: # include query in spans, default: false
-  otel_trace_connection_ips: # track connection requests per ip address, default: false
-  otel_trace_mongodb_per_users: # track all mongo actions per user, default: false
-  otel_trace_mongodb_query_per_users: # track queries per user, default: false
-  otel_trace_mongodb_aggregate_per_users: # track aggregates per user, default: false
-  otel_trace_mongodb_insert_per_users: # track inserts per user, default: false
-  otel_trace_mongodb_update_per_users: # track updates per user, default: false
-  otel_trace_mongodb_delete_per_users: # track deletes per user, default: false
-  grpc_keepalive_time_ms: # default: 20000 * 1000
-  grpc_keepalive_timeout_ms: # default: 1000
-  grpc_http2_min_ping_interval_without_data_ms: # default: 5000
-  grpc_max_connection_idle_ms: # default: 71992547
-  grpc_max_connection_age_ms: # default: 71992547
-  grpc_max_connection_age_grace_ms: # default: 71992547
-  grpc_http2_max_pings_without_data: # default: 71992547
-  grpc_keepalive_permit_without_calls: # default: 1
-  grpc_max_receive_message_length: # default: 1024 * 1024 * 1024
-  grpc_max_send_message_length: # default: 1024 * 1024 * 1024
 
   aes_secret: # use this to encrypt parts of mongodb documents and hash user passwords
   resources: {}
   api_ws_url: # force new nodereds and browser to use this url to access the api
   saml_federation_metadata: # Override SAML url for new nodered instances
-  otel_measure_nodeid: # Collect otel metrics PER node in nodered ( default is per node type ), default: false
-  otel_measure_queued_messages: # Collect otel metrics for openflow/nodered on socket messages waiting on a reply, default: false
-  otel_measure_mongodb_watch: # Collect otel metrics for open change streams to mongodb, default: false
-  otel_measure_onlineuser: # Collect otel metrics while updating onmline users every 10th second, default: false
   enable_analytics: # Enable analytics
   otel_trace_url: # Open Telemetry exporter trace URL
-  otel_metric_url: # Open Telemetry exporter metrix URL
-  otel_servicename: # Open Telemetry service name
-  otel_trace_interval: # Open Telemetry trace sending interval
-  otel_metric_interval: # Open Telemetry metric sending interval
+  otel_metric_url: # Open Telemetry exporter metric URL
   expected_max_roles: # to avoid dos we limited the number of roles, default 4000
   decorate_roles_fetching_all_roles: # default true, will grab all roles from the database and find accumulated roles in that array, if set to false will do multiple queries to the database to find all nested roles for the user
   roles_cached_in_seconds: # if decorate_roles_fetching_all_roles is true, how many seconds will we cache all roles, default is 300, to disable cache set to 0
@@ -240,7 +147,6 @@ openflow:
   longtoken_expires_in: # default: 365d
   downloadtoken_expires_in: # default: 15m
   personalnoderedtoken_expires_in: # default: 365d
-  otel_debug_log: 
   debug: # Configure logging for the debug plugin
   NO_PROXY: # Set NO_PROXY for all api and agents
   HTTP_PROXY: # Set HTTP_PROXY for all api and agents
@@ -249,7 +155,6 @@ openflow:
   agent_HTTP_PROXY: # Set HTTP_PROXY for all agents only
   agent_HTTPS_PROXY: # Set HTTPS_PROXY for all agents only
   agent_domain_schema: # default is $slug$.domain ( for instance $slug$.app.openiap.io )
-  nodered_domain_schema: # default is $slug$.domain ( for instance $slug$.app.openiap.io )
   
   # limits:
   #   #   cpu: "1"
@@ -267,8 +172,6 @@ openflow:
   stripe_force_vat: # When multi_tenant is enabled, force new customers to add VAT information, default false
   stripe_force_checkout: # When multi_tenant is enabled, force users to accept a stripe checkout session for each purchaes, default true
   auto_create_user_from_jwt: # If openflow received an JWT for an unknown user, auto create the user. Used in certain demo setups, default false
-  nodered_docker_entrypoints: # Used for docker setups, not relevant for kubernetes
-  nodered_docker_certresolver: # Used for docker setups, not relevant for kubernetes
 
   # To use openflow as an webpush server, add your wapid certificate and email here
   wapid_pub: 
