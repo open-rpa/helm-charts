@@ -172,6 +172,11 @@ spec:
             - name: namespace
               value: {{ .Release.Namespace | quote }}
 
+
+          {{ if .Values.openflow.disable_db_config }}
+            - name: disable_db_config
+              value: {{ .Values.openflow.disable_db_config | quote }}
+          {{- end }}
           {{ if .Values.openflow.saml_issuer }}
             - name: saml_issuer
               value: {{ .Values.openflow.saml_issuer | quote }}

@@ -20,6 +20,7 @@ openflow:
   prestop:
     enabled: false
     command: "wget http://localhost:3000/heapdump"
+  disable_db_config: # Disable loading config from database, default false
   use_openshift_routes: 
   heapdump_onstop: 
   terminationGracePeriodSeconds: 15
