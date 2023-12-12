@@ -56,11 +56,15 @@ spec:
       - name: {{ include "common.name" $dot }}
         image: {{ .Values.image | quote }}
         imagePullPolicy: Always
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
         ports:
           - containerPort: 27017
             name: mongo
-        # command: ["/bin/sh"]
-        # args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- if .Values.debugmongodb }}
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- else }}        
         args: 
         # - "-c"
         # - "/usr/local/bin/docker-entrypoint.sh"
@@ -96,6 +100,7 @@ spec:
                 name: "mongo-creds"
                 key: adminpass
           {{- end }}
+{{- end }}
         # livenessProbe:
         #   exec:
         #     command:
@@ -141,6 +146,11 @@ spec:
             value: {{ .Values.rsname | quote }}
           - name: KUBE_NAMESPACE
             value: {{ .Release.Namespace | quote }}
+            # if .Values.tls.enabled and .Values.ingress.enabled
+          {{- if and .Values.tls.enabled .Values.ingress.enabled }}
+          - name: EXTERNAL_PORT
+            value: {{ .Values.ingress.externalport | quote }}
+          {{- end }}
           {{- if .Values.tls.enabled }}
           - name: TLS_SELFSIGN
             value: {{ .Values.tls.selfsigned | quote }}
@@ -282,6 +292,10 @@ spec:
         ports:
           - containerPort: 27017
             name: mongo
+{{- if .Values.debugmongodb }}
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]
+{{- else }}        
         args: 
         - "--dbpath"
         - "/data/db"
@@ -305,6 +319,7 @@ spec:
         - {{ .Values.tls.cafile | quote }}
         {{- end }}
         {{- end }}
+{{- end }}
         env:
           {{- if .Values.auth.enabled }}
           - name: MONGO_INITDB_ROOT_USERNAME

@@ -3,6 +3,7 @@ rsname: rs0
 image: mongo
 sidecarimage: openiap/mongo-k8s-sidecar
 nodeSelector: {}
+resources: {}
 imagePullSecrets: 
 # This needs to be 1, 3 or higher
 # Sometimes you want to run a replicate set with only one node. sure, fine .. go ahead
@@ -11,6 +12,7 @@ imagePullSecrets:
 replicas: 3
 addservicename: true
 mongodbPort: 27017
+debugmongodb: false
 debugsidecar: false
 sidecar_unhealthy_seconds: # 15
 arbiter:
