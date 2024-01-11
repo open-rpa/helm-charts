@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: harbor.emea.ocp.int.kn/dockerhub/library/mongo:6.0.5
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: data
+          mountPath: /data/db
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data-openflow-mongodb-0

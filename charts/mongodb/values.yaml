@@ -13,6 +13,8 @@ addservicename: true
 mongodbPort: 27017
 debugsidecar: false
 sidecar_unhealthy_seconds: # 15
+sidecar:
+  enabled: true
 arbiter:
   enabled: false
   replicas: 1 

@@ -121,6 +121,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data/db
+{{- if eq .Values.sidecar.enabled true }}
       - name: sidecar
         image: {{ .Values.sidecarimage | quote }}
         imagePullPolicy: Always
@@ -217,6 +218,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data/db
+    {{- end }}
     {{- if .Values.exporter.enabled }}
       - name: exporter
         image: {{ .Values.exporter.image | quote }}
