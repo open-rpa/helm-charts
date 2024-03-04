@@ -71,6 +71,8 @@ spec:
         {{- if .Values.tls.enabled }}
         - "--tlsMode"
         - {{ .Values.tls.mode | quote }}
+        - "--setParameter"
+        - "tlsUseSystemCA=true"
         - "--tlsCertificateKeyFile"
         - {{ .Values.tls.certfile | quote }}
           {{- if .Values.tls.certpassword }}
@@ -308,6 +310,8 @@ spec:
         {{- if .Values.tls.enabled }}
         - "--tlsMode" 
         - {{ .Values.tls.mode | quote }}
+        - "--setParameter"
+        - "tlsUseSystemCA=true"
         - "--tlsCertificateKeyFile"
         - {{ .Values.tls.certfile | quote }}
           {{- if .Values.tls.certpassword }}
