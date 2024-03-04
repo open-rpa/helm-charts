@@ -77,6 +77,16 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
+    created: "2024-03-04T20:29:24.677492081+01:00"
+    description: A Helm chart for deploying a mongodb
+    digest: e9235a65c11caae72d8f5cd1a70c70cc0555834f8180270950f7cca414918ea5
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.13/mongodb-0.0.13.tgz
+    version: 0.0.13
+  - apiVersion: v2
+    appVersion: 6.0.0
     created: "2023-02-07T17:22:50.213319064+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 52016e3d6b38a1b4f32336c39886765e490e3f1e59fbb73226814d829c2ff3fe
@@ -1658,7 +1668,8 @@ entries:
       name: mongodb
       repository: https://charts.bitnami.com/bitnami
       version: 7.x.x
-    description: Prepare to take off with the ultimate chat platform, experience the next level of team communications
+    description: Prepare to take off with the ultimate chat platform, experience the
+      next level of team communications
     digest: 5004fe42ba8b158f913e38d3417b6d3153d6122302b9e7658dea6f2c5d4dd054
     home: https://rocket.chat/
     icon: https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon.svg
@@ -1680,4 +1691,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2023-04-23T11:33:59.226884054+02:00"
+generated: "2024-03-04T20:29:25.363736657+01:00"
