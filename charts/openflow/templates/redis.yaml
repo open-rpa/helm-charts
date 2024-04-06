@@ -30,7 +30,7 @@ spec:
           image: {{ .Values.openflow.redisimage | quote }}
           imagePullPolicy: Always
           resources:
-            {{- toYaml .Values.openflow.resources | nindent 12 }}
+            {{- toYaml .Values.redis.resources | nindent 12 }}
           ports:
             - containerPort: 6379
           args: [ "--requirepass", "{{ .Values.openflow.cache_store_redis_password }}" ]

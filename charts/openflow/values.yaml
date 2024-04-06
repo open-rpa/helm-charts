@@ -15,6 +15,10 @@ port: # if the external port to access this is differente from 80/443, then set 
 grpc:
   exposed: false
   internalport: 50051
+redis:
+  # enabled: true # set using openflow.cache_store_type "redis"
+  # image: redis # set using image: {{ .Values.openflow.redisimage | quote }}
+  resources: {}
 openflow:
   image: openiap/openflow # set image for api deployment
   prestop:
