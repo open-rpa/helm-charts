@@ -442,6 +442,10 @@ spec:
             - name: DEBUG
               value: {{ .Values.openflow.debug | quote }}
           {{- end }}
+          {{ if .Values.openflow.NODE_OPTIONS }}
+            - name: NODE_OPTIONS
+              value: {{ .Values.openflow.NODE_OPTIONS | quote }}
+          {{- end }}          
           {{ if .Values.openflow.HTTP_PROXY }}
             - name: HTTP_PROXY
               value: {{ .Values.openflow.HTTP_PROXY | quote }}
