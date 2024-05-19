@@ -27,7 +27,6 @@ openflow:
     command: "wget http://localhost:3000/heapdump"
   disable_db_config: # Disable loading config from database, default false
   use_openshift_routes: 
-  heapdump_onstop: 
   terminationGracePeriodSeconds: 15
   deploymentstrategy: RollingUpdate # Recreate or RollingUpdate
   sessionAffinity: None # either None or ClientIP. Set to ClientIP to use sticky sessions ( clients will always hit the same pod, based on number of pods and client ip )
@@ -37,7 +36,7 @@ openflow:
   # What url to show inside the robot's getting started page
   replicas: 1 # number of api pods to spin up
   port: 3000 # pod/deployment will use this port
-  cache_store_type: 
+  cache_store_type: memory # memory or redis
   redisimage: redis
   cache_store_ttl_seconds: # Items expire from store after this amount of seconds
   cache_store_max: # Max items to store when using memory store
