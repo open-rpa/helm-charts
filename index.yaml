@@ -77,6 +77,16 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
+    created: "2024-05-24T09:47:30.149913907+02:00"
+    description: A Helm chart for deploying a mongodb
+    digest: 3be92be7e3193ccd9160a610e20a79fd094f4b0ba3df2ff7d239a9f7f811444a
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.14/mongodb-0.0.14.tgz
+    version: 0.0.14
+  - apiVersion: v2
+    appVersion: 6.0.0
     created: "2024-03-04T20:29:24.677492081+01:00"
     description: A Helm chart for deploying a mongodb
     digest: e9235a65c11caae72d8f5cd1a70c70cc0555834f8180270950f7cca414918ea5
@@ -198,7 +208,7 @@ entries:
   openflow:
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2024-05-17T17:17:20.910542957+02:00"
+    created: "2024-05-24T09:47:31.3362201+02:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -221,7 +231,7 @@ entries:
     version: 0.1.116
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2024-05-17T17:17:20.633795608+02:00"
+    created: "2024-05-24T09:47:31.05772476+02:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -1737,4 +1747,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2024-05-17T17:17:20.911058993+02:00"
+generated: "2024-05-24T09:47:31.337116826+02:00"
