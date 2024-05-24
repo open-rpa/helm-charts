@@ -64,8 +64,17 @@ spec:
 {{- if .Values.debugmongodb }}
         command: ["/bin/sh"]
         args: ["-c", "while true; do echo hello; sleep 10;done"]
-{{- else }}        
+{{- else }}
         args: 
+        - "--profile"
+        - {{ .Values.profiler.profile | quote }} 
+        - "--slowms"
+        - {{ .Values.profiler.slowms | quote }}
+        - "--slowOpSampleRate"
+        - {{ .Values.profiler.slowOpSampleRate | quote }}
+{{- if .Values.log.quiet }}
+        - "--quiet"
+{{- end }}
         # - "-c"
         # - "/usr/local/bin/docker-entrypoint.sh"
         {{- if .Values.tls.enabled }}
@@ -88,6 +97,7 @@ spec:
         - "/data/db"
         - "--replSet" 
         - {{ .Values.rsname | quote }}
+        - "--tlsAllowInvalidCertificates"
         {{- if .Values.auth.enabled }}
         - "--keyFile"
         - "/data/db/mongodb.key"
@@ -303,6 +313,10 @@ spec:
         - "/data/db"
         - "--replSet" 
         - {{ .Values.rsname | quote }}
+{{- if .Values.log.quiet }}
+        - "--quiet"
+{{- end }}
+        - "--tlsAllowInvalidCertificates"
         {{- if .Values.auth.enabled }}
         - "--keyFile"
         - "/data/db/mongodb.key"

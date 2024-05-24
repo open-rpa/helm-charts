@@ -15,6 +15,12 @@ mongodbPort: 27017
 debugmongodb: false
 debugsidecar: false
 sidecar_unhealthy_seconds: # 15
+log:
+  quiet: true
+profiler:
+  profile: 0 # 0 - off / 1 - use slowms and slowOpSampleRate / 2 - collects data for all operations
+  slowms: 250
+  slowOpSampleRate: 1 # between 0 and 1, The fraction of slow operations that should be profiled or logged
 arbiter:
   enabled: false
   replicas: 1 
