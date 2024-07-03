@@ -12,7 +12,9 @@ data:
       otlp:
         protocols:
           grpc:
+            endpoint: 0.0.0.0:4317
           http:
+            endpoint: 0.0.0.0:4318
 {{- if (eq .Values.exporter.kubestatemetrics.enabled true) }}
       prometheus:
           config:
@@ -45,7 +47,8 @@ data:
         check_interval: {{ .Values.exporter.memorylimit.check_interval }}
 {{- end }}
     extensions:
-      health_check: {}
+      health_check:
+        endpoint: 0.0.0.0:13133
       zpages: {}
     exporters:
 {{- if (eq .Values.jaeger.enabled true) }}
