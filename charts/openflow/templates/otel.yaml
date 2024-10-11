@@ -63,8 +63,8 @@ data:
         format: proto
 {{- end }}
 {{- if (.Values.exporter.loglevel)}}
-      logging:
-       loglevel: {{ .Values.exporter.loglevel }}
+      # logging:
+      #  loglevel: {{ .Values.exporter.loglevel }}
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
       loki:
