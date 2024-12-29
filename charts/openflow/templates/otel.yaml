@@ -67,12 +67,8 @@ data:
       #  loglevel: {{ .Values.exporter.loglevel }}
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
-      loki:
-        endpoint: "http://localhost:3100/loki/api/v1/push"
-        tenant_id: "example2"
-        labels:
-          attributes:
-            log.file.name: "filename"
+      otlphttp:
+        endpoint: "http://loki:3100/otlp"
 {{- end }}
 
 {{- if (eq .Values.exporter.opensearch.metricsenabled true) }}
@@ -178,9 +174,6 @@ data:
   {{- if eq .Values.zipkin.enabled true }}
             - zipkin
   {{- end }}
-  {{- if eq .Values.loki.enabled true }}
-            - loki
-  {{- end }}
   {{- if (eq .Values.exporter.opensearch.traceenabled true) }}
             - otlp/opensearchtrace
   {{- end }}
@@ -191,7 +184,7 @@ data:
 {{- if (eq .Values.loki.enabled true) }}
         logs:
           receivers: [otlp]
-          exporters: [ loki ]
+          exporters: [ otlphttp ]
 {{- end }}
 {{- if eq .Values.exporter.opensearch.logsenabled true }}
         logs:
