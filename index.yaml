@@ -77,9 +77,19 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-07T16:27:19.275257233+01:00"
+    created: "2025-01-07T16:31:48.941756875+01:00"
     description: A Helm chart for deploying a mongodb
-    digest: 5d009fad9de13799bfc6c3d60187dcd27b6930a09d620aaffb219579dec75ee3
+    digest: c0cbc31fe6a59d17c726a49e7c26274a88f744041b4caeafcec5c19b31d75aac
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.16/mongodb-0.0.16.tgz
+    version: 0.0.16
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2025-01-07T16:31:48.727641356+01:00"
+    description: A Helm chart for deploying a mongodb
+    digest: 5c9687a1c1cc512f3c2c49d4401c652b8986443add04538421577edbed7328f3
     name: mongodb
     type: application
     urls:
@@ -87,7 +97,7 @@ entries:
     version: 0.0.15
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-07T16:27:19.061580546+01:00"
+    created: "2025-01-07T16:31:48.513798805+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 3be92be7e3193ccd9160a610e20a79fd094f4b0ba3df2ff7d239a9f7f811444a
     name: mongodb
@@ -218,7 +228,7 @@ entries:
   openflow:
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:27:21.134334631+01:00"
+    created: "2025-01-07T16:31:51.012896756+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -233,7 +243,7 @@ entries:
       repository: https://victoriametrics.github.io/helm-charts
       version: 0.x
     description: A Helm chart for deploying a single openflow instance
-    digest: acdcdcbfc29a7fcd302341b9d5de42c74af9c1d2df4bdb5ead4ec45516a5a9c5
+    digest: e307043cca157016158ba7509b4328aa4b833fc8e7088b88d4eb3ff0f91e9860
     name: openflow
     type: application
     urls:
@@ -241,7 +251,7 @@ entries:
     version: 0.1.118
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:27:20.861947545+01:00"
+    created: "2025-01-07T16:31:50.714906434+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -264,7 +274,7 @@ entries:
     version: 0.1.117
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:27:20.594854567+01:00"
+    created: "2025-01-07T16:31:50.430392811+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -287,7 +297,7 @@ entries:
     version: 0.1.116
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:27:20.292474345+01:00"
+    created: "2025-01-07T16:31:50.164743538+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -1803,4 +1813,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2025-01-07T16:27:21.134923504+01:00"
+generated: "2025-01-07T16:31:51.013575922+01:00"

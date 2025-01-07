@@ -1,3 +1,4 @@
+{{- $dot := . }}
 {{- if .Values.maxUnavailable }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
