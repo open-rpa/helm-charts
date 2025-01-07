@@ -77,9 +77,19 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-07T16:31:48.941756875+01:00"
+    created: "2025-01-07T16:41:12.825602336+01:00"
     description: A Helm chart for deploying a mongodb
-    digest: c0cbc31fe6a59d17c726a49e7c26274a88f744041b4caeafcec5c19b31d75aac
+    digest: 6661de27e6efab6200789997e8010609dff74eb24b3e12fb5920414eb8d811a8
+    name: mongodb
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/mongodb-0.0.17/mongodb-0.0.17.tgz
+    version: 0.0.17
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2025-01-07T16:41:12.608199328+01:00"
+    description: A Helm chart for deploying a mongodb
+    digest: 5c4c582e96eabbdf419cebe1111f9e5d75d127d0aded7095cc199cc161cf7c6e
     name: mongodb
     type: application
     urls:
@@ -87,7 +97,7 @@ entries:
     version: 0.0.16
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-07T16:31:48.727641356+01:00"
+    created: "2025-01-07T16:41:12.377942305+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 5c9687a1c1cc512f3c2c49d4401c652b8986443add04538421577edbed7328f3
     name: mongodb
@@ -97,7 +107,7 @@ entries:
     version: 0.0.15
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-07T16:31:48.513798805+01:00"
+    created: "2025-01-07T16:41:12.101359141+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 3be92be7e3193ccd9160a610e20a79fd094f4b0ba3df2ff7d239a9f7f811444a
     name: mongodb
@@ -228,7 +238,30 @@ entries:
   openflow:
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:31:51.012896756+01:00"
+    created: "2025-01-07T16:41:15.027496436+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://open-rpa.github.io/helm-charts/
+      version: x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    - condition: victoria-metrics-cluster.enabled
+      name: victoria-metrics-cluster
+      repository: https://victoriametrics.github.io/helm-charts
+      version: 0.x
+    description: A Helm chart for deploying a single openflow instance
+    digest: b5a92fc8e932ffd97d0669e1bddc25945315efa7a084c47fdee79ac4630683a1
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.119/openflow-0.1.119.tgz
+    version: 0.1.119
+  - apiVersion: v2
+    appVersion: 1.5.1
+    created: "2025-01-07T16:41:14.715315374+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -251,7 +284,7 @@ entries:
     version: 0.1.118
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:31:50.714906434+01:00"
+    created: "2025-01-07T16:41:14.42576403+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -274,7 +307,7 @@ entries:
     version: 0.1.117
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:31:50.430392811+01:00"
+    created: "2025-01-07T16:41:14.123774596+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -297,7 +330,7 @@ entries:
     version: 0.1.116
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-07T16:31:50.164743538+01:00"
+    created: "2025-01-07T16:41:13.847876229+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -1813,4 +1846,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2025-01-07T16:31:51.013575922+01:00"
+generated: "2025-01-07T16:41:15.02816192+01:00"

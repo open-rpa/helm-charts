@@ -1,0 +1,12 @@
+{{- $dot := . }}
+{{- if .Values.openflow.maxUnavailable }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: "api-pdb"
+spec:
+  maxUnavailable: {{ .Values.openflow.maxUnavailable }}
+  selector:
+    matchLabels:
+      role: api
+{{- end }}

@@ -10,7 +10,7 @@ imagePullSecrets:
 # but if you add 2 for redundancy you will have issues, since voting cannot happen with at least 2 nodes UP
 # meaning if only 2 nodes are there, and one restarts both become secondary and noone gets elected primary
 replicas: 3
- This is the max unavailable setting for the pod disruption budget
+# This is the max unavailable setting for the pod disruption budget
 # The default value of 1 will make sure that kubernetes won't allow more than 1
 # of your pods to be unavailable during maintenance
 maxUnavailable: 1

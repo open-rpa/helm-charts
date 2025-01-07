@@ -35,6 +35,11 @@ openflow:
 
   # What url to show inside the robot's getting started page
   replicas: 1 # number of api pods to spin up
+  # This is the max unavailable setting for the pod disruption budget
+  # The default value of 1 will make sure that kubernetes won't allow more than 1
+  # of your pods to be unavailable during maintenance
+  maxUnavailable: 1
+
   port: 3000 # pod/deployment will use this port
   cache_store_type: memory # memory or redis
   redisimage: redis
