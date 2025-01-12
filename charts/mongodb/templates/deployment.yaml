@@ -124,17 +124,19 @@ spec:
         #   timeoutSeconds: 5
         #   successThreshold: 1
         #   failureThreshold: 6
-        # readinessProbe:
-        #   exec:
-        #     command:
-        #       - mongosh
-        #       - --eval
-        #       - "db.adminCommand('ping')"
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 10
-        #   timeoutSeconds: 5
-        #   successThreshold: 1
-        #   failureThreshold: 6
+{{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          exec:
+            command:
+              - mongosh
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+{{- end }}
         volumeMounts:
         - name: data
           mountPath: /data/db

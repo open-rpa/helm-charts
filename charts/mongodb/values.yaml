@@ -19,6 +19,13 @@ mongodbPort: 27017
 debugmongodb: false
 debugsidecar: false
 sidecar_unhealthy_seconds: # 15
+readinessProbe:
+  enabled: false
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 6
 log:
   quiet: true
 profiler:
