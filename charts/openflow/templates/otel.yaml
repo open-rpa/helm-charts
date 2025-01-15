@@ -52,10 +52,15 @@ data:
       zpages: {}
     exporters:
 {{- if (eq .Values.jaeger.enabled true) }}
-      jaeger:
-        endpoint: openflow-jaeger-collector:14250
+      otlp/jaeger:
+        # endpoint: openflow-jaeger-collector:4317
+        endpoint: openflow-jaeger-collector:4317
         tls:
           insecure: true
+      # jaeger:
+      #   endpoint: openflow-jaeger-collector:14250
+      #   tls:
+      #     insecure: true
 {{- end }}
 {{- if (eq .Values.zipkin.enabled true) }}
       zipkin:
@@ -169,7 +174,7 @@ data:
           processors: [batch]
           exporters: 
   {{- if eq .Values.jaeger.enabled true }}
-            - jaeger
+            - otlp/jaeger
   {{- end }}
   {{- if eq .Values.zipkin.enabled true }}
             - zipkin

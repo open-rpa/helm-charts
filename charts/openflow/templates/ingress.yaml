@@ -71,7 +71,7 @@ spec:
                 port:
                   name: rabbitmq-mgnt
   {{- end }}
-  {{- if and .Values.openflow.license_key (eq .Values.grafana.enabled true) }}
+  {{- if and (eq .Values.grafana.enabled true) }}
     - host: "grafana.{{ $domain }}"
       http:
         paths:
@@ -83,7 +83,7 @@ spec:
                 port:
                   name: grafana
   {{- end }}
-  {{- if and .Values.openflow.license_key (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
+  {{- if and (eq .Values.victoriametrics.enabled true) (eq .Values.victoriametrics.exposed true) }}
     - host: "victoria.{{ $domain }}"
       http:
         paths:
@@ -155,7 +155,7 @@ spec:
 
 {{- end }}
 ---
-{{- if or (and (.Values.openflow.license_key) (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true))) (eq .Values.rediscommander.exposed true) }}
+{{- if or (and (or (eq .Values.jaeger.exposed true) (eq .Values.zipkin.enabled true))) (eq .Values.rediscommander.exposed true) }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -204,7 +204,7 @@ spec:
                 port:
                   name: rediscommander
   {{- end }}
-  {{- if and .Values.openflow.license_key (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
+  {{- if and (eq .Values.jaeger.enabled true) (eq .Values.jaeger.exposed true) }}
     - host: "jaeger.{{ $domain }}"
       http:
         paths:
@@ -216,7 +216,7 @@ spec:
                 port:
                   name: query
   {{- end }}
-  {{- if and .Values.openflow.license_key (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
+  {{- if and (eq .Values.zipkin.enabled true) (eq .Values.zipkin.exposed true) }}
     - host: "zipkin.{{ $domain }}"
       http:
         paths:

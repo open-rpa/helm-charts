@@ -278,6 +278,15 @@ exporter: # open telemetry exporter. This service receive metrics and spans from
     check_interval: 5s
 jaeger: # for visualizing and optionally also saving all spans, we can use jaeger.
   enabled: false
+  collector:
+    service:
+      grpc:
+        port: 4317
+      # otlp:
+        # grpc:
+        #   name: otlp-grpc
+        #   port: 4317
+        #   # nodePort: 
   exposed: false
   # provisionDataStore: 
   #   cassandra: false
