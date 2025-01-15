@@ -55,14 +55,14 @@ openflow:
     timeoutSeconds: 5
   readinessProbe:
     enabled: true
-    path: /loginproviders
+    path: /livenessprobe
     initialDelaySeconds: 2
     periodSeconds: 2
     failureThreshold: 3
     timeoutSeconds: 5
   startupProbe:
     enabled: false
-    path: /loginproviders
+    path: /livenessprobe
     initialDelaySeconds: 2
     periodSeconds: 2
     failureThreshold: 3
