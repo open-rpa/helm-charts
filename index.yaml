@@ -77,7 +77,7 @@ entries:
   mongodb:
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-12T14:08:12.032311562+01:00"
+    created: "2025-01-17T14:32:07.555823806+01:00"
     description: A Helm chart for deploying a mongodb
     digest: db19ee8241e352b6ee5a90f86aa3c3a61a6b9e3ca201d599e39c748d6c4b87b9
     name: mongodb
@@ -87,7 +87,7 @@ entries:
     version: 0.0.18
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-12T14:08:11.853030065+01:00"
+    created: "2025-01-17T14:32:07.354143672+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 6661de27e6efab6200789997e8010609dff74eb24b3e12fb5920414eb8d811a8
     name: mongodb
@@ -97,7 +97,7 @@ entries:
     version: 0.0.17
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-12T14:08:11.635450216+01:00"
+    created: "2025-01-17T14:32:07.164447848+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 5c4c582e96eabbdf419cebe1111f9e5d75d127d0aded7095cc199cc161cf7c6e
     name: mongodb
@@ -107,7 +107,7 @@ entries:
     version: 0.0.16
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-12T14:08:11.444033252+01:00"
+    created: "2025-01-17T14:32:06.960116666+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 5c9687a1c1cc512f3c2c49d4401c652b8986443add04538421577edbed7328f3
     name: mongodb
@@ -117,7 +117,7 @@ entries:
     version: 0.0.15
   - apiVersion: v2
     appVersion: 6.0.0
-    created: "2025-01-12T14:08:11.25453915+01:00"
+    created: "2025-01-17T14:32:06.759899463+01:00"
     description: A Helm chart for deploying a mongodb
     digest: 3be92be7e3193ccd9160a610e20a79fd094f4b0ba3df2ff7d239a9f7f811444a
     name: mongodb
@@ -248,7 +248,30 @@ entries:
   openflow:
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-12T14:08:14.087784784+01:00"
+    created: "2025-01-17T14:32:09.94637595+01:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://open-rpa.github.io/helm-charts/
+      version: x
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.x
+    - condition: victoria-metrics-cluster.enabled
+      name: victoria-metrics-cluster
+      repository: https://victoriametrics.github.io/helm-charts
+      version: "0.11"
+    description: A Helm chart for deploying a single openflow instance
+    digest: 37554493fe17406a3580a3bf53371ae3be967c6c818514fdbab283525ae88058
+    name: openflow
+    type: application
+    urls:
+    - https://github.com/open-rpa/helm-charts/releases/download/openflow-0.1.120/openflow-0.1.120.tgz
+    version: 0.1.120
+  - apiVersion: v2
+    appVersion: 1.5.1
+    created: "2025-01-17T14:32:09.641330928+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -271,7 +294,7 @@ entries:
     version: 0.1.119
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-12T14:08:13.836659424+01:00"
+    created: "2025-01-17T14:32:09.325154264+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -294,7 +317,7 @@ entries:
     version: 0.1.118
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-12T14:08:13.572782008+01:00"
+    created: "2025-01-17T14:32:09.038067293+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -317,7 +340,7 @@ entries:
     version: 0.1.117
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-12T14:08:13.301599235+01:00"
+    created: "2025-01-17T14:32:08.775360184+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -340,7 +363,7 @@ entries:
     version: 0.1.116
   - apiVersion: v2
     appVersion: 1.5.1
-    created: "2025-01-12T14:08:13.021982211+01:00"
+    created: "2025-01-17T14:32:08.53097606+01:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -1856,4 +1879,4 @@ entries:
     urls:
     - https://github.com/open-rpa/helm-charts/releases/download/rocketchat-3.0.2/rocketchat-3.0.2.tgz
     version: 3.0.2
-generated: "2025-01-12T14:08:14.088815116+01:00"
+generated: "2025-01-17T14:32:09.949556342+01:00"

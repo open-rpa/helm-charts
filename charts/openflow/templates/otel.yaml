@@ -72,8 +72,10 @@ data:
       #  loglevel: {{ .Values.exporter.loglevel }}
 {{- end }}
 {{- if (eq .Values.loki.enabled true) }}
-      otlphttp:
+      otlphttp/logs:
         endpoint: "http://loki:3100/otlp"
+        tls:
+          insecure: true
 {{- end }}
 
 {{- if (eq .Values.exporter.opensearch.metricsenabled true) }}
@@ -189,11 +191,12 @@ data:
 {{- if (eq .Values.loki.enabled true) }}
         logs:
           receivers: [otlp]
-          exporters: [ otlphttp ]
+          processors: [batch]
+          exporters: [otlphttp/logs]
 {{- end }}
 {{- if eq .Values.exporter.opensearch.logsenabled true }}
         logs:
-          receivers: [filelog,otlp]
+          receivers: [otlp]
           exporters: 
             - otlp/opensearchlogs
 {{- end }}

@@ -144,7 +144,18 @@ spec:
   {{- end }}
 {{- end }}
 
-
+{{- if .Values.openflow.otel_log_url }}
+            - name: otel_log_url
+              value: {{ .Values.openflow.otel_log_url | quote }}
+{{- else if eq .Values.loki.enabled true }}
+    {{- if (eq .Values.exporter.exposed true) }}
+            - name: otel_log_url
+              value: "{{ $oteluri }}/v1/logs"
+    {{- else }}
+            - name: otel_log_url
+              value: "http://otel-collector:4317/v1/logs"
+    {{- end }}
+{{- end }}
 
 {{- if .Values.openflow.otel_metric_url }}
             - name: otel_metric_url
