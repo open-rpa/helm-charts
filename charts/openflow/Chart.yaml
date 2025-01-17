@@ -22,6 +22,6 @@ dependencies:
   repository: "https://jaegertracing.github.io/helm-charts"
   condition: jaeger.enabled
 - name: victoria-metrics-cluster
-  version: "0.x"
+  version: "0.11"
   repository: "https://victoriametrics.github.io/helm-charts"
   condition: victoria-metrics-cluster.enabled
