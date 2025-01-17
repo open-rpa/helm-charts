@@ -69,7 +69,13 @@ data:
       grpc_listen_port: 9096
     limits_config:
       allow_structured_metadata: true
-
+      otlp_config:
+        resource_attributes:
+          attributes_config:
+            - action: index_label
+              attributes:
+                - hostname
+                - ofid
     common:
       instance_addr: 127.0.0.1
       path_prefix: /tmp/loki
