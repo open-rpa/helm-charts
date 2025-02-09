@@ -4,6 +4,9 @@ image: mongo
 sidecarimage: openiap/mongo-k8s-sidecar
 nodeSelector: {}
 resources: {}
+traefik: 
+  # IngressRouteApiVersion: traefik.containo.us/v1alpha1
+  IngressRouteApiVersion: traefik.io/v1alpha1
 imagePullSecrets: 
 # This needs to be 1, 3 or higher
 # Sometimes you want to run a replicate set with only one node. sure, fine .. go ahead

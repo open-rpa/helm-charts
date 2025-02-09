@@ -3,6 +3,9 @@ domainsuffix:
 domain:
 apidomain:
 protocol: http # set the https if using tlsSecret or certresolver
+traefik: 
+  # IngressRouteApiVersion: traefik.containo.us/v1alpha1
+  IngressRouteApiVersion: traefik.io/v1alpha1
 certificate:
   create: false # Create a certificate, when using certificate manager
   tlsSecret: # Add tlsSecret to all ingress controllers, handy if using certificate manager, or you imported your own certificate in a secret
