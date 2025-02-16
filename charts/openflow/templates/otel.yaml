@@ -14,6 +14,15 @@ data:
           grpc:
             endpoint: 0.0.0.0:4317
           http:
+            include_metadata: true
+            cors:
+              allowed_origins:
+                - https://*
+                - http://*
+                - http://*:5173/*
+                - http://*:5174/*
+                - http://*:4173/*
+                - http://*:4174/*
             endpoint: 0.0.0.0:4318
 {{- if (eq .Values.exporter.kubestatemetrics.enabled true) }}
       prometheus:
@@ -348,6 +357,21 @@ spec:
         - name: otel-collector
           port: 4317
           scheme: h2c
+---
+apiVersion: {{$.Values.traefik.IngressRouteApiVersion}}
+kind: IngressRoute
+metadata:
+  name: ingressroute.otelhttp
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`otelhttp.{{$domain}}`)
+      kind: Rule
+      services:
+        - name: otel-collector
+          port: 4318
   {{- end }}
 {{- end }}
 
