@@ -285,6 +285,10 @@ spec:
             - name: grafana_url
               value: {{ .Values.openflow.grafana_url | quote }}
           {{- end }}
+          {{ if .Values.openflow.posthog_token }}
+            - name: posthog_token
+              value: {{ .Values.openflow.posthog_token | quote }}
+          {{- end }}
           {{ if .Values.openflow.license_key }}
             - name: license_key
               value: {{ .Values.openflow.license_key | quote }}
