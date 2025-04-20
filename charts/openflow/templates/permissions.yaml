@@ -13,6 +13,7 @@ rules:
   resources:
   - pods
   - services
+  - endpoints
   verbs: 
   - get
   - watch
@@ -30,6 +31,7 @@ rules:
   - create
   - update
   - delete
+  - watch
 - apiGroups:
   - ''
   resources:
@@ -94,18 +96,6 @@ rules:
   verbs:
   - get
   - list
-{{- if eq .Values.openflow.kpack true -}}
-- apiGroups:
-  - kpack.io
-  resources:
-  - images
-  verbs:
-  - get
-  - list
-  - create
-  - update
-  - delete
-{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
