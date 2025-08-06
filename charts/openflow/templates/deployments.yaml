@@ -321,6 +321,10 @@ spec:
             - name: amqp_enabled_exchange
               value: {{ .Values.openflow.amqp_enabled_exchange | quote }}
           {{- end }}
+          {{ if .Values.openflow.openai_api_key }}
+            - name: OPENAI_API_KEY
+              value: {{ .Values.openflow.openai_api_key | quote }}
+          {{- end }}
           {{ if .Values.openflow.use_ingress_beta1_syntax }}
             - name: use_ingress_beta1_syntax
               value: {{ .Values.openflow.use_ingress_beta1_syntax | quote }}
@@ -384,6 +388,10 @@ spec:
           {{ if .Values.openflow.enable_analytics }}
             - name: enable_analytics
               value: {{ .Values.openflow.enable_analytics | quote }}
+          {{- end }}
+          {{ if .Values.openflow.otel_protocol }}
+            - name: otel_protocol
+              value: {{ .Values.openflow.otel_protocol | quote }}
           {{- end }}
           {{ if .Values.openflow.cache_store_type }}
             - name: cache_store_type

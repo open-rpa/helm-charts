@@ -78,6 +78,7 @@ openflow:
   # allow api node to listen on https, not recomended in docker, use a reverse proxy instead
   multi_tenant: # if multi tenant is enabled, will lock down default roles to avoid users can "see each other" any custom roles created will allow users of same role to see each other
   amqp_enabled_exchange:  # enabled the amp exchange node in nodered, and enabled Register Exchange command in API
+  openai_api_key: # OpenAI API key, used for the openai plugin
 
   use_ingress_beta1_syntax: # Use beta one syntax for ingress controller, default: false
   traefik_ipblock: false # Tell traefic to check IP before forwarding request, using OpenFlow blocklist endpoint
@@ -149,6 +150,7 @@ openflow:
   api_ws_url: # force new nodereds and browser to use this url to access the api
   saml_federation_metadata: # Override SAML url for new nodered instances
   enable_analytics: # Enable analytics
+  otel_protocol: # Open Telemetry protocol, http or grpc, default: grpc
   otel_trace_url: # Open Telemetry exporter trace URL
   otel_metric_url: # Open Telemetry exporter metric URL
   otel_log_url: # Open Telemetry exporter log URL
