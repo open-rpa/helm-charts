@@ -66,6 +66,9 @@ spec:
         args: ["-c", "while true; do echo hello; sleep 10;done"]
 {{- else }}
         args: 
+        {{- if .Values.wiredtigercachesizegb }}
+        - "--wiredTigerCacheSizeGB {{ .Values.wiredtigercachesizegb }}"
+        {{- end }}
         - "--profile"
         - {{ .Values.profiler.profile | quote }} 
         - "--slowms"

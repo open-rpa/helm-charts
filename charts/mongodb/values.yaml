@@ -4,6 +4,7 @@ image: mongo
 sidecarimage: openiap/mongo-k8s-sidecar
 nodeSelector: {}
 resources: {}
+wiredtigercachesizegb: 
 traefik: 
   # IngressRouteApiVersion: traefik.containo.us/v1alpha1
   IngressRouteApiVersion: traefik.io/v1alpha1
